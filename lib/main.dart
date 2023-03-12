@@ -4,24 +4,26 @@ import 'package:fitness_app/screens/welcome_screen.dart';
 import 'package:fitness_app/screens/registration_screen.dart';
 import 'package:fitness_app/screens/chat_screen.dart';
 
-void main() => runApp(FlashChat());
+void main() => runApp(const FitnessApp());
 
-class FlashChat extends StatelessWidget {
+class FitnessApp extends StatelessWidget {
+  const FitnessApp({super.key});
+
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
       theme: ThemeData.dark().copyWith(
-        textTheme: TextTheme(
+        textTheme: const TextTheme(
           bodyText1: TextStyle(color: Colors.black54),
         ),
       ),
-      home: WelcomeScreen(),
+      home: const WelcomeScreen(),
       initialRoute: WelcomeScreen.id,
       routes: {
-        WelcomeScreen.id: (context) => WelcomeScreen(),
-        LoginScreen.id: (context) => LoginScreen(),
-        RegistrationScreen.id: (context) => RegistrationScreen(),
-        ChatScreen.id: (context) => ChatScreen()
+        WelcomeScreen.id: (context) => const WelcomeScreen(),
+        LoginScreen.id: (context) => const LoginScreen(),
+        RegistrationScreen.id: (context) => const RegistrationScreen(),
+        ChatScreen.id: (context) => const ChatScreen()
       },
     );
   }

@@ -17,7 +17,7 @@ class _WelcomeScreenState extends State<WelcomeScreen> {
     return Scaffold(
       backgroundColor: Colors.white,
       body: Padding(
-        padding: const EdgeInsets.symmetric(horizontal: 24.0),
+        padding: const EdgeInsets.symmetric(horizontal: 12.0),
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           crossAxisAlignment: CrossAxisAlignment.stretch,
@@ -25,11 +25,12 @@ class _WelcomeScreenState extends State<WelcomeScreen> {
             Row(
               children: <Widget>[
                 SizedBox(
-                  height: 60.0,
-                  child: Image.asset('images/logo.png'),
+                  width: 280.0,
+                  height: 280.0,
+                  child: Image.asset('images/fitness_logo.png'),
                 ),
                 const Text(
-                  'Flash Chat',
+                  'JB Fitness',
                   style: TextStyle(
                     fontSize: 45.0,
                     fontWeight: FontWeight.w900,
@@ -54,7 +55,7 @@ class _WelcomeScreenState extends State<WelcomeScreen> {
                   minWidth: 200.0,
                   height: 42.0,
                   child: const Text(
-                    'Log In',
+                    '로그인',
                   ),
                 ),
               ),
@@ -73,7 +74,7 @@ class _WelcomeScreenState extends State<WelcomeScreen> {
                   minWidth: 200.0,
                   height: 42.0,
                   child: const Text(
-                    'Register',
+                    '회원 등록',
                   ),
                 ),
               ),

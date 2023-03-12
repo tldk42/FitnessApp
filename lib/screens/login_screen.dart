@@ -1,9 +1,14 @@
+import 'package:fitness_app/screens/chat_screen.dart';
 import 'package:flutter/material.dart';
 
 class LoginScreen extends StatefulWidget {
   const LoginScreen({super.key});
 
   static String id = 'login_screen';
+
+  static String ID = "";
+  static String PW = "";
+
   @override
   _LoginScreenState createState() => _LoginScreenState();
 }
@@ -21,17 +26,18 @@ class _LoginScreenState extends State<LoginScreen> {
           children: <Widget>[
             SizedBox(
               height: 200.0,
-              child: Image.asset('images/logo.png'),
+              child: Image.asset('images/fitness_logo.png'),
             ),
             const SizedBox(
               height: 48.0,
             ),
             TextField(
               onChanged: (value) {
-                //Do something with the user input.
+                // TODO: ID 검증
+                LoginScreen.ID = value;
               },
               decoration: const InputDecoration(
-                hintText: 'Enter your email',
+                hintText: 'ID를 입력하세요.',
                 contentPadding:
                     EdgeInsets.symmetric(vertical: 10.0, horizontal: 20.0),
                 border: OutlineInputBorder(
@@ -54,10 +60,11 @@ class _LoginScreenState extends State<LoginScreen> {
             ),
             TextField(
               onChanged: (value) {
-                //Do something with the user input.
+                // TODO: PW 검증
+                LoginScreen.PW = value;
               },
               decoration: const InputDecoration(
-                hintText: 'Enter your password.',
+                hintText: 'PW를 입력하세요.',
                 contentPadding:
                     EdgeInsets.symmetric(vertical: 10.0, horizontal: 20.0),
                 border: OutlineInputBorder(
@@ -86,7 +93,12 @@ class _LoginScreenState extends State<LoginScreen> {
                 elevation: 5.0,
                 child: MaterialButton(
                   onPressed: () {
-                    //Implement login functionality.
+                    // TODO: Implement login functionality.
+                    // TODO: DB에 회원 정보 등록하고 검증하기.
+                    if (LoginScreen.ID == "tldk42" &&
+                        LoginScreen.PW == "lbgs8589") {
+                      Navigator.pushNamed(context, ChatScreen.id);
+                    }
                   },
                   minWidth: 200.0,
                   height: 42.0,
