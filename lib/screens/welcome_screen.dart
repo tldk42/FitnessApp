@@ -11,29 +11,63 @@ class WelcomeScreen extends StatefulWidget {
   _WelcomeScreenState createState() => _WelcomeScreenState();
 }
 
-class _WelcomeScreenState extends State<WelcomeScreen> {
+class _WelcomeScreenState extends State<WelcomeScreen>
+    with SingleTickerProviderStateMixin {
+  late AnimationController animationController;
+  late Animation animation;
+
+  @override
+  void initState() {
+    // TODO: implement initState
+    super.initState();
+    animationController =
+        AnimationController(vsync: this, duration: const Duration(seconds: 1));
+
+    // Animation을 이용할 경우 Controller의 UpperBound가 1을 넘으면 안됌
+    // animation =
+    //     CurvedAnimation(parent: animationController, curve: Curves.decelerate);
+    animation = ColorTween(begin: Colors.grey, end: Colors.orange)
+        .animate(animationController);
+
+    animationController.forward();
+    animationController.addListener(() {
+      setState(() {});
+      print(animationController.value);
+    });
+  }
+
+  @override
+  void dispose() {
+    super.dispose();
+    // TODO: implement dispose
+    animationController.dispose();
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: Colors.white,
+      backgroundColor: Colors.grey[300],
       body: Padding(
         padding: const EdgeInsets.symmetric(horizontal: 12.0),
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           crossAxisAlignment: CrossAxisAlignment.stretch,
           children: <Widget>[
-            Row(
+            Column(
               children: <Widget>[
-                SizedBox(
-                  width: 280.0,
-                  height: 280.0,
-                  child: Image.asset('images/fitness_logo.png'),
-                ),
-                const Text(
+                Hero(
+                    tag: 'logo',
+                    child: SizedBox(
+                      height: animationController.value * 300,
+                      child: Image.asset('images/fitness_logo.png'),
+                    )),
+                Text(
                   'JB Fitness',
                   style: TextStyle(
                     fontSize: 45.0,
                     fontWeight: FontWeight.w900,
+                    // color: Colors.orange.shade700
+                    color: animation.value,
                   ),
                 ),
               ],
@@ -45,7 +79,7 @@ class _WelcomeScreenState extends State<WelcomeScreen> {
               padding: const EdgeInsets.symmetric(vertical: 16.0),
               child: Material(
                 elevation: 5.0,
-                color: Colors.lightBlueAccent,
+                color: Colors.orange[400],
                 borderRadius: BorderRadius.circular(30.0),
                 child: MaterialButton(
                   onPressed: () {
@@ -56,6 +90,7 @@ class _WelcomeScreenState extends State<WelcomeScreen> {
                   height: 42.0,
                   child: const Text(
                     '로그인',
+                    style: TextStyle(fontWeight: FontWeight.w600, fontSize: 24),
                   ),
                 ),
               ),
@@ -63,7 +98,7 @@ class _WelcomeScreenState extends State<WelcomeScreen> {
             Padding(
               padding: const EdgeInsets.symmetric(vertical: 16.0),
               child: Material(
-                color: Colors.blueAccent,
+                color: Colors.orange[700],
                 borderRadius: BorderRadius.circular(30.0),
                 elevation: 5.0,
                 child: MaterialButton(
@@ -75,6 +110,7 @@ class _WelcomeScreenState extends State<WelcomeScreen> {
                   height: 42.0,
                   child: const Text(
                     '회원 등록',
+                    style: TextStyle(fontWeight: FontWeight.w600, fontSize: 24),
                   ),
                 ),
               ),
