@@ -1,15 +1,9 @@
-import 'package:fitness_app/api/api.dart';
-import 'package:fitness_app/screens/chat_screen.dart';
 import 'package:flutter/material.dart';
-import 'package:http/http.dart' as http;
 
 class LoginScreen extends StatefulWidget {
   const LoginScreen({super.key});
 
   static String id = 'login_screen';
-
-  static String ID = "";
-  static String PW = "";
 
   @override
   _LoginScreenState createState() => _LoginScreenState();
@@ -40,7 +34,6 @@ class _LoginScreenState extends State<LoginScreen> {
             TextField(
               onChanged: (value) {
                 // TODO: ID 검증
-                LoginScreen.ID = value;
               },
               decoration: const InputDecoration(
                 hintText: 'ID를 입력하세요.',
@@ -67,7 +60,6 @@ class _LoginScreenState extends State<LoginScreen> {
             TextField(
               onChanged: (value) {
                 // TODO: PW 검증
-                LoginScreen.PW = value;
               },
               decoration: const InputDecoration(
                 hintText: 'PW를 입력하세요.',
@@ -101,10 +93,6 @@ class _LoginScreenState extends State<LoginScreen> {
                   onPressed: () {
                     // TODO: Implement login functionality.
                     // TODO: DB에 회원 정보 등록하고 검증하기.
-                    if (LoginScreen.ID == "tldk42" &&
-                        LoginScreen.PW == "lbgs8589") {
-                      Navigator.pushNamed(context, ChatScreen.id);
-                    }
                   },
                   minWidth: 200.0,
                   height: 42.0,

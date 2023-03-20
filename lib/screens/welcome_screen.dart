@@ -1,6 +1,7 @@
 import 'package:fitness_app/screens/login_screen.dart';
 import 'package:fitness_app/screens/registration_screen.dart';
 import 'package:flutter/material.dart';
+import 'package:animated_text_kit/animated_text_kit.dart';
 
 class WelcomeScreen extends StatefulWidget {
   const WelcomeScreen({super.key});
@@ -61,13 +62,17 @@ class _WelcomeScreenState extends State<WelcomeScreen>
                       height: animationController.value * 300,
                       child: Image.asset('images/fitness_logo.png'),
                     )),
-                Text(
-                  'JB Fitness',
-                  style: TextStyle(
-                    fontSize: 45.0,
-                    fontWeight: FontWeight.w900,
-                    // color: Colors.orange.shade700
-                    color: animation.value,
+                SizedBox(
+                  child: AnimatedTextKit(
+                    animatedTexts: [
+                      TypewriterAnimatedText(
+                        'JB Fitness',
+                        textStyle: TextStyle(
+                            fontSize: 45.0,
+                            fontWeight: FontWeight.w900,
+                            color: Colors.orange.shade700),
+                      )
+                    ],
                   ),
                 ),
               ],
