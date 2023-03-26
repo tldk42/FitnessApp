@@ -1,6 +1,7 @@
 import 'package:fitness_app/db/login_info_storage.dart';
 import 'package:fitness_app/db/user_data_storage.dart';
 import 'package:fitness_app/providers/user_login_state_provider.dart';
+import 'package:fitness_app/utilities/make_api_request.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
@@ -55,9 +56,17 @@ class _LoginFormComponentState extends State<LoginFormComponent> {
   }
 
   void tryLoggingIn() async {
-    // async final dataReceived = await sendData(
-    //    urlPath
-    //  )
+    final dataReceived = await sendData(
+        urlPath: 'myUrl', data: {'userInput': userInput, 'password': password});
+    if (dataReceived.keys.join().toLowerCase().contains('error')) {
+      showErrorAlert(context, dataReceived);
+    } else{
+      final status = Future.wait([
+        _saveLoggedInUserData(
+        dataReceived['authorization_token'],dataReceived['user']),
+        CardsStorage()
+      ])
+    }
   }
 
   @override
@@ -114,7 +123,10 @@ class _LoginFormComponentState extends State<LoginFormComponent> {
                 contentPadding:
                     EdgeInsets.only(left: 15, bottom: 11, top: 11, right: 15),
                 hintText: "id or phone number",
-                hintStyle: TextStyle(fontSize: 16, color: Color(0xff393239), fontWeight: FontWeight.w600),
+                hintStyle: TextStyle(
+                    fontSize: 16,
+                    color: Color(0xff393239),
+                    fontWeight: FontWeight.w600),
               ),
               style: const TextStyle(fontSize: 16, color: Colors.black87),
             ),
@@ -179,7 +191,10 @@ class _LoginFormComponentState extends State<LoginFormComponent> {
                 contentPadding:
                     EdgeInsets.only(left: 15, bottom: 11, top: 11, right: 15),
                 hintText: "password",
-                hintStyle: TextStyle(fontSize: 16, color: Color(0xff393239), fontWeight: FontWeight.w600),
+                hintStyle: TextStyle(
+                    fontSize: 16,
+                    color: Color(0xff393239),
+                    fontWeight: FontWeight.w600),
               ),
               style: const TextStyle(fontSize: 16, color: Colors.black87),
             ),
@@ -220,8 +235,10 @@ class _LoginFormComponentState extends State<LoginFormComponent> {
                 ),
                 child: const Text(
                   'Log in',
-                  style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold, color: Color(
-                      0xffffffff)),
+                  style: TextStyle(
+                      fontSize: 16,
+                      fontWeight: FontWeight.bold,
+                      color: Color(0xffffffff)),
                 )),
           ),
         ],

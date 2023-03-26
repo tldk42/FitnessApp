@@ -47,6 +47,7 @@ class _StepGetPhoneState extends State<StepGetPhone> {
     return Form(
         key: widget.phoneFormKey,
         child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             Container(
               width: double.infinity,
@@ -54,8 +55,7 @@ class _StepGetPhoneState extends State<StepGetPhone> {
               padding: const EdgeInsets.all(5),
               decoration: BoxDecoration(
                   color: Colors.white,
-                  border:
-                      Border.all(width: 1.0, color: const Color(0xFFF5F7FA)),
+                  border: Border.all(width: 1.0, color: const Color(0xFFF5F7FA)),
                   borderRadius: BorderRadius.circular(20),
                   boxShadow: [
                     const BoxShadow(
@@ -71,9 +71,15 @@ class _StepGetPhoneState extends State<StepGetPhone> {
                   ]),
               child: TextFormField(
                 initialValue: phoneNum,
+                onChanged: _toggleSignUpButtonVisibility,
                 validator: _validatePhone,
                 autofocus: mounted,
                 autocorrect: false,
+                onFieldSubmitted: (value) {
+                  if (value.isNotEmpty) {
+                    widget.finalStepProcessing();
+                  }
+                },
                 decoration: const InputDecoration(
                   fillColor: Colors.white,
                   border: InputBorder.none,
@@ -82,30 +88,24 @@ class _StepGetPhoneState extends State<StepGetPhone> {
                   errorBorder: InputBorder.none,
                   disabledBorder: InputBorder.none,
                   contentPadding:
-                      EdgeInsets.only(left: 15, bottom: 11, top: 11, right: 15),
-                  hintText: "full name",
+                  EdgeInsets.only(left: 15, bottom: 11, top: 11, right: 15),
+                  hintText: "phone number(010XXXXXXXXX)",
                   hintStyle: TextStyle(fontSize: 16, color: Color(0xFF929BAB)),
                 ),
                 style: const TextStyle(fontSize: 16, color: Color(0xFF929BAB)),
-                keyboardType: TextInputType.name,
-                textInputAction: TextInputAction.next,
               ),
             ),
-
             if (phoneNumErrorMSG != '')
               Container(
                 margin: const EdgeInsets.all(2),
                 padding: const EdgeInsets.all(2),
-                width: double.infinity,
                 child: Text(
                   "\t\t\t\t$phoneNumErrorMSG",
                   style: const TextStyle(fontSize: 10, color: Colors.red),
                 ),
               ),
-            // input field for RESIDENTIAL-ADDRESS ends here
           ],
-        ));
-  }
+        ));  }
 
   void errorMessageSetter(String message) {
     setState(() {

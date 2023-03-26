@@ -3,7 +3,6 @@ import 'package:flutter/material.dart';
 class StepGetName extends StatefulWidget {
   final LabeledGlobalKey<FormState> nameFormKey;
   final Function updateSignUpDetails;
-
   final Function registrationDetails;
   final Function proceedToNextStep;
 
@@ -37,7 +36,6 @@ class _StepGetNameState extends State<StepGetName> {
 
   @override
   void dispose() {
-    // TODO: implement dispose
     super.dispose();
   }
 
@@ -53,7 +51,8 @@ class _StepGetNameState extends State<StepGetName> {
               padding: const EdgeInsets.all(5),
               decoration: BoxDecoration(
                   color: Colors.white,
-                  border: Border.all(width: 1.0, color: const Color(0xFFF5F7FA)),
+                  border:
+                      Border.all(width: 1.0, color: const Color(0xFFF5F7FA)),
                   borderRadius: BorderRadius.circular(20),
                   boxShadow: [
                     const BoxShadow(
@@ -89,7 +88,6 @@ class _StepGetNameState extends State<StepGetName> {
                 textInputAction: TextInputAction.next,
               ),
             ),
-
             if (fullNameErrorMSG != '')
               Container(
                 margin: const EdgeInsets.all(2),
@@ -97,15 +95,14 @@ class _StepGetNameState extends State<StepGetName> {
                 width: double.infinity,
                 child: Text(
                   "\t\t\t\t$fullNameErrorMSG",
-                  style: const TextStyle(fontSize: 10, color: Colors.red),
+                  style: const TextStyle(fontSize: 16, color: Colors.red),
                 ),
               ),
-            // input field for RESIDENTIAL-ADDRESS ends here
           ],
         ));
   }
 
-  void errorMessageSetter(String fieldName, String message) {
+  void errorMessageSetter(String message) {
     setState(() {
       fullNameErrorMSG = message;
     });
@@ -113,14 +110,13 @@ class _StepGetNameState extends State<StepGetName> {
 
   String? _validateName(String? value) {
     if (value == null || value.isEmpty) {
-      errorMessageSetter('FULL-NAME', 'you must provide your full name');
-    } else if (value.length > 100) {
-      errorMessageSetter(
-          'FULL-NAME', 'name cannot contain more than 100 characters');
+      errorMessageSetter('you must provide your name');
+    } else if (value.length > 20) {
+      errorMessageSetter('name cannot contain more than 20 characters');
     } else {
-      errorMessageSetter('FULL-NAME', "");
-
+      errorMessageSetter('');
       widget.updateSignUpDetails('fullname', value);
     }
+    return null;
   }
 }

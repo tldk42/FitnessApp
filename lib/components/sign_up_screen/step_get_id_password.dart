@@ -40,7 +40,6 @@ class _StepGetIDPasswordState extends State<StepGetIDPassword> {
 
   @override
   void dispose() {
-    // TODO: implement dispose
     super.dispose();
   }
 
@@ -86,11 +85,11 @@ class _StepGetIDPasswordState extends State<StepGetIDPassword> {
                   disabledBorder: InputBorder.none,
                   contentPadding:
                       EdgeInsets.only(left: 15, bottom: 11, top: 11, right: 15),
-                  hintText: "email address",
+                  hintText: "id",
                   hintStyle: TextStyle(fontSize: 16, color: Color(0xFF929BAB)),
                 ),
                 style: const TextStyle(fontSize: 16, color: Color(0xFF929BAB)),
-                keyboardType: TextInputType.emailAddress,
+                keyboardType: TextInputType.text,
               ),
             ),
             if (idErrorMSG != '')
@@ -99,7 +98,7 @@ class _StepGetIDPasswordState extends State<StepGetIDPassword> {
                 padding: const EdgeInsets.all(2),
                 child: Text(
                   "\t\t\t\t$idErrorMSG",
-                  style: const TextStyle(fontSize: 10, color: Colors.red),
+                  style: const TextStyle(fontSize: 16, color: Colors.red),
                 ),
               ),
             Container(
@@ -142,6 +141,7 @@ class _StepGetIDPasswordState extends State<StepGetIDPassword> {
                   hintText: "password",
                   hintStyle: TextStyle(fontSize: 16, color: Color(0xFF929BAB)),
                 ),
+                style: const TextStyle(color: Colors.black),
               ),
             ),
             if (passwordErrorMSG != '')
@@ -150,7 +150,7 @@ class _StepGetIDPasswordState extends State<StepGetIDPassword> {
                 padding: const EdgeInsets.all(2),
                 child: Text(
                   "\t\t\t\t$passwordErrorMSG",
-                  style: const TextStyle(fontSize: 10, color: Colors.red),
+                  style: const TextStyle(fontSize: 16, color: Colors.red),
                 ),
               ),
           ],
@@ -175,9 +175,9 @@ class _StepGetIDPasswordState extends State<StepGetIDPassword> {
       errorMessageSetter('ID', 'you must provide a valid id');
     } else {
       errorMessageSetter('ID', "");
-
       widget.updateSignUpDetails('id', value);
     }
+    //TODO: id 중복되는 경우 체크
     return null;
   }
 

@@ -18,8 +18,8 @@ class FitnessApp extends StatelessWidget {
           bodyText1: TextStyle(color: Colors.black54),
         ),
       ),
-      home: const WelcomeScreen(),
-      initialRoute: WelcomeScreen.id,
+      home: const LoginScreen(),
+      initialRoute: LoginScreen.id,
       routes: {
         WelcomeScreen.id: (context) => const WelcomeScreen(),
         LoginScreen.id: (context) => const LoginScreen(),

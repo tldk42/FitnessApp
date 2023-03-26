@@ -1,3 +1,4 @@
+import 'package:fitness_app/components/sign_up_screen/sign_up_steps.dart';
 import 'package:flutter/material.dart';
 
 class SignUpScreen extends StatefulWidget {
@@ -12,6 +13,7 @@ class _SignUpScreenState extends State<SignUpScreen> {
   Widget build(BuildContext context) {
     return WillPopScope(
         child: Scaffold(
+          backgroundColor: const Color(0xFF393239),
           body: SingleChildScrollView(
             padding: const EdgeInsets.all(45),
             child: Column(
@@ -20,8 +22,7 @@ class _SignUpScreenState extends State<SignUpScreen> {
                   height: 16,
                 ),
                 SizedBox(
-                  height: 30,
-                  child: Image.asset('assets/images/hadwin-logo-with-name.png'),
+                  child: Image.asset('images/pants-logo.png'),
                 ),
                 const SizedBox(
                   height: 30,
