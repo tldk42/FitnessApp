@@ -3,7 +3,6 @@ import 'dart:developer';
 import 'dart:io';
 import 'package:path_provider/path_provider.dart';
 
-
 class LoginInfoStorage {
   Future<String> get _localPath async {
     final directory = await getApplicationDocumentsDirectory();
@@ -32,5 +31,25 @@ class LoginInfoStorage {
     }
   }
 
+  Future<bool> saveUserData(Map<String, dynamic> userData) async {
+    try {
+      final file = await _userLoginDataFile;
 
+      return file.writeAsString(jsonEncode(userData)).then((value) => true);
+
+    } catch (e) {
+      return false;
+    }
+  }
+
+  Future<bool> deleteFile() async {
+    try {
+      final file = await _userLoginDataFile;
+
+      await file.delete();
+      return true;
+    } catch (e) {
+      return false;
+    }
+  }
 }

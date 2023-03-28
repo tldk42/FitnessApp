@@ -32,8 +32,8 @@ class _StepGetIDPasswordState extends State<StepGetIDPassword> {
     Map<String, String> signUpDetails = widget.registrationDetails();
     if (mounted) {
       setState(() {
-        id = signUpDetails['id']!;
-        password = signUpDetails['password']!;
+        id = signUpDetails['member_id']!;
+        password = signUpDetails['member_password']!;
       });
     }
   }
@@ -175,7 +175,7 @@ class _StepGetIDPasswordState extends State<StepGetIDPassword> {
       errorMessageSetter('ID', 'you must provide a valid id');
     } else {
       errorMessageSetter('ID', "");
-      widget.updateSignUpDetails('id', value);
+      widget.updateSignUpDetails('member_id', value);
     }
     //TODO: id 중복되는 경우 체크
     return null;
@@ -187,7 +187,7 @@ class _StepGetIDPasswordState extends State<StepGetIDPassword> {
     } else {
       errorMessageSetter('PASSWORD', "");
 
-      widget.updateSignUpDetails('password', value);
+      widget.updateSignUpDetails('member_password', value);
     }
     return null;
   }

@@ -1,6 +1,7 @@
 import 'package:fitness_app/db/login_info_storage.dart';
 import 'package:fitness_app/db/user_data_storage.dart';
 import 'package:fitness_app/providers/user_login_state_provider.dart';
+import 'package:fitness_app/utilities/display_error_alert.dart';
 import 'package:fitness_app/utilities/make_api_request.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
@@ -57,15 +58,11 @@ class _LoginFormComponentState extends State<LoginFormComponent> {
 
   void tryLoggingIn() async {
     final dataReceived = await sendData(
-        urlPath: 'myUrl', data: {'userInput': userInput, 'password': password});
-    if (dataReceived.keys.join().toLowerCase().contains('error')) {
+        urlPath: 'user/login.php',
+        data: {'member_id': userInput, 'member_password': password});
+    if (dataReceived['success']) {
+    } else {
       showErrorAlert(context, dataReceived);
-    } else{
-      final status = Future.wait([
-        _saveLoggedInUserData(
-        dataReceived['authorization_token'],dataReceived['user']),
-        CardsStorage()
-      ])
     }
   }
 

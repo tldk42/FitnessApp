@@ -1,6 +1,7 @@
 import 'package:fitness_app/components/sign_up_screen/step_get_id_password.dart';
 import 'package:fitness_app/components/sign_up_screen/step_get_name.dart';
 import 'package:fitness_app/components/sign_up_screen/step_get_phone.dart';
+import 'package:fitness_app/utilities/display_error_alert.dart';
 import 'package:fitness_app/utilities/make_api_request.dart';
 import 'package:fitness_app/utilities/slide_right_route.dart';
 import 'package:flutter/gestures.dart';
@@ -21,10 +22,10 @@ class _SignUpStepsState extends State<SignUpSteps> {
   final phoneNumberFormKey = LabeledGlobalKey<FormState>("phoneNumberForm");
 
   Map<String, String> signUpDetails = {
-    'fullname': '',
-    'id': '',
-    'password': '',
-    'phone': ''
+    'member_id': '',
+    'member_password': '',
+    'member_name': '',
+    'member_phone': ''
   };
 
   Map<String, String> registrationDetails() => signUpDetails;
@@ -355,7 +356,7 @@ class _SignUpStepsState extends State<SignUpSteps> {
         switch (i) {
           case 0:
             nameFormKey.currentState?.validate();
-            if (signUpDetails['fullname']!.isEmpty) {
+            if (signUpDetails['member_name']!.isEmpty) {
               errorStatus = true;
             }
             break;
@@ -364,8 +365,8 @@ class _SignUpStepsState extends State<SignUpSteps> {
             if (stepCompletedSuccessfully[1]) {
               errorStatus = false;
             } else if (stepCompletedSuccessfully[0] && _currentStep == 1) {
-              if (signUpDetails['id']!.isEmpty ||
-                  signUpDetails['password']!.isEmpty) {
+              if (signUpDetails['member_id']!.isEmpty ||
+                  signUpDetails['member_password']!.isEmpty) {
                 errorStatus = true;
               } else {
                 errorStatus = true;
@@ -374,7 +375,7 @@ class _SignUpStepsState extends State<SignUpSteps> {
             break;
           case 2:
             phoneNumberFormKey.currentState?.validate();
-            if (signUpDetails['phone']!.isEmpty) {
+            if (signUpDetails['member_phone']!.isEmpty) {
               errorStatus = true;
             }
             break;
@@ -394,7 +395,7 @@ class _SignUpStepsState extends State<SignUpSteps> {
         switch (i) {
           case 0:
             nameFormKey.currentState?.validate();
-            if (signUpDetails["fullname"]!.isEmpty) {
+            if (signUpDetails["member_name"]!.isEmpty) {
               errorStatus = true;
             }
 
@@ -405,8 +406,8 @@ class _SignUpStepsState extends State<SignUpSteps> {
               errorStatus = false;
             } else if (stepCompletedSuccessfully[0] && _currentStep == 1) {
               // emailPasswordFormKey.currentState?.validate();
-              if (signUpDetails["id"]!.isEmpty ||
-                  signUpDetails["password"]!.isEmpty) {
+              if (signUpDetails["member_id"]!.isEmpty ||
+                  signUpDetails["member_password"]!.isEmpty) {
                 errorStatus = true;
               }
             } else {
@@ -415,7 +416,7 @@ class _SignUpStepsState extends State<SignUpSteps> {
             break;
           case 2:
             phoneNumberFormKey.currentState?.validate();
-            if (signUpDetails["phone"]!.isEmpty) {
+            if (signUpDetails["member_phone"]!.isEmpty) {
               errorStatus = true;
             }
 
@@ -434,19 +435,21 @@ class _SignUpStepsState extends State<SignUpSteps> {
 
   void _tryRegistering() {
     // TODO: 서버에 SendData
-    sendData(urlPath: 'myUrl', data: signUpDetails)
+    sendData(urlPath: 'user/signup.php', data: signUpDetails)
         .then((response) {
       ScaffoldMessenger.of(context).hideCurrentSnackBar();
 
       if (response.keys.join().toLowerCase().contains('error')) {
         showErrorAlert(context, response);
       } else {
-        Navigator.of(context).pushAndRemoveUntil(
-            MaterialPageRoute(builder: (context) =>
-                ChooseUserName(
-                  userAuthKey: response['authorization_token'],
-                  userData: response['user'],
-                )), (route) => false)
+        //   Navigator.of(context).pushAndRemoveUntil(
+        //       MaterialPageRoute(
+        //           builder: (context) =>
+        //               ChooseUserName(
+        //                 userAuthKey: response['authorization_token'],
+        //                 userData: response['user'],
+        //               )), (route) => false)
+        // }
       }
     });
   }

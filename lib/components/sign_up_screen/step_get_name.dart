@@ -29,7 +29,7 @@ class _StepGetNameState extends State<StepGetName> {
     Map<String, String> signUpDetails = widget.registrationDetails();
     if (mounted) {
       setState(() {
-        fullName = signUpDetails['fullname']!;
+        fullName = signUpDetails['member_name']!;
       });
     }
   }
@@ -115,7 +115,7 @@ class _StepGetNameState extends State<StepGetName> {
       errorMessageSetter('name cannot contain more than 20 characters');
     } else {
       errorMessageSetter('');
-      widget.updateSignUpDetails('fullname', value);
+      widget.updateSignUpDetails('member_name', value);
     }
     return null;
   }

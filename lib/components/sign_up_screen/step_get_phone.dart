@@ -31,7 +31,7 @@ class _StepGetPhoneState extends State<StepGetPhone> {
     Map<String, String> signUpDetails = widget.registrationDetails();
     if (mounted) {
       setState(() {
-        phoneNum = signUpDetails['phone']!;
+        phoneNum = signUpDetails['member_phone']!;
       });
     }
   }
@@ -129,7 +129,7 @@ class _StepGetPhoneState extends State<StepGetPhone> {
   }
 
   void _toggleSignUpButtonVisibility(String value) {
-    widget.updateSignUpDetails('phone', value);
+    widget.updateSignUpDetails('member_phone', value);
     if (value.isNotEmpty) {
       widget.showConfirmSignUpButton(true);
     } else {
