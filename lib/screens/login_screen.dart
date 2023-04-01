@@ -174,7 +174,7 @@ class _LoginScreenState extends State<LoginScreen> {
 
   void goToSignUpScreen() {
     Navigator.push(
-        context, MaterialPageRoute(builder: (context) => WelcomeScreen()));
+        context, MaterialPageRoute(builder: (context) => SignUpScreen()));
   }
 
   SizedBox _spacing(double height) =>

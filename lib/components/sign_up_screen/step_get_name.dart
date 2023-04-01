@@ -107,13 +107,12 @@ class _StepGetNameState extends State<StepGetName> {
               child: GenderPickerWithImage(
                 showOtherGender: false,
                 verticalAlignedText: true,
-
                 // to show what's selected on app opens, but by default it's Male
                 selectedGender: Gender.Male,
                 selectedGenderTextStyle: const TextStyle(
                     color: Color(0xfff975c4), fontWeight: FontWeight.bold),
                 unSelectedGenderTextStyle: const TextStyle(
-                    color: Colors.black, fontWeight: FontWeight.normal),
+                    color: Colors.white, fontWeight: FontWeight.normal),
                 onChanged: (Gender? gender) {
                   if (kDebugMode) {
                     print(gender);
@@ -121,7 +120,6 @@ class _StepGetNameState extends State<StepGetName> {
                 },
                 //Alignment between icons
                 equallyAligned: true,
-
                 animationDuration: const Duration(milliseconds: 300),
                 isCircular: true,
                 opacityOfGradient: 0.4,

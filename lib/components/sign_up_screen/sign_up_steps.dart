@@ -26,7 +26,7 @@ class _SignUpStepsState extends State<SignUpSteps> {
     'member_password': '',
     'member_name': '',
     'member_phone': '',
-    'member_sex': ''
+    'member_gender': ''
   };
 
   Map<String, String> registrationDetails() => signUpDetails;
@@ -395,7 +395,8 @@ class _SignUpStepsState extends State<SignUpSteps> {
         switch (i) {
           case 0:
             nameFormKey.currentState?.validate();
-            if (signUpDetails["member_name"]!.isEmpty) {
+            if (signUpDetails["member_name"]!.isEmpty ||
+                signUpDetails["member_gender"]!.isEmpty) {
               errorStatus = true;
             }
 

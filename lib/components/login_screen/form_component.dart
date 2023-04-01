@@ -1,8 +1,10 @@
 import 'package:fitness_app/db/login_info_storage.dart';
 import 'package:fitness_app/db/user_data_storage.dart';
 import 'package:fitness_app/providers/user_login_state_provider.dart';
+import 'package:fitness_app/screens/welcome_screen.dart';
 import 'package:fitness_app/utilities/display_error_alert.dart';
 import 'package:fitness_app/utilities/make_api_request.dart';
+import 'package:fitness_app/utilities/slide_right_route.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
@@ -61,6 +63,12 @@ class _LoginFormComponentState extends State<LoginFormComponent> {
         urlPath: 'user/login.php',
         data: {'member_id': userInput, 'member_password': password});
     if (dataReceived['success']) {
+      Future.delayed(
+          const Duration(milliseconds: 300),
+          () => Navigator.push(
+              context,
+              SlideRightRoute(
+                  page: WelcomeScreen())));
     } else {
       showErrorAlert(context, dataReceived);
     }

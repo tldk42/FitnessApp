@@ -44,6 +44,7 @@ dependencies:
   markdown_widget: ^1.2.8
   path_provider: ^2.0.9
   gender_picker: ^1.1.0
+  filter_list: ^1.0.2
 
 
 dev_dependencies:
