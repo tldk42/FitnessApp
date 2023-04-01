@@ -19,7 +19,7 @@ class FitnessApp extends StatelessWidget {
         ),
       ),
       home: const LoginScreen(),
-      initialRoute: LoginScreen.id,
+      initialRoute: WelcomeScreen.id,
       routes: {
         WelcomeScreen.id: (context) => const WelcomeScreen(),
         LoginScreen.id: (context) => const LoginScreen(),

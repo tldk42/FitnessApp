@@ -9,13 +9,14 @@ class WelcomeScreen extends StatefulWidget {
   static String id = 'welcome_screen';
 
   @override
-  _WelcomeScreenState createState() => _WelcomeScreenState();
+  State<WelcomeScreen> createState() => _WelcomeScreenState();
 }
 
 class _WelcomeScreenState extends State<WelcomeScreen>
     with SingleTickerProviderStateMixin {
   late AnimationController animationController;
   late Animation animation;
+  final _unfocusNode = FocusNode();
 
   @override
   void initState() {
@@ -39,93 +40,1042 @@ class _WelcomeScreenState extends State<WelcomeScreen>
 
   @override
   void dispose() {
-    super.dispose();
     // TODO: implement dispose
+    _unfocusNode.dispose();
     animationController.dispose();
+    super.dispose();
   }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: Colors.grey[300],
-      appBar: AppBar(
-        title: Text("TEST"),
-      ),
-      body: Padding(
-        padding: const EdgeInsets.symmetric(horizontal: 12.0),
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-          crossAxisAlignment: CrossAxisAlignment.stretch,
-          children: <Widget>[
-            Column(
-              children: <Widget>[
-                Hero(
-                    tag: 'logo',
-                    child: SizedBox(
-                      height: animationController.value * 300,
-                      child: Image.asset('images/fitness_logo.png'),
-                    )),
-                SizedBox(
-                  child: AnimatedTextKit(
-                    animatedTexts: [
-                      TypewriterAnimatedText(
-                        'JB Fitness',
-                        textStyle: TextStyle(
-                            fontSize: 45.0,
-                            fontWeight: FontWeight.w900,
-                            color: Colors.orange.shade700),
-                      )
-                    ],
-                  ),
+        backgroundColor: const Color(0xFF393239),
+        appBar: AppBar(
+          backgroundColor: const Color(0xFF393239),
+          automaticallyImplyLeading: false,
+          title: const Text(
+            'Activity',
+            style: TextStyle(
+              color: Color(0xFFFF94D4),
+            ),
+          ),
+          actions: const [],
+          centerTitle: false,
+          elevation: 0,
+        ),
+        body: SafeArea(
+          child: GestureDetector(
+            onTap: () => FocusScope.of(context).requestFocus(_unfocusNode),
+            child: Column(
+              mainAxisSize: MainAxisSize.max,
+              children: [
+                Row(
+                  mainAxisSize: MainAxisSize.max,
+                  children: [
+                    Material(
+                      color: Colors.transparent,
+                      elevation: 0,
+                      child: Container(
+                        width: MediaQuery.of(context).size.width,
+                        height: 60,
+                        decoration: const BoxDecoration(
+                            color: Color(0xFF393239),
+                            boxShadow: [
+                              BoxShadow(
+                                blurRadius: 4,
+                                color: Color(0x430F1113),
+                                offset: Offset(0, 2),
+                              )
+                            ]),
+                        child: Padding(
+                          padding: const EdgeInsetsDirectional.fromSTEB(
+                              20, 4, 20, 0),
+                          child: TextFormField(),
+                        ),
+                      ),
+                    ),
+                  ],
                 ),
+                Expanded(
+                    child: ListView(
+                  padding: EdgeInsets.zero,
+                  scrollDirection: Axis.vertical,
+                  children: [
+                    Padding(
+                      padding:
+                          const EdgeInsetsDirectional.fromSTEB(16, 12, 16, 20),
+                      child: Container(
+                        width: double.infinity,
+                        height: 184,
+                        decoration: BoxDecoration(
+                          color: Colors.white,
+                          image: DecorationImage(
+                            fit: BoxFit.fitWidth,
+                            image: Image.network(
+                              'https://images.unsplash.com/photo-1616803689943-5601631c7fec?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxzZWFyY2h8NTR8fHdvcmtvdXR8ZW58MHx8MHx8&auto=format&fit=crop&w=800&q=60',
+                            ).image,
+                          ),
+                          boxShadow: const [
+                            BoxShadow(
+                              blurRadius: 3,
+                              color: Color(0x33000000),
+                              offset: Offset(0, 2),
+                            )
+                          ],
+                          borderRadius: BorderRadius.circular(8),
+                        ),
+                        child: Container(
+                          width: 100,
+                          height: 100,
+                          decoration: BoxDecoration(
+                            color: const Color(0x65090F13),
+                            borderRadius: BorderRadius.circular(8),
+                          ),
+                          child: Padding(
+                            padding: const EdgeInsetsDirectional.fromSTEB(
+                                0, 0, 0, 2),
+                            child: Column(
+                              mainAxisSize: MainAxisSize.max,
+                              children: [
+                                Padding(
+                                  padding: const EdgeInsetsDirectional.fromSTEB(
+                                      16, 16, 16, 0),
+                                  child: Row(
+                                    mainAxisSize: MainAxisSize.max,
+                                    children: const [
+                                      Expanded(
+                                        child: Text(
+                                          'Class Name',
+                                          style: TextStyle(
+                                                fontFamily: 'Lexend Deca',
+                                                color: Colors.white,
+                                                fontSize: 24,
+                                                fontWeight: FontWeight.bold,
+                                              ),
+                                        ),
+                                      ),
+                                      Icon(
+                                        Icons.chevron_right_rounded,
+                                        color: Colors.white,
+                                        size: 24,
+                                      ),
+                                    ],
+                                  ),
+                                ),
+                                Padding(
+                                  padding: const EdgeInsetsDirectional.fromSTEB(
+                                      16, 4, 16, 0),
+                                  child: Row(
+                                    mainAxisSize: MainAxisSize.max,
+                                    children: const [
+                                      Expanded(
+                                        child: Text(
+                                            '30m | High Intensity | Indoor/Outdoor',
+                                            style: TextStyle(
+                                              fontFamily: 'Lexend Deca',
+                                              color: Color(0xFF39D2C0),
+                                              fontSize: 14,
+                                              fontWeight: FontWeight.normal,
+                                            )),
+                                      ),
+                                    ],
+                                  ),
+                                ),
+                                Expanded(
+                                  child: Padding(
+                                    padding:
+                                        const EdgeInsetsDirectional.fromSTEB(
+                                            16, 4, 16, 16),
+                                    child: Row(
+                                      mainAxisSize: MainAxisSize.max,
+                                      crossAxisAlignment:
+                                          CrossAxisAlignment.end,
+                                      children: [
+                                        // FFButtonWidget(
+                                        //   onPressed: () {
+                                        //     print('Button-Reserve pressed ...');
+                                        //   },
+                                        //   text: 'Reserve',
+                                        //   icon: const Icon(
+                                        //     Icons.add_rounded,
+                                        //     color: Colors.white,
+                                        //     size: 15,
+                                        //   ),
+                                        //   options: FFButtonOptions(
+                                        //     width: 120,
+                                        //     height: 40,
+                                        //     padding:
+                                        //     const EdgeInsetsDirectional.fromSTEB(
+                                        //         0, 0, 0, 0),
+                                        //     iconPadding:
+                                        //     const EdgeInsetsDirectional.fromSTEB(
+                                        //         0, 0, 0, 0),
+                                        //     color: const Color(0xFFFF96D5),
+                                        //     textStyle: GoogleFonts.getFont(
+                                        //       'Lexend Deca',
+                                        //       color: Colors.white,
+                                        //       fontSize: 14,
+                                        //     ),
+                                        //     elevation: 3,
+                                        //     borderSide: const BorderSide(
+                                        //       color: Colors.transparent,
+                                        //       width: 1,
+                                        //     ),
+                                        //   ),
+                                        // ),
+                                        Expanded(
+                                          child: Column(
+                                            mainAxisSize: MainAxisSize.max,
+                                            mainAxisAlignment:
+                                                MainAxisAlignment.end,
+                                            crossAxisAlignment:
+                                                CrossAxisAlignment.end,
+                                            children: const [
+                                              Padding(
+                                                padding: EdgeInsetsDirectional
+                                                    .fromSTEB(0, 0, 0, 4),
+                                                child: Text('10:00am',
+                                                    style: TextStyle(
+                                                      fontFamily: 'Lexend Deca',
+                                                      color: Colors.white,
+                                                      fontSize: 20,
+                                                      fontWeight:
+                                                          FontWeight.bold,
+                                                    )),
+                                              ),
+                                              Text('Thursday June 22',
+                                                  textAlign: TextAlign.end,
+                                                  style: TextStyle(
+                                                    fontFamily: 'Lexend Deca',
+                                                    color: Color(0xB4FFFFFF),
+                                                    fontSize: 14,
+                                                    fontWeight:
+                                                        FontWeight.normal,
+                                                  )),
+                                            ],
+                                          ),
+                                        ),
+                                      ],
+                                    ),
+                                  ),
+                                ),
+                              ],
+                            ),
+                          ),
+                        ),
+                      ),
+                    )
+                  ],
+                ))
               ],
             ),
-            const SizedBox(
-              height: 48.0,
-            ),
-            Padding(
-              padding: const EdgeInsets.symmetric(vertical: 16.0),
-              child: Material(
-                elevation: 5.0,
-                color: Colors.orange[400],
-                borderRadius: BorderRadius.circular(30.0),
-                child: MaterialButton(
-                  onPressed: () {
-                    //TODO: Go to login screen.
-                    Navigator.pushNamed(context, LoginScreen.id);
-                  },
-                  minWidth: 200.0,
-                  height: 42.0,
-                  child: const Text(
-                    '로그인',
-                    style: TextStyle(fontWeight: FontWeight.w600, fontSize: 24),
-                  ),
-                ),
-              ),
-            ),
-            Padding(
-              padding: const EdgeInsets.symmetric(vertical: 16.0),
-              child: Material(
-                color: Colors.orange[700],
-                borderRadius: BorderRadius.circular(30.0),
-                elevation: 5.0,
-                child: MaterialButton(
-                  onPressed: () {
-                    //TODO: Go to registration screen.
-                    Navigator.pushNamed(context, RegistrationScreen.id);
-                  },
-                  minWidth: 200.0,
-                  height: 42.0,
-                  child: const Text(
-                    '회원 등록',
-                    style: TextStyle(fontWeight: FontWeight.w600, fontSize: 24),
-                  ),
-                ),
-              ),
-            ),
-          ],
-        ),
-      ),
-    );
+          ),
+        )
+        );
   }
 }
+
+// Widget build(BuildContext context) {
+//   return Scaffold(
+//     key: scaffoldKey,
+//     backgroundColor: const Color(0xFF393239),
+//     appBar: AppBar(
+//       backgroundColor: const Color(0xFF393239),
+//       automaticallyImplyLeading: false,
+//       title: Text(
+//         'Activity',
+//         style: FlutterFlowTheme.of(context).displaySmall.override(
+//               fontFamily: 'Lexend Deca',
+//               color: const Color(0xFFFF94D4),
+//               fontSize: 24,
+//               fontWeight: FontWeight.bold,
+//             ),
+//       ),
+//       actions: [],
+//       centerTitle: false,
+//       elevation: 0,
+//     ),
+//     body: SafeArea(
+//       child: GestureDetector(
+//         onTap: () => FocusScope.of(context).requestFocus(_unfocusNode),
+//         child: Column(
+//           mainAxisSize: MainAxisSize.max,
+//           children: [
+//             Row(
+//               mainAxisSize: MainAxisSize.max,
+//               children: [
+//                 Material(
+//                   color: Colors.transparent,
+//                   elevation: 0,
+//                   child: Container(
+//                     width: MediaQuery.of(context).size.width,
+//                     height: 60,
+//                     decoration: const BoxDecoration(
+//                       color: Color(0xFF393239),
+//                       boxShadow: [
+//                         BoxShadow(
+//                           blurRadius: 4,
+//                           color: Color(0x430F1113),
+//                           offset: Offset(0, 2),
+//                         )
+//                       ],
+//                     ),
+//                     child: Padding(
+//                       padding: const EdgeInsetsDirectional.fromSTEB(20, 4, 20, 0),
+//                       child: TextFormField(
+//                         controller: _model.searchFieldController,
+//                         obscureText: false,
+//                         decoration: InputDecoration(
+//                           hintText: 'Type to search here...',
+//                           hintStyle:
+//                               FlutterFlowTheme.of(context).bodySmall.override(
+//                                     fontFamily: 'Lexend Deca',
+//                                     color: const Color(0xFF95A1AC),
+//                                     fontSize: 14,
+//                                     fontWeight: FontWeight.normal,
+//                                   ),
+//                           enabledBorder: OutlineInputBorder(
+//                             borderSide: const BorderSide(
+//                               color: Color(0xFFF1F4F8),
+//                               width: 2,
+//                             ),
+//                             borderRadius: BorderRadius.circular(8),
+//                           ),
+//                           focusedBorder: OutlineInputBorder(
+//                             borderSide: const BorderSide(
+//                               color: Color(0x00000000),
+//                               width: 2,
+//                             ),
+//                             borderRadius: BorderRadius.circular(8),
+//                           ),
+//                           errorBorder: OutlineInputBorder(
+//                             borderSide: const BorderSide(
+//                               color: Color(0x00000000),
+//                               width: 2,
+//                             ),
+//                             borderRadius: BorderRadius.circular(8),
+//                           ),
+//                           focusedErrorBorder: OutlineInputBorder(
+//                             borderSide: const BorderSide(
+//                               color: Color(0x00000000),
+//                               width: 2,
+//                             ),
+//                             borderRadius: BorderRadius.circular(8),
+//                           ),
+//                           prefixIcon: const Icon(
+//                             Icons.search_rounded,
+//                             color: Color(0xFF95A1AC),
+//                           ),
+//                         ),
+//                         style: FlutterFlowTheme.of(context).bodyMedium.override(
+//                               fontFamily: 'Lexend Deca',
+//                               color: const Color(0xFF090F13),
+//                               fontSize: 14,
+//                               fontWeight: FontWeight.normal,
+//                             ),
+//                         maxLines: null,
+//                         validator: _model.searchFieldControllerValidator
+//                             .asValidator(context),
+//                       ),
+//                     ),
+//                   ),
+//                 ),
+//               ],
+//             ),
+//             Expanded(
+//               child: ListView(
+//                 padding: EdgeInsets.zero,
+//                 scrollDirection: Axis.vertical,
+//                 children: [
+//                   Padding(
+//                     padding: const EdgeInsetsDirectional.fromSTEB(16, 12, 16, 20),
+//                     child: Container(
+//                       width: double.infinity,
+//                       height: 184,
+//                       decoration: BoxDecoration(
+//                         color: Colors.white,
+//                         image: DecorationImage(
+//                           fit: BoxFit.fitWidth,
+//                           image: Image.network(
+//                             'https://images.unsplash.com/photo-1616803689943-5601631c7fec?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxzZWFyY2h8NTR8fHdvcmtvdXR8ZW58MHx8MHx8&auto=format&fit=crop&w=800&q=60',
+//                           ).image,
+//                         ),
+//                         boxShadow: [
+//                           const BoxShadow(
+//                             blurRadius: 3,
+//                             color: Color(0x33000000),
+//                             offset: Offset(0, 2),
+//                           )
+//                         ],
+//                         borderRadius: BorderRadius.circular(8),
+//                       ),
+//                       child: Container(
+//                         width: 100,
+//                         height: 100,
+//                         decoration: BoxDecoration(
+//                           color: const Color(0x65090F13),
+//                           borderRadius: BorderRadius.circular(8),
+//                         ),
+//                         child: Padding(
+//                           padding: const EdgeInsetsDirectional.fromSTEB(0, 0, 0, 2),
+//                           child: Column(
+//                             mainAxisSize: MainAxisSize.max,
+//                             children: [
+//                               Padding(
+//                                 padding: const EdgeInsetsDirectional.fromSTEB(
+//                                     16, 16, 16, 0),
+//                                 child: Row(
+//                                   mainAxisSize: MainAxisSize.max,
+//                                   children: [
+//                                     Expanded(
+//                                       child: Text(
+//                                         'Class Name',
+//                                         style: FlutterFlowTheme.of(context)
+//                                             .displaySmall
+//                                             .override(
+//                                               fontFamily: 'Lexend Deca',
+//                                               color: Colors.white,
+//                                               fontSize: 24,
+//                                               fontWeight: FontWeight.bold,
+//                                             ),
+//                                       ),
+//                                     ),
+//                                     const Icon(
+//                                       Icons.chevron_right_rounded,
+//                                       color: Colors.white,
+//                                       size: 24,
+//                                     ),
+//                                   ],
+//                                 ),
+//                               ),
+//                               Padding(
+//                                 padding: const EdgeInsetsDirectional.fromSTEB(
+//                                     16, 4, 16, 0),
+//                                 child: Row(
+//                                   mainAxisSize: MainAxisSize.max,
+//                                   children: [
+//                                     Expanded(
+//                                       child: Text(
+//                                         '30m | High Intensity | Indoor/Outdoor',
+//                                         style: FlutterFlowTheme.of(context)
+//                                             .bodySmall
+//                                             .override(
+//                                               fontFamily: 'Lexend Deca',
+//                                               color: const Color(0xFF39D2C0),
+//                                               fontSize: 14,
+//                                               fontWeight: FontWeight.normal,
+//                                             ),
+//                                       ),
+//                                     ),
+//                                   ],
+//                                 ),
+//                               ),
+//                               Expanded(
+//                                 child: Padding(
+//                                   padding: const EdgeInsetsDirectional.fromSTEB(
+//                                       16, 4, 16, 16),
+//                                   child: Row(
+//                                     mainAxisSize: MainAxisSize.max,
+//                                     crossAxisAlignment: CrossAxisAlignment.end,
+//                                     children: [
+//                                       FFButtonWidget(
+//                                         onPressed: () {
+//                                           print('Button-Reserve pressed ...');
+//                                         },
+//                                         text: 'Reserve',
+//                                         icon: const Icon(
+//                                           Icons.add_rounded,
+//                                           color: Colors.white,
+//                                           size: 15,
+//                                         ),
+//                                         options: FFButtonOptions(
+//                                           width: 120,
+//                                           height: 40,
+//                                           padding:
+//                                               const EdgeInsetsDirectional.fromSTEB(
+//                                                   0, 0, 0, 0),
+//                                           iconPadding:
+//                                               const EdgeInsetsDirectional.fromSTEB(
+//                                                   0, 0, 0, 0),
+//                                           color: const Color(0xFFFF96D5),
+//                                           textStyle: GoogleFonts.getFont(
+//                                             'Lexend Deca',
+//                                             color: Colors.white,
+//                                             fontSize: 14,
+//                                           ),
+//                                           elevation: 3,
+//                                           borderSide: const BorderSide(
+//                                             color: Colors.transparent,
+//                                             width: 1,
+//                                           ),
+//                                         ),
+//                                       ),
+//                                       Expanded(
+//                                         child: Column(
+//                                           mainAxisSize: MainAxisSize.max,
+//                                           mainAxisAlignment:
+//                                               MainAxisAlignment.end,
+//                                           crossAxisAlignment:
+//                                               CrossAxisAlignment.end,
+//                                           children: [
+//                                             Padding(
+//                                               padding: const EdgeInsetsDirectional
+//                                                   .fromSTEB(0, 0, 0, 4),
+//                                               child: Text(
+//                                                 '10:00am',
+//                                                 style:
+//                                                     FlutterFlowTheme.of(context)
+//                                                         .headlineSmall
+//                                                         .override(
+//                                                           fontFamily:
+//                                                               'Lexend Deca',
+//                                                           color: Colors.white,
+//                                                           fontSize: 20,
+//                                                           fontWeight:
+//                                                               FontWeight.bold,
+//                                                         ),
+//                                               ),
+//                                             ),
+//                                             Text(
+//                                               'Thursday June 22',
+//                                               textAlign: TextAlign.end,
+//                                               style: FlutterFlowTheme.of(
+//                                                       context)
+//                                                   .bodyMedium
+//                                                   .override(
+//                                                     fontFamily: 'Lexend Deca',
+//                                                     color: const Color(0xB4FFFFFF),
+//                                                     fontSize: 14,
+//                                                     fontWeight:
+//                                                         FontWeight.normal,
+//                                                   ),
+//                                             ),
+//                                           ],
+//                                         ),
+//                                       ),
+//                                     ],
+//                                   ),
+//                                 ),
+//                               ),
+//                             ],
+//                           ),
+//                         ),
+//                       ),
+//                     ),
+//                   ),
+//                   Padding(
+//                     padding: const EdgeInsetsDirectional.fromSTEB(16, 12, 16, 0),
+//                     child: Container(
+//                       width: double.infinity,
+//                       height: 184,
+//                       decoration: BoxDecoration(
+//                         color: Colors.white,
+//                         image: DecorationImage(
+//                           fit: BoxFit.fitWidth,
+//                           image: Image.asset(
+//                             'assets/images/john-arano-h4i9G-de7Po-unsplash.jpg',
+//                           ).image,
+//                         ),
+//                         boxShadow: [
+//                           const BoxShadow(
+//                             blurRadius: 3,
+//                             color: Color(0x33000000),
+//                             offset: Offset(0, 2),
+//                           )
+//                         ],
+//                         borderRadius: BorderRadius.circular(8),
+//                       ),
+//                       child: Container(
+//                         width: 100,
+//                         height: 100,
+//                         decoration: BoxDecoration(
+//                           color: const Color(0x65090F13),
+//                           borderRadius: BorderRadius.circular(8),
+//                         ),
+//                         child: Column(
+//                           mainAxisSize: MainAxisSize.max,
+//                           children: [
+//                             Padding(
+//                               padding:
+//                                   const EdgeInsetsDirectional.fromSTEB(16, 16, 16, 0),
+//                               child: Row(
+//                                 mainAxisSize: MainAxisSize.max,
+//                                 children: [
+//                                   Expanded(
+//                                     child: Text(
+//                                       'Class Name',
+//                                       style: FlutterFlowTheme.of(context)
+//                                           .displaySmall
+//                                           .override(
+//                                             fontFamily: 'Lexend Deca',
+//                                             color: Colors.white,
+//                                             fontSize: 24,
+//                                             fontWeight: FontWeight.bold,
+//                                           ),
+//                                     ),
+//                                   ),
+//                                   const Icon(
+//                                     Icons.chevron_right_rounded,
+//                                     color: Colors.white,
+//                                     size: 24,
+//                                   ),
+//                                 ],
+//                               ),
+//                             ),
+//                             Padding(
+//                               padding:
+//                                   const EdgeInsetsDirectional.fromSTEB(16, 4, 16, 0),
+//                               child: Row(
+//                                 mainAxisSize: MainAxisSize.max,
+//                                 children: [
+//                                   Expanded(
+//                                     child: Text(
+//                                       '30m | High Intensity | Indoor/Outdoor',
+//                                       style: FlutterFlowTheme.of(context)
+//                                           .bodySmall
+//                                           .override(
+//                                             fontFamily: 'Lexend Deca',
+//                                             color: const Color(0xFF39D2C0),
+//                                             fontSize: 14,
+//                                             fontWeight: FontWeight.normal,
+//                                           ),
+//                                     ),
+//                                   ),
+//                                 ],
+//                               ),
+//                             ),
+//                             Expanded(
+//                               child: Padding(
+//                                 padding: const EdgeInsetsDirectional.fromSTEB(
+//                                     16, 4, 16, 16),
+//                                 child: Row(
+//                                   mainAxisSize: MainAxisSize.max,
+//                                   crossAxisAlignment: CrossAxisAlignment.end,
+//                                   children: [
+//                                     FFButtonWidget(
+//                                       onPressed: () {
+//                                         print('Button-Reserve pressed ...');
+//                                       },
+//                                       text: 'Reserve',
+//                                       icon: const Icon(
+//                                         Icons.add_rounded,
+//                                         color: Colors.white,
+//                                         size: 15,
+//                                       ),
+//                                       options: FFButtonOptions(
+//                                         width: 120,
+//                                         height: 40,
+//                                         padding: const EdgeInsetsDirectional.fromSTEB(
+//                                             0, 0, 0, 0),
+//                                         iconPadding:
+//                                             const EdgeInsetsDirectional.fromSTEB(
+//                                                 0, 0, 0, 0),
+//                                         color: const Color(0xFFFF96D5),
+//                                         textStyle: GoogleFonts.getFont(
+//                                           'Lexend Deca',
+//                                           color: Colors.white,
+//                                           fontSize: 14,
+//                                         ),
+//                                         elevation: 3,
+//                                         borderSide: const BorderSide(
+//                                           color: Colors.transparent,
+//                                           width: 1,
+//                                         ),
+//                                       ),
+//                                     ),
+//                                     Expanded(
+//                                       child: Column(
+//                                         mainAxisSize: MainAxisSize.max,
+//                                         mainAxisAlignment:
+//                                             MainAxisAlignment.end,
+//                                         crossAxisAlignment:
+//                                             CrossAxisAlignment.end,
+//                                         children: [
+//                                           Padding(
+//                                             padding:
+//                                                 const EdgeInsetsDirectional.fromSTEB(
+//                                                     0, 0, 0, 4),
+//                                             child: Text(
+//                                               '10:00am',
+//                                               style: FlutterFlowTheme.of(
+//                                                       context)
+//                                                   .headlineSmall
+//                                                   .override(
+//                                                     fontFamily: 'Lexend Deca',
+//                                                     color: Colors.white,
+//                                                     fontSize: 20,
+//                                                     fontWeight: FontWeight.bold,
+//                                                   ),
+//                                             ),
+//                                           ),
+//                                           Text(
+//                                             'Thursday June 22',
+//                                             textAlign: TextAlign.end,
+//                                             style: FlutterFlowTheme.of(context)
+//                                                 .bodyMedium
+//                                                 .override(
+//                                                   fontFamily: 'Lexend Deca',
+//                                                   color: const Color(0xB4FFFFFF),
+//                                                   fontSize: 14,
+//                                                   fontWeight: FontWeight.normal,
+//                                                 ),
+//                                           ),
+//                                         ],
+//                                       ),
+//                                     ),
+//                                   ],
+//                                 ),
+//                               ),
+//                             ),
+//                           ],
+//                         ),
+//                       ),
+//                     ),
+//                   ),
+//                   Padding(
+//                     padding: const EdgeInsetsDirectional.fromSTEB(16, 12, 16, 0),
+//                     child: Container(
+//                       width: double.infinity,
+//                       height: 184,
+//                       decoration: BoxDecoration(
+//                         color: Colors.white,
+//                         image: DecorationImage(
+//                           fit: BoxFit.fitWidth,
+//                           image: Image.network(
+//                             'https://images.unsplash.com/photo-1571019613454-1cb2f99b2d8b?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxzZWFyY2h8M3x8d29ya291dHxlbnwwfHwwfHw%3D&auto=format&fit=crop&w=800&q=60',
+//                           ).image,
+//                         ),
+//                         boxShadow: [
+//                           const BoxShadow(
+//                             blurRadius: 3,
+//                             color: Color(0x33000000),
+//                             offset: Offset(0, 2),
+//                           )
+//                         ],
+//                         borderRadius: BorderRadius.circular(8),
+//                       ),
+//                       child: Container(
+//                         width: 100,
+//                         height: 100,
+//                         decoration: BoxDecoration(
+//                           color: const Color(0x65090F13),
+//                           borderRadius: BorderRadius.circular(8),
+//                         ),
+//                         child: Column(
+//                           mainAxisSize: MainAxisSize.max,
+//                           children: [
+//                             Padding(
+//                               padding:
+//                                   const EdgeInsetsDirectional.fromSTEB(16, 16, 16, 0),
+//                               child: Row(
+//                                 mainAxisSize: MainAxisSize.max,
+//                                 children: [
+//                                   Expanded(
+//                                     child: Text(
+//                                       'Class Name',
+//                                       style: FlutterFlowTheme.of(context)
+//                                           .displaySmall
+//                                           .override(
+//                                             fontFamily: 'Lexend Deca',
+//                                             color: Colors.white,
+//                                             fontSize: 24,
+//                                             fontWeight: FontWeight.bold,
+//                                           ),
+//                                     ),
+//                                   ),
+//                                   const Icon(
+//                                     Icons.chevron_right_rounded,
+//                                     color: Colors.white,
+//                                     size: 24,
+//                                   ),
+//                                 ],
+//                               ),
+//                             ),
+//                             Padding(
+//                               padding:
+//                                   const EdgeInsetsDirectional.fromSTEB(16, 4, 16, 0),
+//                               child: Row(
+//                                 mainAxisSize: MainAxisSize.max,
+//                                 children: [
+//                                   Expanded(
+//                                     child: Text(
+//                                       '30m | High Intensity | Indoor/Outdoor',
+//                                       style: FlutterFlowTheme.of(context)
+//                                           .bodySmall
+//                                           .override(
+//                                             fontFamily: 'Lexend Deca',
+//                                             color: const Color(0xFF39D2C0),
+//                                             fontSize: 14,
+//                                             fontWeight: FontWeight.normal,
+//                                           ),
+//                                     ),
+//                                   ),
+//                                 ],
+//                               ),
+//                             ),
+//                             Expanded(
+//                               child: Padding(
+//                                 padding: const EdgeInsetsDirectional.fromSTEB(
+//                                     16, 4, 16, 16),
+//                                 child: Row(
+//                                   mainAxisSize: MainAxisSize.max,
+//                                   crossAxisAlignment: CrossAxisAlignment.end,
+//                                   children: [
+//                                     FFButtonWidget(
+//                                       onPressed: () {
+//                                         print('Button-Reserve pressed ...');
+//                                       },
+//                                       text: 'Reserve',
+//                                       icon: const Icon(
+//                                         Icons.add_rounded,
+//                                         color: Colors.white,
+//                                         size: 15,
+//                                       ),
+//                                       options: FFButtonOptions(
+//                                         width: 120,
+//                                         height: 40,
+//                                         padding: const EdgeInsetsDirectional.fromSTEB(
+//                                             0, 0, 0, 0),
+//                                         iconPadding:
+//                                             const EdgeInsetsDirectional.fromSTEB(
+//                                                 0, 0, 0, 0),
+//                                         color: const Color(0xFFFF96D5),
+//                                         textStyle: GoogleFonts.getFont(
+//                                           'Lexend Deca',
+//                                           color: Colors.white,
+//                                           fontSize: 14,
+//                                         ),
+//                                         elevation: 3,
+//                                         borderSide: const BorderSide(
+//                                           color: Colors.transparent,
+//                                           width: 1,
+//                                         ),
+//                                       ),
+//                                     ),
+//                                     Expanded(
+//                                       child: Column(
+//                                         mainAxisSize: MainAxisSize.max,
+//                                         mainAxisAlignment:
+//                                             MainAxisAlignment.end,
+//                                         crossAxisAlignment:
+//                                             CrossAxisAlignment.end,
+//                                         children: [
+//                                           Padding(
+//                                             padding:
+//                                                 const EdgeInsetsDirectional.fromSTEB(
+//                                                     0, 0, 0, 4),
+//                                             child: Text(
+//                                               '10:00am',
+//                                               style: FlutterFlowTheme.of(
+//                                                       context)
+//                                                   .headlineSmall
+//                                                   .override(
+//                                                     fontFamily: 'Lexend Deca',
+//                                                     color: Colors.white,
+//                                                     fontSize: 20,
+//                                                     fontWeight: FontWeight.bold,
+//                                                   ),
+//                                             ),
+//                                           ),
+//                                           Text(
+//                                             'Thursday June 22',
+//                                             textAlign: TextAlign.end,
+//                                             style: FlutterFlowTheme.of(context)
+//                                                 .bodyMedium
+//                                                 .override(
+//                                                   fontFamily: 'Lexend Deca',
+//                                                   color: const Color(0xB4FFFFFF),
+//                                                   fontSize: 14,
+//                                                   fontWeight: FontWeight.normal,
+//                                                 ),
+//                                           ),
+//                                         ],
+//                                       ),
+//                                     ),
+//                                   ],
+//                                 ),
+//                               ),
+//                             ),
+//                           ],
+//                         ),
+//                       ),
+//                     ),
+//                   ),
+//                   Padding(
+//                     padding: const EdgeInsetsDirectional.fromSTEB(16, 12, 16, 0),
+//                     child: Container(
+//                       width: double.infinity,
+//                       height: 184,
+//                       decoration: BoxDecoration(
+//                         color: Colors.white,
+//                         image: DecorationImage(
+//                           fit: BoxFit.fitWidth,
+//                           image: Image.network(
+//                             'https://images.unsplash.com/photo-1581009137042-c552e485697a?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxzZWFyY2h8MTN8fHdvcmtvdXR8ZW58MHx8MHx8&auto=format&fit=crop&w=800&q=60',
+//                           ).image,
+//                         ),
+//                         boxShadow: [
+//                           const BoxShadow(
+//                             blurRadius: 3,
+//                             color: Color(0x33000000),
+//                             offset: Offset(0, 2),
+//                           )
+//                         ],
+//                         borderRadius: BorderRadius.circular(8),
+//                       ),
+//                       child: Container(
+//                         width: 100,
+//                         height: 100,
+//                         decoration: BoxDecoration(
+//                           color: const Color(0x65090F13),
+//                           borderRadius: BorderRadius.circular(8),
+//                         ),
+//                         child: Column(
+//                           mainAxisSize: MainAxisSize.max,
+//                           children: [
+//                             Padding(
+//                               padding:
+//                                   const EdgeInsetsDirectional.fromSTEB(16, 16, 16, 0),
+//                               child: Row(
+//                                 mainAxisSize: MainAxisSize.max,
+//                                 children: [
+//                                   Expanded(
+//                                     child: Text(
+//                                       'Class Name',
+//                                       style: FlutterFlowTheme.of(context)
+//                                           .displaySmall
+//                                           .override(
+//                                             fontFamily: 'Lexend Deca',
+//                                             color: Colors.white,
+//                                             fontSize: 24,
+//                                             fontWeight: FontWeight.bold,
+//                                           ),
+//                                     ),
+//                                   ),
+//                                   const Icon(
+//                                     Icons.chevron_right_rounded,
+//                                     color: Colors.white,
+//                                     size: 24,
+//                                   ),
+//                                 ],
+//                               ),
+//                             ),
+//                             Padding(
+//                               padding:
+//                                   const EdgeInsetsDirectional.fromSTEB(16, 4, 16, 0),
+//                               child: Row(
+//                                 mainAxisSize: MainAxisSize.max,
+//                                 children: [
+//                                   Expanded(
+//                                     child: Text(
+//                                       '30m | High Intensity | Indoor/Outdoor',
+//                                       style: FlutterFlowTheme.of(context)
+//                                           .bodySmall
+//                                           .override(
+//                                             fontFamily: 'Lexend Deca',
+//                                             color: const Color(0xFF39D2C0),
+//                                             fontSize: 14,
+//                                             fontWeight: FontWeight.normal,
+//                                           ),
+//                                     ),
+//                                   ),
+//                                 ],
+//                               ),
+//                             ),
+//                             Expanded(
+//                               child: Padding(
+//                                 padding: const EdgeInsetsDirectional.fromSTEB(
+//                                     16, 4, 16, 16),
+//                                 child: Row(
+//                                   mainAxisSize: MainAxisSize.max,
+//                                   crossAxisAlignment: CrossAxisAlignment.end,
+//                                   children: [
+//                                     FFButtonWidget(
+//                                       onPressed: () {
+//                                         print('Button-Reserve pressed ...');
+//                                       },
+//                                       text: 'Reserve',
+//                                       icon: const Icon(
+//                                         Icons.add_rounded,
+//                                         color: Colors.white,
+//                                         size: 15,
+//                                       ),
+//                                       options: FFButtonOptions(
+//                                         width: 120,
+//                                         height: 40,
+//                                         padding: const EdgeInsetsDirectional.fromSTEB(
+//                                             0, 0, 0, 0),
+//                                         iconPadding:
+//                                             const EdgeInsetsDirectional.fromSTEB(
+//                                                 0, 0, 0, 0),
+//                                         color: const Color(0xFF39D2C0),
+//                                         textStyle: GoogleFonts.getFont(
+//                                           'Lexend Deca',
+//                                           color: Colors.white,
+//                                           fontSize: 14,
+//                                         ),
+//                                         elevation: 3,
+//                                         borderSide: const BorderSide(
+//                                           color: Colors.transparent,
+//                                           width: 1,
+//                                         ),
+//                                       ),
+//                                     ),
+//                                     Expanded(
+//                                       child: Column(
+//                                         mainAxisSize: MainAxisSize.max,
+//                                         mainAxisAlignment:
+//                                             MainAxisAlignment.end,
+//                                         crossAxisAlignment:
+//                                             CrossAxisAlignment.end,
+//                                         children: [
+//                                           Padding(
+//                                             padding:
+//                                                 const EdgeInsetsDirectional.fromSTEB(
+//                                                     0, 0, 0, 4),
+//                                             child: Text(
+//                                               '10:00am',
+//                                               style: FlutterFlowTheme.of(
+//                                                       context)
+//                                                   .headlineSmall
+//                                                   .override(
+//                                                     fontFamily: 'Lexend Deca',
+//                                                     color: Colors.white,
+//                                                     fontSize: 20,
+//                                                     fontWeight: FontWeight.bold,
+//                                                   ),
+//                                             ),
+//                                           ),
+//                                           Text(
+//                                             'Thursday June 22',
+//                                             textAlign: TextAlign.end,
+//                                             style: FlutterFlowTheme.of(context)
+//                                                 .bodyMedium
+//                                                 .override(
+//                                                   fontFamily: 'Lexend Deca',
+//                                                   color: const Color(0xB4FFFFFF),
+//                                                   fontSize: 14,
+//                                                   fontWeight: FontWeight.normal,
+//                                                 ),
+//                                           ),
+//                                         ],
+//                                       ),
+//                                     ),
+//                                   ],
+//                                 ),
+//                               ),
+//                             ),
+//                           ],
+//                         ),
+//                       ),
+//                     ),
+//                   ),
+//                 ],
+//               ),
+//             ),
+//           ],
+//         ),
+//       ),
+//     ),
+//   );
+// }

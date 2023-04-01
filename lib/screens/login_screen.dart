@@ -1,5 +1,6 @@
 import 'package:fitness_app/components/login_screen/form_component.dart';
 import 'package:fitness_app/screens/sign_up_screen.dart';
+import 'package:fitness_app/screens/welcome_screen.dart';
 import 'package:fitness_app/utilities/slide_right_route.dart';
 import 'package:flutter/material.dart';
 
@@ -173,7 +174,7 @@ class _LoginScreenState extends State<LoginScreen> {
 
   void goToSignUpScreen() {
     Navigator.push(
-        context, MaterialPageRoute(builder: (context) => SignUpScreen()));
+        context, MaterialPageRoute(builder: (context) => WelcomeScreen()));
   }
 
   SizedBox _spacing(double height) =>

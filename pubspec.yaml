@@ -43,7 +43,7 @@ dependencies:
   mysql1: ^0.20.0
   markdown_widget: ^1.2.8
   path_provider: ^2.0.9
-
+  gender_picker: ^1.1.0
 
 
 dev_dependencies:

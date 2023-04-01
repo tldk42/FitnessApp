@@ -25,7 +25,8 @@ class _SignUpStepsState extends State<SignUpSteps> {
     'member_id': '',
     'member_password': '',
     'member_name': '',
-    'member_phone': ''
+    'member_phone': '',
+    'member_sex': ''
   };
 
   Map<String, String> registrationDetails() => signUpDetails;
@@ -77,45 +78,44 @@ class _SignUpStepsState extends State<SignUpSteps> {
               child: Row(
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [0, 1, 2]
-                    .map((e) =>
-                    Wrap(
-                      crossAxisAlignment: WrapCrossAlignment.center,
-                      children: [
-                        GestureDetector(
-                          onTap: () => changeStepOnTap(e),
-                          child: CircleAvatar(
-                              backgroundColor: stepHasError[e]
-                                  ? Colors.orange.shade600
-                                  : !stepCompletedSuccessfully[e]
-                                  ? const Color(0xffF5F7FA)
-                                  : const Color(0xfff975c4),
-                              foregroundColor: !stepCompletedSuccessfully[e]
-                                  ? const Color(0xfff975c4)
-                                  : Colors.white,
-                              radius: 18,
-                              child: stepHasError[e]
-                                  ? const Icon(
-                                FluentIcons.warning_16_filled,
-                                color: Colors.white,
-                              )
-                                  : stepCompletedSuccessfully[e]
-                                  ? const Icon(
-                                  FluentIcons.checkmark_16_regular)
-                                  : _currentStep == e
-                                  ? const Icon(
-                                  FluentIcons.edit_16_filled)
-                                  : Text("${e + 1}")),
-                        ),
-                        if (e < 2)
-                          Container(
-                            height: 10,
-                            width: 70,
-                            color: stepCompletedSuccessfully[e]
-                                ? const Color(0xfff975c4)
-                                : Colors.transparent,
-                          ),
-                      ],
-                    ))
+                    .map((e) => Wrap(
+                          crossAxisAlignment: WrapCrossAlignment.center,
+                          children: [
+                            GestureDetector(
+                              onTap: () => changeStepOnTap(e),
+                              child: CircleAvatar(
+                                  backgroundColor: stepHasError[e]
+                                      ? Colors.orange.shade600
+                                      : !stepCompletedSuccessfully[e]
+                                          ? const Color(0xffF5F7FA)
+                                          : const Color(0xfff975c4),
+                                  foregroundColor: !stepCompletedSuccessfully[e]
+                                      ? const Color(0xfff975c4)
+                                      : Colors.white,
+                                  radius: 18,
+                                  child: stepHasError[e]
+                                      ? const Icon(
+                                          FluentIcons.warning_16_filled,
+                                          color: Colors.white,
+                                        )
+                                      : stepCompletedSuccessfully[e]
+                                          ? const Icon(
+                                              FluentIcons.checkmark_16_regular)
+                                          : _currentStep == e
+                                              ? const Icon(
+                                                  FluentIcons.edit_16_filled)
+                                              : Text("${e + 1}")),
+                            ),
+                            if (e < 2)
+                              Container(
+                                height: 10,
+                                width: 70,
+                                color: stepCompletedSuccessfully[e]
+                                    ? const Color(0xfff975c4)
+                                    : Colors.transparent,
+                              ),
+                          ],
+                        ))
                     .toList(),
               ),
             ),
@@ -135,156 +135,157 @@ class _SignUpStepsState extends State<SignUpSteps> {
             if (_currentStep == 2)
               Padding(
                   padding:
-                  const EdgeInsets.symmetric(vertical: 3.6, horizontal: 10),
+                      const EdgeInsets.symmetric(vertical: 3.6, horizontal: 10),
                   child: RichText(
                       text: TextSpan(
                           text: 'By signing up you are agreeing to the ',
                           style: const TextStyle(
                               fontSize: 14, color: Color(0xFF929BAB)),
                           children: <InlineSpan>[
-                            TextSpan(
-                                text: 'Terms & Conditions',
-                                style: const TextStyle(
-                                    fontSize: 14, color: Color(0xfff975c4)),
-                                recognizer: TapGestureRecognizer()
-                                  ..onTap = () {
-                                    FocusManager.instance.primaryFocus
-                                        ?.unfocus();
-                                    // Future.delayed(
-                                    //     const Duration(milliseconds: 300),
-                                    //     () => Navigator.push(
-                                    //         context,
-                                    //         SlideRightRoute(
-                                    //             page: HadWinMarkdownViewer(
-                                    //           screenName: "Terms & Conditons",
-                                    //           urlRequested:
-                                    //               'https://raw.githubusercontent.com/brownboycodes/HADWIN/master/docs/TERMS_AND_CONDITIONS.md',
-                                    //         ))));
-                                  }),
-                            const TextSpan(
-                              text: ' and our ',
-                              style:
+                        TextSpan(
+                            text: 'Terms & Conditions',
+                            style: const TextStyle(
+                                fontSize: 14, color: Color(0xfff975c4)),
+                            recognizer: TapGestureRecognizer()
+                              ..onTap = () {
+                                FocusManager.instance.primaryFocus?.unfocus();
+                                // Future.delayed(
+                                //     const Duration(milliseconds: 300),
+                                //     () => Navigator.push(
+                                //         context,
+                                //         SlideRightRoute(
+                                //             page: HadWinMarkdownViewer(
+                                //           screenName: "Terms & Conditons",
+                                //           urlRequested:
+                                //               'https://raw.githubusercontent.com/brownboycodes/HADWIN/master/docs/TERMS_AND_CONDITIONS.md',
+                                //         ))));
+                              }),
+                        const TextSpan(
+                          text: ' and our ',
+                          style:
                               TextStyle(fontSize: 14, color: Color(0xFF929BAB)),
-                            ),
-                            TextSpan(
-                                text: 'End User License Agreement',
-                                style: const TextStyle(
-                                    fontSize: 14, color: Color(0xfff975c4)),
-                                recognizer: TapGestureRecognizer()
-                                  ..onTap = () {
-                                    FocusManager.instance.primaryFocus
-                                        ?.unfocus();
-                                    // Future.delayed(
-                                    //     const Duration(milliseconds: 300),
-                                    //     () => Navigator.push(
-                                    //         context,
-                                    //         SlideRightRoute(
-                                    //             page: HadWinMarkdownViewer(
-                                    //           screenName:
-                                    //               "End User License Agreement",
-                                    //           urlRequested:
-                                    //               'https://raw.githubusercontent.com/brownboycodes/HADWIN/master/docs/END_USER_LICENSE_AGREEMENT.md',
-                                    //         ))));
-                                  })
-                          ]))),
-            confirmSignUpButton ? Container(
-              margin: const EdgeInsets.symmetric(vertical: 16.0),
-              width: double.infinity,
-              height: 64,
-              decoration: BoxDecoration(
-                boxShadow: [
-                  BoxShadow(
-                      color: Colors.blueGrey.shade100,
-                      offset: const Offset(0, 4),
-                      blurRadius: 5.0)
-                ],
-                gradient: const RadialGradient(
-                    colors: [Color(0xff0070BA), Color(0xff1546A0)],
-                    radius: 8.4,
-                    center: Alignment(-0.24, -0.36)),
-                borderRadius: BorderRadius.circular(20),
-              ),
-              child: ElevatedButton(
-                  onPressed: _finalStepProcessing,
-                  style: ElevatedButton.styleFrom(
-                    backgroundColor: const Color(0xfff975c4),
-                    shadowColor: Colors.transparent,
-                    shape: RoundedRectangleBorder(
-                        borderRadius: BorderRadius.circular(20)),
-                  ),
-                  child: const Text(
-                    'Create Account',
-                    style: TextStyle(
-                        fontSize: 16, fontWeight: FontWeight.w600),
-                  )),
-            )
+                        ),
+                        TextSpan(
+                            text: 'End User License Agreement',
+                            style: const TextStyle(
+                                fontSize: 14, color: Color(0xfff975c4)),
+                            recognizer: TapGestureRecognizer()
+                              ..onTap = () {
+                                FocusManager.instance.primaryFocus?.unfocus();
+                                // Future.delayed(
+                                //     const Duration(milliseconds: 300),
+                                //     () => Navigator.push(
+                                //         context,
+                                //         SlideRightRoute(
+                                //             page: HadWinMarkdownViewer(
+                                //           screenName:
+                                //               "End User License Agreement",
+                                //           urlRequested:
+                                //               'https://raw.githubusercontent.com/brownboycodes/HADWIN/master/docs/END_USER_LICENSE_AGREEMENT.md',
+                                //         ))));
+                              })
+                      ]))),
+            confirmSignUpButton
+                ? Container(
+                    margin: const EdgeInsets.symmetric(vertical: 16.0),
+                    width: double.infinity,
+                    height: 64,
+                    decoration: BoxDecoration(
+                      boxShadow: [
+                        BoxShadow(
+                            color: Colors.blueGrey.shade100,
+                            offset: const Offset(0, 4),
+                            blurRadius: 5.0)
+                      ],
+                      gradient: const RadialGradient(
+                          colors: [Color(0xff0070BA), Color(0xff1546A0)],
+                          radius: 8.4,
+                          center: Alignment(-0.24, -0.36)),
+                      borderRadius: BorderRadius.circular(20),
+                    ),
+                    child: ElevatedButton(
+                        onPressed: _finalStepProcessing,
+                        style: ElevatedButton.styleFrom(
+                          backgroundColor: const Color(0xfff975c4),
+                          shadowColor: Colors.transparent,
+                          shape: RoundedRectangleBorder(
+                              borderRadius: BorderRadius.circular(20)),
+                        ),
+                        child: const Text(
+                          'Create Account',
+                          style: TextStyle(
+                              fontSize: 16, fontWeight: FontWeight.w600),
+                        )),
+                  )
                 : Row(
-              children: [
-                if (_currentStep > 0 && confirmSignUpButton == false)
-                  Container(
-                    decoration: BoxDecoration(
-                      color: Colors.transparent,
-                      borderRadius: BorderRadius.circular(20),
-                    ),
-                    child: TextButton(
-                        onPressed: _goBackToPreviousStep,
-                        style: TextButton.styleFrom(
-                          foregroundColor: Colors.transparent,
-                          shadowColor: Colors.transparent,
-                          elevation: 0,
-                          shape: RoundedRectangleBorder(
-                              borderRadius: BorderRadius.circular(20)),
+                    children: [
+                      if (_currentStep > 0 && confirmSignUpButton == false)
+                        Container(
+                          decoration: BoxDecoration(
+                            color: Colors.transparent,
+                            borderRadius: BorderRadius.circular(20),
+                          ),
+                          child: TextButton(
+                              onPressed: _goBackToPreviousStep,
+                              style: TextButton.styleFrom(
+                                foregroundColor: Colors.transparent,
+                                shadowColor: Colors.transparent,
+                                elevation: 0,
+                                shape: RoundedRectangleBorder(
+                                    borderRadius: BorderRadius.circular(20)),
+                              ),
+                              child: Wrap(
+                                  crossAxisAlignment: WrapCrossAlignment.center,
+                                  spacing: 3.2,
+                                  children: const [
+                                    Icon(
+                                      FluentIcons.arrow_left_16_filled,
+                                      color: Color(0xfff975c4),
+                                      size: 18,
+                                    ),
+                                    Text(
+                                      'Back',
+                                      style: TextStyle(
+                                          color: Color(0xfff975c4),
+                                          fontSize: 16),
+                                    ),
+                                  ])),
                         ),
-                        child: Wrap(
-                            crossAxisAlignment: WrapCrossAlignment.center,
-                            spacing: 3.2,
-                            children: const [
-                              Icon(
-                                FluentIcons.arrow_left_16_filled,
-                                color: Color(0xfff975c4),
-                                size: 18,
+                      const Spacer(),
+                      if (_currentStep < signUpStepContent.length - 1)
+                        Container(
+                          decoration: BoxDecoration(
+                            color: Colors.transparent,
+                            borderRadius: BorderRadius.circular(20),
+                          ),
+                          child: TextButton(
+                              onPressed: _proceedToNextStep,
+                              style: TextButton.styleFrom(
+                                foregroundColor: Colors.transparent,
+                                shadowColor: Colors.transparent,
+                                elevation: 0,
+                                shape: RoundedRectangleBorder(
+                                    borderRadius: BorderRadius.circular(20)),
                               ),
-                              Text(
-                                'Back',
-                                style: TextStyle(
-                                    color: Color(0xfff975c4), fontSize: 16),
-                              ),
-                            ])),
-                  ),
-                const Spacer(),
-                if (_currentStep < signUpStepContent.length - 1)
-                  Container(
-                    decoration: BoxDecoration(
-                      color: Colors.transparent,
-                      borderRadius: BorderRadius.circular(20),
-                    ),
-                    child: TextButton(
-                        onPressed: _proceedToNextStep,
-                        style: TextButton.styleFrom(
-                          foregroundColor: Colors.transparent,
-                          shadowColor: Colors.transparent,
-                          elevation: 0,
-                          shape: RoundedRectangleBorder(
-                              borderRadius: BorderRadius.circular(20)),
+                              child: Wrap(
+                                  crossAxisAlignment: WrapCrossAlignment.center,
+                                  spacing: 3.2,
+                                  children: const [
+                                    Text(
+                                      'Next',
+                                      style: TextStyle(
+                                          color: Color(0xfff975c4),
+                                          fontSize: 16),
+                                    ),
+                                    Icon(
+                                      FluentIcons.arrow_right_16_filled,
+                                      color: Color(0xfff975c4),
+                                      size: 18,
+                                    )
+                                  ])),
                         ),
-                        child: Wrap(
-                            crossAxisAlignment: WrapCrossAlignment.center,
-                            spacing: 3.2,
-                            children: const [
-                              Text(
-                                'Next',
-                                style: TextStyle(
-                                    color: Color(0xfff975c4), fontSize: 16),
-                              ),
-                              Icon(
-                                FluentIcons.arrow_right_16_filled,
-                                color: Color(0xfff975c4),
-                                size: 18,
-                              )
-                            ])),
+                    ],
                   ),
-              ],
-            ),
           ],
         ));
   }
@@ -294,14 +295,13 @@ class _SignUpStepsState extends State<SignUpSteps> {
     _performErrorCheck(_currentStep + 1);
 
     if (stepHasError[_currentStep] == false && mounted) {
-      ScaffoldMessenger
-          .of(context)
+      ScaffoldMessenger.of(context)
           .showSnackBar(
-        const SnackBar(
-          content: Text('Processing'),
-          backgroundColor: Colors.blue,
-        ),
-      )
+            const SnackBar(
+              content: Text('Processing'),
+              backgroundColor: Colors.blue,
+            ),
+          )
           .closed
           .then((value) => _tryRegistering());
     }
@@ -435,8 +435,7 @@ class _SignUpStepsState extends State<SignUpSteps> {
 
   void _tryRegistering() {
     // TODO: 서버에 SendData
-    sendData(urlPath: 'user/signup.php', data: signUpDetails)
-        .then((response) {
+    sendData(urlPath: 'user/signup.php', data: signUpDetails).then((response) {
       ScaffoldMessenger.of(context).hideCurrentSnackBar();
 
       if (response.keys.join().toLowerCase().contains('error')) {

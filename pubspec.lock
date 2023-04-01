@@ -168,6 +168,14 @@ packages:
     description: flutter
     source: sdk
     version: "0.0.0"
+  gender_picker:
+    dependency: "direct main"
+    description:
+      name: gender_picker
+      sha256: "75180516208bb524ba6164755915edefaff8035cbfbc94073427270c4b1b766c"
+      url: "https://pub.dev"
+    source: hosted
+    version: "1.1.0"
   google_fonts:
     dependency: "direct main"
     description:

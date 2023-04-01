@@ -13,7 +13,7 @@ class _SignUpScreenState extends State<SignUpScreen> {
   Widget build(BuildContext context) {
     return WillPopScope(
         child: Scaffold(
-          backgroundColor: const Color(0xFF393239),
+          backgroundColor: const Color(0xFF362e36),
           body: SingleChildScrollView(
             padding: const EdgeInsets.all(45),
             child: Column(
