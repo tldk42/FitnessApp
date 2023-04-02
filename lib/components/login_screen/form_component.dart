@@ -68,7 +68,7 @@ class _LoginFormComponentState extends State<LoginFormComponent> {
           () => Navigator.push(
               context,
               SlideRightRoute(
-                  page: WelcomeScreen())));
+                  page: ActivityScreen())));
     } else {
       showErrorAlert(context, dataReceived);
     }

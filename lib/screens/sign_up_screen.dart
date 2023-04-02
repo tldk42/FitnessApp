@@ -30,7 +30,7 @@ class _SignUpScreenState extends State<SignUpScreen> {
 
                 SignUpSteps(),
                 const SizedBox(
-                  height: 27,
+                  height: 30,
                 ),
 
                 SizedBox(
@@ -44,7 +44,6 @@ class _SignUpScreenState extends State<SignUpScreen> {
                         TextStyle(fontSize: 14, color: Color(0xFF929BAB)),
                       ),
                       onTap: () {
-
                         Navigator.pop(context);
                       },
                     ),

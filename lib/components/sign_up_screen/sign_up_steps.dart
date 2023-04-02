@@ -87,7 +87,7 @@ class _SignUpStepsState extends State<SignUpSteps> {
                                   backgroundColor: stepHasError[e]
                                       ? Colors.orange.shade600
                                       : !stepCompletedSuccessfully[e]
-                                          ? const Color(0xffF5F7FA)
+                                          ? Colors.white
                                           : const Color(0xfff975c4),
                                   foregroundColor: !stepCompletedSuccessfully[e]
                                       ? const Color(0xfff975c4)
@@ -368,9 +368,9 @@ class _SignUpStepsState extends State<SignUpSteps> {
               if (signUpDetails['member_id']!.isEmpty ||
                   signUpDetails['member_password']!.isEmpty) {
                 errorStatus = true;
-              } else {
-                errorStatus = true;
               }
+            } else {
+              errorStatus = true;
             }
             break;
           case 2:

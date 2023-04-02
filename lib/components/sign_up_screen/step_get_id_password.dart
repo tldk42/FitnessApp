@@ -1,3 +1,5 @@
+import 'package:fitness_app/utilities/display_error_alert.dart';
+import 'package:fitness_app/utilities/make_api_request.dart';
 import 'package:flutter/material.dart';
 
 class StepGetIDPassword extends StatefulWidget {
@@ -173,11 +175,20 @@ class _StepGetIDPasswordState extends State<StepGetIDPassword> {
   String? _validateID(String? value) {
     if (value == null || value.isEmpty) {
       errorMessageSetter('ID', 'you must provide a valid id');
-    } else {
+    }
+    //TODO: id 중복되는 경우 체크
+    else if(value.isNotEmpty){
+      sendData(urlPath: 'user/verifyID.php', data: {'member_id': value}).then((response) {
+        if (!response['success']){
+          errorMessageSetter('ID', 'ID already exist');
+        }
+      });
+      
+    }
+    else {
       errorMessageSetter('ID', "");
       widget.updateSignUpDetails('member_id', value);
     }
-    //TODO: id 중복되는 경우 체크
     return null;
   }
 

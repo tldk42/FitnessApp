@@ -1,3 +1,5 @@
+import 'dart:ffi';
+
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:gender_picker/gender_picker.dart';
@@ -24,6 +26,7 @@ class StepGetName extends StatefulWidget {
 class _StepGetNameState extends State<StepGetName> {
   String fullName = '';
   String fullNameErrorMSG = '';
+  String gender = '';
 
   @override
   void initState() {
@@ -33,6 +36,7 @@ class _StepGetNameState extends State<StepGetName> {
     if (mounted) {
       setState(() {
         fullName = signUpDetails['member_name']!;
+        gender = signUpDetails['member_gender']!;
       });
     }
   }
@@ -114,6 +118,8 @@ class _StepGetNameState extends State<StepGetName> {
                 unSelectedGenderTextStyle: const TextStyle(
                     color: Colors.white, fontWeight: FontWeight.normal),
                 onChanged: (Gender? gender) {
+                  widget.updateSignUpDetails(
+                      'member_gender', gender == Gender.Male ? 'M' : 'F');
                   if (kDebugMode) {
                     print(gender);
                   }
@@ -148,4 +154,6 @@ class _StepGetNameState extends State<StepGetName> {
     }
     return null;
   }
+
+  void _validateGender() {}
 }
