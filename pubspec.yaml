@@ -34,6 +34,7 @@ dependencies:
 
   # The following adds the Cupertino Icons font to your application.
   # Use with the CupertinoIcons class for iOS style icons.
+  google_nav_bar: ^5.0.6
   cupertino_icons: ^1.0.2
   http: ^0.13.4
   fluentui_system_icons: ^1.1.153
@@ -52,6 +53,8 @@ dev_dependencies:
     sdk: flutter
 
   flutter_launcher_icons: "^0.9.2"
+  flutter_native_splash: ^2.0.1+1
+
 
   # The "flutter_lints" package below contains a set of recommended lints to
   # encourage good coding practices. The lint set provided by the package is

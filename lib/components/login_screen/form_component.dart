@@ -1,3 +1,4 @@
+import 'package:fitness_app/components/main_app_screen/tapped_layout_component.dart';
 import 'package:fitness_app/db/login_info_storage.dart';
 import 'package:fitness_app/db/user_data_storage.dart';
 import 'package:fitness_app/providers/user_login_state_provider.dart';
@@ -45,8 +46,6 @@ class _LoginFormComponentState extends State<LoginFormComponent> {
       if (mounted) {
         Provider.of<UserLoginStateProvider>(context, listen: false)
             .setAuthKeyValue(loggedInUserAuthKey);
-        Provider.of<UserLoginStateProvider>(context, listen: false)
-            .initializeBankBalance(user);
 
         if (isUserSaved[0] && isUserSaved[1]) {
           debugPrint("user data saved");
@@ -68,7 +67,9 @@ class _LoginFormComponentState extends State<LoginFormComponent> {
           () => Navigator.push(
               context,
               SlideRightRoute(
-                  page: ActivityScreen())));
+                  page: TabbedLayoutComponent(
+                userData: dataReceived['userData'],
+              ))));
     } else {
       showErrorAlert(context, dataReceived);
     }
