@@ -1,8 +1,9 @@
-import 'package:fitness_app/components/main_app_screen/tapped_layout_component.dart';
+import 'package:fitness_app/components/main_app_screen/tabbed_layout_component.dart';
 import 'package:fitness_app/db/login_info_storage.dart';
 import 'package:fitness_app/db/user_data_storage.dart';
 import 'package:fitness_app/db/user_device_info_storage.dart';
 import 'package:fitness_app/providers/live_transactions_provider.dart';
+import 'package:fitness_app/providers/tab_navigation_provider.dart';
 import 'package:fitness_app/providers/user_login_state_provider.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_native_splash/flutter_native_splash.dart';
@@ -23,6 +24,7 @@ void main() {
       ChangeNotifierProvider(
         create: (_) => UserLoginStateProvider(),
       ),
+      ChangeNotifierProvider(create: (_) => TabNavigationProvider()),
       //   ChangeNotifierProxyProvider<UserLoginStateProvider, LiveTransactionsProvider>(
       //       create: (BuildContext context) => LiveTransactionsProvider(), update: (context, userLoginAuthKey, liveTransactions) =>
       // liveTransactions!..update(userLoginAuthKey)),

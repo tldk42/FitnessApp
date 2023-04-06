@@ -1,4 +1,4 @@
-import 'package:fitness_app/components/main_app_screen/tapped_layout_component.dart';
+import 'package:fitness_app/components/main_app_screen/tabbed_layout_component.dart';
 import 'package:fitness_app/db/login_info_storage.dart';
 import 'package:fitness_app/db/user_data_storage.dart';
 import 'package:fitness_app/providers/user_login_state_provider.dart';

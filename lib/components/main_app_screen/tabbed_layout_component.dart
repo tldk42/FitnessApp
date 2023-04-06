@@ -1,14 +1,13 @@
 import 'dart:async';
-import 'dart:math';
 import 'package:fitness_app/providers/tab_navigation_provider.dart';
 import 'package:fitness_app/providers/user_login_state_provider.dart';
+import 'package:fitness_app/screens/activity_screen.dart';
 import 'package:fitness_app/screens/home_screen.dart';
-import 'package:fluentui_system_icons/fluentui_system_icons.dart';
+import 'package:fitness_app/screens/user_screen.dart';
 import 'package:google_nav_bar/google_nav_bar.dart';
 
-import 'package:fitness_app/screens/chat_screen.dart';
-import 'package:fitness_app/screens/welcome_screen.dart';
 import 'package:flutter/material.dart';
+import 'package:line_icons/line_icons.dart';
 import 'package:provider/provider.dart';
 
 class TabbedLayoutComponent extends StatefulWidget {
@@ -60,43 +59,49 @@ class _TabbedLayoutComponentState extends State<TabbedLayoutComponent> {
         setTab: setTab,
         key: homeScreenKey,
       ),
-      const ChatScreen(),
+      ActivityScreen(
+          user: widget.userData, userAuthKey: userAuthKey, setTab: setTab),
+      UserInfo(user: widget.userData, userAuthKey: userAuthKey, setTab: setTab),
     ];
 
     return WillPopScope(
-        child: Scaffold(
-          backgroundColor: const Color(0xfffefefe),
-          extendBodyBehindAppBar: true,
-          bottomNavigationBar: googleNavBar(),
-          // body: screens.isEmpty
-          //     ? const Text("Loading...")
-          //     : screens[_currentTabIndex],
-          body: screens[0],
-        ),
-        onWillPop: _onBackPress);
+      onWillPop: _onBackPress,
+      child: Scaffold(
+        backgroundColor: const Color(0xFF362e36),
+        extendBodyBehindAppBar: true,
+        bottomNavigationBar: googleNavBar(),
+        body: screens.isEmpty
+            ? const Text("Loading...")
+            : screens[_currentTabIndex],
+      ),
+    );
   }
 
   Widget googleNavBar() {
     return Container(
       padding: const EdgeInsets.symmetric(horizontal: 6.18, vertical: 1),
       child: GNav(
+        tabBackgroundColor: const Color(0xFF524752),
+        hoverColor: const Color(0xFFFF94D4),
+        activeColor: const Color(0xFFFF94D4),
         haptic: false,
         gap: 6,
-        activeColor: const Color(0xFF0070BA),
-        iconSize: 24,
+        iconSize: 36,
         padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 11),
         duration: const Duration(milliseconds: 300),
-        color: const Color(0xFF243656),
+        color: const Color(0xFFFF94D4),
         tabs: const [
           GButton(
-            icon: FluentIcons.home_32_regular,
-            iconSize: 36,
+            icon: LineIcons.home,
             text: 'Home',
           ),
           GButton(
-            icon: FluentIcons.comment_24_regular,
-            iconSize: 36,
-            text: 'chat',
+            icon: LineIcons.running,
+            text: 'Activity',
+          ),
+          GButton(
+            icon: LineIcons.user,
+            text: 'My',
           )
         ],
         selectedIndex: _currentTabIndex,
@@ -109,8 +114,6 @@ class _TabbedLayoutComponentState extends State<TabbedLayoutComponent> {
     if (_currentTabIndex == 0 || _currentTabIndex == 1) {
       FocusManager.instance.primaryFocus?.unfocus();
     }
-    print("currentTabIndex : {$_currentTabIndex}");
-    print("index : {$index}");
     Provider.of<TabNavigationProvider>(context, listen: false)
         .updateTabs(_currentTabIndex);
 
