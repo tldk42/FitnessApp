@@ -108,7 +108,7 @@ class _FitnessAppState extends State<FitnessApp> {
       ),
       home: Builder(
         builder: (context) {
-          if (_previousllyInstalled == true) {
+          if (_previousllyInstalled == false) {
             FlutterNativeSplash.remove();
             return LoginScreen();
           } else {

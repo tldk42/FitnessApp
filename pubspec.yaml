@@ -48,6 +48,7 @@ dependencies:
   path_provider: ^2.0.9
   gender_picker: ^1.1.0
   filter_list: ^1.0.2
+  image_picker: ^0.8.7+1
 
 
 dev_dependencies:

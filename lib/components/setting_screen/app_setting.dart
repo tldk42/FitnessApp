@@ -1,7 +1,6 @@
 import 'package:fitness_app/db/login_info_storage.dart';
 import 'package:fitness_app/db/user_data_storage.dart';
 import 'package:fitness_app/screens/login_screen.dart';
-import 'package:fitness_app/utilities/slide_right_route.dart';
 import 'package:fluentui_system_icons/fluentui_system_icons.dart';
 import 'package:flutter/material.dart';
 
@@ -99,22 +98,16 @@ class AppSettingComponent extends StatelessWidget {
       {
         'title': Text('Sign Out'),
         'trailing': Icon(FluentIcons.sign_out_24_regular),
-        'onTap': () async {
-          bool logOutStatus = await _deleteLoggedInUserData();
-          if (logOutStatus) {
-            Navigator.of(context).pushAndRemoveUntil(
-                MaterialPageRoute(builder: (context) => LoginScreen()),
-                    (route) => false);
-          }
-        },
+        'onTap': () => showDialogOnLogoutRequest(context),
         'settingsCategory': 'General',
       },
       {
         'title': Padding(
             padding: EdgeInsets.symmetric(horizontal: 48, vertical: 0),
             child: Image.asset(
-              'assets/images/hadwin_system/hadwin-logo-with-name.png',
-            )),
+              'images/super.png',
+            ),
+        ),
         'trailing': null,
         'onTap': null,
         'settingsCategory': 'About the app',
@@ -179,6 +172,92 @@ class AppSettingComponent extends StatelessWidget {
                             // }
                           },
                           child: Text('Reset'),
+                          style: buttonStyle),
+                    ),
+                    SizedBox(
+                      width: 24,
+                    ),
+                    Container(
+                      height: 48,
+                      width: 100,
+                      decoration: buttonDecoration,
+                      child: ElevatedButton(
+                          onPressed: () => Navigator.of(context).pop(),
+                          child: Text('Cancel'),
+                          style: buttonStyle),
+                    ),
+                  ],
+                ),
+                SizedBox(
+                  height: 18,
+                ),
+              ],
+            )
+          ],
+        ));
+  }
+
+  void showDialogOnLogoutRequest(BuildContext context){
+    Decoration buttonDecoration = BoxDecoration(
+      boxShadow: [
+        BoxShadow(
+            color: Colors.blueGrey.shade100,
+            offset: Offset(0, 4),
+            blurRadius: 5.0)
+      ],
+      gradient: RadialGradient(
+          colors: [Color(0xff0070BA), Color(0xff1546A0)],
+          radius: 8.4,
+          center: Alignment(-0.24, -0.36)),
+      borderRadius: BorderRadius.circular(10),
+    );
+    ButtonStyle buttonStyle = ElevatedButton.styleFrom(
+      primary: Colors.transparent,
+      shadowColor: Colors.transparent,
+      shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(10)),
+    );
+
+    showDialog(
+        context: context,
+        barrierDismissible: false,
+        builder: (context) => AlertDialog(
+          title: Text(
+            "Logout",
+            textAlign: TextAlign.center,
+          ),
+          content: Text(
+            "This will delete all locally saved transactions and cards.\nDo you wish to continue?",
+            textAlign: TextAlign.center,
+          ),
+          shape: RoundedRectangleBorder(
+              borderRadius: BorderRadius.circular(20)),
+          actionsAlignment: MainAxisAlignment.center,
+          actions: [
+            Column(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    Container(
+                      height: 48,
+                      width: 100,
+                      decoration: buttonDecoration,
+                      child: ElevatedButton(
+                          onPressed: () async {
+                            // bool deleted =
+                            // await _resetTransactionsAndCards(context);
+                            // if (deleted) {
+                            //   Navigator.of(context).pop();
+                            // }
+                            bool logOutStatus = await _deleteLoggedInUserData();
+                            if (logOutStatus) {
+                              Navigator.of(context).pushAndRemoveUntil(
+                                  MaterialPageRoute(builder: (context) => LoginScreen()),
+                                      (route) => false);
+                            }
+                          },
+                          child: Text('Logout'),
                           style: buttonStyle),
                     ),
                     SizedBox(

@@ -58,6 +58,7 @@ class LoginInfoStorage {
       await file.delete();
       return true;
     } catch (e) {
+      print(e);
       return false;
     }
   }

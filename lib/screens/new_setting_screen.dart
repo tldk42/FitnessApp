@@ -26,7 +26,7 @@ class NewSettingScreen extends StatelessWidget {
       ],
     );
     return Scaffold(
-      backgroundColor: Colors.white,
+      backgroundColor: Color(0xFFe1dbd7),
       appBar: appBar,
       body: appSettings,
     );

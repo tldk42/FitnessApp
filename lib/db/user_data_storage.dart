@@ -44,6 +44,7 @@ class UserDataStorage {
 
       return true;
     } catch (e) {
+      print(e);
       return false;
     }
   }

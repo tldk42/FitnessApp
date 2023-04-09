@@ -18,15 +18,13 @@ class ActivityScreen extends StatefulWidget {
   State<ActivityScreen> createState() => _ActivityScreenState();
 }
 
-class Activity{
+class Activity {
   final String? name;
 
   Activity({this.name});
 }
 
 class _ActivityScreenState extends State<ActivityScreen> {
-
-
   List<Activity> userList = [
     Activity(name: "Personal Training"),
     Activity(name: "Pilates"),
@@ -34,7 +32,7 @@ class _ActivityScreenState extends State<ActivityScreen> {
     Activity(name: "Yoga"),
   ];
 
-  List<Activity> selectedUserList =[];
+  List<Activity> selectedUserList = [];
 
   void openFilterDialog() async {
     await FilterListDialog.display<Activity>(
@@ -57,7 +55,6 @@ class _ActivityScreenState extends State<ActivityScreen> {
     );
   }
 
-
   @override
   void initState() {
     // TODO: implement initState
@@ -72,7 +69,6 @@ class _ActivityScreenState extends State<ActivityScreen> {
 
   @override
   Widget build(BuildContext context) {
-
     return Scaffold(
       backgroundColor: const Color(0xFF393239),
       appBar: TabbedAppBar(title: 'Activities'),
@@ -101,8 +97,9 @@ class _ActivityScreenState extends State<ActivityScreen> {
                             )
                           ]),
                       child: Container(
-                           padding: const EdgeInsetsDirectional.fromSTEB(0, 0, 18, 0),
-                        alignment: Alignment.topRight,
+                          padding:
+                              const EdgeInsetsDirectional.fromSTEB(0, 0, 18, 0),
+                          alignment: Alignment.topRight,
                           child: FloatingActionButton(
                               backgroundColor: const Color(0xFFFF94D4),
                               onPressed: openFilterDialog,
@@ -110,184 +107,211 @@ class _ActivityScreenState extends State<ActivityScreen> {
                                 IconData(0xf068, fontFamily: 'MaterialIcons'),
                               ))
 
-                        // TextFormField(),
-                      ),
+                          // TextFormField(),
+                          ),
                     ),
                   ),
                 ],
               ),
               Expanded(
                   child: ListView(
-                    padding: EdgeInsets.zero,
-                    scrollDirection: Axis.vertical,
-                    children: [
-                      Padding(
-                        padding:
-                        const EdgeInsetsDirectional.fromSTEB(16, 12, 16, 20),
-                        child: Container(
-                          width: double.infinity,
-                          height: 184,
-                          decoration: BoxDecoration(
-                            color: Colors.white,
-                            image: DecorationImage(
-                              fit: BoxFit.fitWidth,
-                              image: Image.network(
-                                'https://images.unsplash.com/photo-1616803689943-5601631c7fec?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxzZWFyY2h8NTR8fHdvcmtvdXR8ZW58MHx8MHx8&auto=format&fit=crop&w=800&q=60',
-                              ).image,
-                            ),
-                            boxShadow: const [
-                              BoxShadow(
-                                blurRadius: 3,
-                                color: Color(0x33000000),
-                                offset: Offset(0, 2),
-                              )
-                            ],
-                            borderRadius: BorderRadius.circular(8),
-                          ),
-                          child: Container(
-                            width: 100,
-                            height: 100,
-                            decoration: BoxDecoration(
-                              color: const Color(0x65090F13),
-                              borderRadius: BorderRadius.circular(8),
-                            ),
-                            child: Padding(
-                              padding:
-                              const EdgeInsetsDirectional.fromSTEB(0, 0, 0, 2),
-                              child: Column(
-                                mainAxisSize: MainAxisSize.max,
-                                children: [
-                                  Padding(
-                                    padding: const EdgeInsetsDirectional.fromSTEB(
-                                        16, 16, 16, 0),
-                                    child: Row(
-                                      mainAxisSize: MainAxisSize.max,
-                                      children: const [
-                                        Expanded(
-                                          child: Text(
-                                            'Class Name',
-                                            style: TextStyle(
-                                              fontFamily: 'Lexend Deca',
-                                              color: Colors.white,
-                                              fontSize: 24,
-                                              fontWeight: FontWeight.bold,
-                                            ),
-                                          ),
-                                        ),
-                                        Icon(
-                                          Icons.chevron_right_rounded,
-                                          color: Colors.white,
-                                          size: 24,
-                                        ),
-                                      ],
-                                    ),
-                                  ),
-                                  Padding(
-                                    padding: const EdgeInsetsDirectional.fromSTEB(
-                                        16, 4, 16, 0),
-                                    child: Row(
-                                      mainAxisSize: MainAxisSize.max,
-                                      children: const [
-                                        Expanded(
-                                          child: Text(
-                                              '30m | High Intensity | Indoor/Outdoor',
-                                              style: TextStyle(
-                                                fontFamily: 'Lexend Deca',
-                                                color: Color(0xFF39D2C0),
-                                                fontSize: 14,
-                                                fontWeight: FontWeight.normal,
-                                              )),
-                                        ),
-                                      ],
-                                    ),
-                                  ),
-                                  Expanded(
-                                    child: Padding(
-                                      padding: const EdgeInsetsDirectional.fromSTEB(
-                                          16, 4, 16, 16),
-                                      child: Row(
-                                        mainAxisSize: MainAxisSize.max,
-                                        crossAxisAlignment: CrossAxisAlignment.end,
-                                        children: [
-                                          // FFButtonWidget(
-                                          //   onPressed: () {
-                                          //     print('Button-Reserve pressed ...');
-                                          //   },
-                                          //   text: 'Reserve',
-                                          //   icon: const Icon(
-                                          //     Icons.add_rounded,
-                                          //     color: Colors.white,
-                                          //     size: 15,
-                                          //   ),
-                                          //   options: FFButtonOptions(
-                                          //     width: 120,
-                                          //     height: 40,
-                                          //     padding:
-                                          //     const EdgeInsetsDirectional.fromSTEB(
-                                          //         0, 0, 0, 0),
-                                          //     iconPadding:
-                                          //     const EdgeInsetsDirectional.fromSTEB(
-                                          //         0, 0, 0, 0),
-                                          //     color: const Color(0xFFFF96D5),
-                                          //     textStyle: GoogleFonts.getFont(
-                                          //       'Lexend Deca',
-                                          //       color: Colors.white,
-                                          //       fontSize: 14,
-                                          //     ),
-                                          //     elevation: 3,
-                                          //     borderSide: const BorderSide(
-                                          //       color: Colors.transparent,
-                                          //       width: 1,
-                                          //     ),
-                                          //   ),
-                                          // ),
-                                          Expanded(
-                                            child: Column(
-                                              mainAxisSize: MainAxisSize.max,
-                                              mainAxisAlignment:
-                                              MainAxisAlignment.end,
-                                              crossAxisAlignment:
-                                              CrossAxisAlignment.end,
-                                              children: const [
-                                                Padding(
-                                                  padding: EdgeInsetsDirectional
-                                                      .fromSTEB(0, 0, 0, 4),
-                                                  child: Text('10:00am',
-                                                      style: TextStyle(
-                                                        fontFamily: 'Lexend Deca',
-                                                        color: Colors.white,
-                                                        fontSize: 20,
-                                                        fontWeight: FontWeight.bold,
-                                                      )),
-                                                ),
-                                                Text('Thursday June 22',
-                                                    textAlign: TextAlign.end,
-                                                    style: TextStyle(
-                                                      fontFamily: 'Lexend Deca',
-                                                      color: Color(0xB4FFFFFF),
-                                                      fontSize: 14,
-                                                      fontWeight: FontWeight.normal,
-                                                    )),
-                                              ],
-                                            ),
-                                          ),
-                                        ],
-                                      ),
-                                    ),
-                                  ),
-                                ],
-                              ),
-                            ),
-                          ),
-                        ),
-                      ),
-                    ],
-                  ))
+                padding: EdgeInsets.zero,
+                scrollDirection: Axis.vertical,
+                children: [
+                  ActivityList(
+                    imageUrl:
+                        'https://images.unsplash.com/photo-1616803689943-5601631c7fec?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxzZWFyY2h8NTR8fHdvcmtvdXR8ZW58MHx8MHx8&auto=format&fit=crop&w=800&q=60',
+                  ),
+                  ActivityList(
+                      imageUrl:
+                          'https://images.unsplash.com/photo-1571019613454-1cb2f99b2d8b?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxzZWFyY2h8M3x8d29ya291dHxlbnwwfHwwfHw%3D&auto=format&fit=crop&w=800&q=60'),
+                  ActivityList(
+                    imageUrl:
+                        'https://images.unsplash.com/photo-1581009137042-c552e485697a?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxzZWFyY2h8MTN8fHdvcmtvdXR8ZW58MHx8MHx8&auto=format&fit=crop&w=800&q=60',
+                  ),
+                ],
+              ))
             ],
           ),
         ),
       ),
     );
+  }
+}
 
+class ActivityList extends StatefulWidget {
+  String imageUrl;
+
+  ActivityList({super.key, required this.imageUrl});
+
+  @override
+  State<ActivityList> createState() => _ActivityListState();
+}
+
+class _ActivityListState extends State<ActivityList> {
+  @override
+  Widget build(BuildContext context) {
+    return Padding(
+      padding: const EdgeInsetsDirectional.fromSTEB(16, 12, 16, 20),
+      child: Container(
+        width: double.infinity,
+        height: 184,
+        decoration: BoxDecoration(
+          color: Colors.white,
+          image: DecorationImage(
+            fit: BoxFit.fitWidth,
+            image: Image.network(
+              widget.imageUrl,
+            ).image,
+          ),
+          boxShadow: const [
+            BoxShadow(
+              blurRadius: 3,
+              color: Color(0x33000000),
+              offset: Offset(0, 2),
+            )
+          ],
+          borderRadius: BorderRadius.circular(8),
+        ),
+        child: Container(
+          width: 100,
+          height: 100,
+          decoration: BoxDecoration(
+            color: const Color(0x65090F13),
+            borderRadius: BorderRadius.circular(8),
+          ),
+          child: Padding(
+            padding: const EdgeInsetsDirectional.fromSTEB(0, 0, 0, 2),
+            child: Column(
+              mainAxisSize: MainAxisSize.max,
+              children: [
+                Padding(
+                  padding: const EdgeInsetsDirectional.fromSTEB(16, 16, 16, 0),
+                  child: Row(
+                    mainAxisSize: MainAxisSize.max,
+                    children: const [
+                      Expanded(
+                        child: Text(
+                          'Class Name',
+                          style: TextStyle(
+                            fontFamily: 'Lexend Deca',
+                            color: Colors.white,
+                            fontSize: 24,
+                            fontWeight: FontWeight.bold,
+                          ),
+                        ),
+                      ),
+                      Icon(
+                        Icons.chevron_right_rounded,
+                        color: Colors.white,
+                        size: 24,
+                      ),
+                    ],
+                  ),
+                ),
+                Padding(
+                  padding: const EdgeInsetsDirectional.fromSTEB(16, 4, 16, 0),
+                  child: Row(
+                    mainAxisSize: MainAxisSize.max,
+                    children: const [
+                      Expanded(
+                        child: Text('30m | High Intensity | Indoor/Outdoor',
+                            style: TextStyle(
+                              fontFamily: 'Lexend Deca',
+                              color: Color(0xFF39D2C0),
+                              fontSize: 14,
+                              fontWeight: FontWeight.normal,
+                            )),
+                      ),
+                    ],
+                  ),
+                ),
+                Expanded(
+                  child: Padding(
+                    padding:
+                        const EdgeInsetsDirectional.fromSTEB(16, 4, 16, 16),
+                    child: Row(
+                      mainAxisSize: MainAxisSize.max,
+                      crossAxisAlignment: CrossAxisAlignment.end,
+                      children: [
+                        ElevatedButton.icon(
+                          style: ElevatedButton.styleFrom(
+                            backgroundColor: const Color(0xFFFF94D4),
+                          ),
+                          onPressed: () {},
+                          icon: const Icon(Icons.add_rounded,
+                              color: Colors.white, size: 15),
+                          label: const Text('Reserved'),
+                        ),
+                        // FFButtonWidget(
+                        //   onPressed: () {
+                        //     print('Button-Reserve pressed ...');
+                        //   },
+                        //   text: 'Reserve',
+                        //   icon: const Icon(
+                        //     Icons.add_rounded,
+                        //     color: Colors.white,
+                        //     size: 15,
+                        //   ),
+                        //   options: FFButtonOptions(
+                        //     width: 120,
+                        //     height: 40,
+                        //     padding:
+                        //     const EdgeInsetsDirectional.fromSTEB(
+                        //         0, 0, 0, 0),
+                        //     iconPadding:
+                        //     const EdgeInsetsDirectional.fromSTEB(
+                        //         0, 0, 0, 0),
+                        //     color: const Color(0xFFFF96D5),
+                        //     textStyle: GoogleFonts.getFont(
+                        //       'Lexend Deca',
+                        //       color: Colors.white,
+                        //       fontSize: 14,
+                        //     ),
+                        //     elevation: 3,
+                        //     borderSide: const BorderSide(
+                        //       color: Colors.transparent,
+                        //       width: 1,
+                        //     ),
+                        //   ),
+                        // ),
+                        Expanded(
+                          child: Column(
+                            mainAxisSize: MainAxisSize.max,
+                            mainAxisAlignment: MainAxisAlignment.end,
+                            crossAxisAlignment: CrossAxisAlignment.end,
+                            children: const [
+                              Padding(
+                                padding:
+                                    EdgeInsetsDirectional.fromSTEB(0, 0, 0, 4),
+                                child: Text('10:00am',
+                                    style: TextStyle(
+                                      fontFamily: 'Lexend Deca',
+                                      color: Colors.white,
+                                      fontSize: 20,
+                                      fontWeight: FontWeight.bold,
+                                    )),
+                              ),
+                              Text('Thursday June 22',
+                                  textAlign: TextAlign.end,
+                                  style: TextStyle(
+                                    fontFamily: 'Lexend Deca',
+                                    color: Color(0xB4FFFFFF),
+                                    fontSize: 14,
+                                    fontWeight: FontWeight.normal,
+                                  )),
+                            ],
+                          ),
+                        ),
+                      ],
+                    ),
+                  ),
+                ),
+              ],
+            ),
+          ),
+        ),
+      ),
+    );
   }
 }
