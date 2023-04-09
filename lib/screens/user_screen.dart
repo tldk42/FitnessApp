@@ -1,8 +1,8 @@
+import 'dart:io';
+
 import 'package:fitness_app/components/main_app_screen/tabbed_appbar_component.dart';
 import 'package:fitness_app/providers/tab_navigation_provider.dart';
-import 'package:fitness_app/resources/api_constants.dart';
 import 'package:fitness_app/screens/new_setting_screen.dart';
-import 'package:fitness_app/utilities/make_api_request.dart';
 import 'package:fitness_app/utilities/slide_right_route.dart';
 import 'package:fluentui_system_icons/fluentui_system_icons.dart';
 import 'package:flutter/material.dart';
@@ -27,6 +27,8 @@ class UserInfo extends StatefulWidget {
 }
 
 class _UserInfoState extends State<UserInfo> {
+  var _image;
+
   @override
   void initState() {
     // TODO: implement initState
@@ -125,16 +127,29 @@ class _UserInfoState extends State<UserInfo> {
                                                 EdgeInsetsDirectional.fromSTEB(
                                                     0, 0, 0, 0),
                                             child: IconButton(
-                                              onPressed: () async {
-                                                var picker = ImagePicker();
-                                                var image = await picker.pickImage(
-                                                        source: ImageSource
-                                                            .gallery);
-                                              },
-                                              icon: Image.asset(
-                                                'images/logo.png'
-                                              )
-                                            ),
+                                                onPressed: () async {
+                                                  var picker = ImagePicker();
+                                                  XFile? tempImg =
+                                                      await picker.pickImage(
+                                                          source: ImageSource
+                                                              .gallery);
+                                                  setState(() {
+                                                    _image =
+                                                        File(tempImg!.path);
+                                                  });
+                                                },
+                                                icon: _image != null
+                                                    ? Image.file(
+                                                        _image,
+                                                        // width: 40,
+                                                        // height: 40,
+                                                      )
+                                                    : Image.asset(
+                                                        'images/super.png')
+                                                // Image.asset(
+                                                //   'images/logo.png'
+                                                // )
+                                                ),
                                           ),
                                         ),
                                       ),
