@@ -31,15 +31,13 @@ Future<Map<String, dynamic>> sendData(
   String backendServerHost = "${ApiConstants.baseUrl}$urlPath";
   http.Response response;
   try {
-    response = await http.post(
-      Uri.parse(backendServerHost),
-      body: data
-    );
-    if (response.statusCode == 200){
+    response = await http.post(Uri.parse(backendServerHost), body: data);
+    if (response.statusCode == 200) {
       var resSignup = jsonDecode(response.body);
-      if (resSignup['success'] == true){
+      if (resSignup['success'] == true) {
         log("SUCCESS");
-      } else{
+      } else {
+        log(resSignup['msg']);
         log("FALSE");
       }
     }

@@ -103,29 +103,28 @@ class _UserInfoState extends State<UserInfo> {
                                 child: Padding(
                                   padding: EdgeInsetsDirectional.fromSTEB(
                                       12, 0, 12, 0),
-                                  child: Row(
-                                    mainAxisSize: MainAxisSize.max,
-                                    children: [
-                                      Container(
-                                        width: 60,
-                                        height: 60,
-                                        decoration: BoxDecoration(
-                                          color: Color(0xFFF1F4F8),
-                                          shape: BoxShape.circle,
-                                        ),
-                                        alignment: AlignmentDirectional(0, 0),
-                                        child: Card(
-                                          clipBehavior:
-                                              Clip.antiAliasWithSaveLayer,
-                                          color: Color(0xFF393239),
-                                          shape: RoundedRectangleBorder(
-                                            borderRadius:
-                                                BorderRadius.circular(40),
+                                  child: GestureDetector(
+                                    onTap: () => print("on tabbed"),
+                                    child: Row(
+
+                                      mainAxisSize: MainAxisSize.max,
+                                      children: [
+                                        Container(
+                                          width: 60,
+                                          height: 60,
+                                          decoration: BoxDecoration(
+                                            color: Color(0xFFF1F4F8),
+                                            shape: BoxShape.circle,
                                           ),
-                                          child: Padding(
-                                            padding:
-                                                EdgeInsetsDirectional.fromSTEB(
-                                                    0, 0, 0, 0),
+                                          alignment: AlignmentDirectional(0, 0),
+                                          child: Card(
+                                            clipBehavior:
+                                                Clip.antiAliasWithSaveLayer,
+                                            color: Color(0xFF393239),
+                                            shape: RoundedRectangleBorder(
+                                              borderRadius:
+                                                  BorderRadius.circular(40),
+                                            ),
                                             child: IconButton(
                                                 onPressed: () async {
                                                   var picker = ImagePicker();
@@ -152,28 +151,28 @@ class _UserInfoState extends State<UserInfo> {
                                                 ),
                                           ),
                                         ),
-                                      ),
-                                      Padding(
-                                        padding: EdgeInsetsDirectional.fromSTEB(
-                                            12, 12, 12, 12),
-                                        child: Column(
-                                          mainAxisSize: MainAxisSize.max,
-                                          mainAxisAlignment:
-                                              MainAxisAlignment.center,
-                                          crossAxisAlignment:
-                                              CrossAxisAlignment.start,
-                                          children: [
-                                            Text(
-                                              'Jacob',
-                                              style: TextStyle(
-                                                fontFamily: 'Poppins',
-                                                fontWeight: FontWeight.bold,
+                                        Padding(
+                                          padding: EdgeInsetsDirectional.fromSTEB(
+                                              12, 12, 12, 12),
+                                          child: Column(
+                                            mainAxisSize: MainAxisSize.max,
+                                            mainAxisAlignment:
+                                                MainAxisAlignment.center,
+                                            crossAxisAlignment:
+                                                CrossAxisAlignment.start,
+                                            children: [
+                                              Text(
+                                                'Jacob',
+                                                style: TextStyle(
+                                                  fontFamily: 'Poppins',
+                                                  fontWeight: FontWeight.bold,
+                                                ),
                                               ),
-                                            ),
-                                          ],
+                                            ],
+                                          ),
                                         ),
-                                      ),
-                                    ],
+                                      ],
+                                    ),
                                   ),
                                 ),
                               ),

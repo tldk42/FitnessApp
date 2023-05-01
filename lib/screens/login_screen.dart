@@ -50,7 +50,7 @@ class _LoginScreenState extends State<LoginScreen> {
         padding: const EdgeInsets.symmetric(horizontal: 10.0),
         child: Image.asset('images/super_b.png'),
       ),
-      _spacing(64),
+      _spacing(10),
       LoginFormComponent(),
       _spacing(30),
       helpInfoBox,

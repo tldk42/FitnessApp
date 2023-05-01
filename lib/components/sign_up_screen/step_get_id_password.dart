@@ -177,14 +177,14 @@ class _StepGetIDPasswordState extends State<StepGetIDPassword> {
       errorMessageSetter('ID', 'you must provide a valid id');
     }
     //TODO: id 중복되는 경우 체크
-    else if(value.isNotEmpty){
-      sendData(urlPath: 'user/verifyID.php', data: {'member_id': value}).then((response) {
-        if (!response['success']){
-          errorMessageSetter('ID', 'ID already exist');
-        }
-      });
-      
-    }
+    // else if(value.isNotEmpty){
+    //   sendData(urlPath: 'user/verifyID.php', data: {'member_id': value}).then((response) {
+    //     if (!response['success']){
+    //       errorMessageSetter('ID', 'ID already exist');
+    //     }
+    //   });
+    //
+    // }
     else {
       errorMessageSetter('ID', "");
       widget.updateSignUpDetails('member_id', value);
