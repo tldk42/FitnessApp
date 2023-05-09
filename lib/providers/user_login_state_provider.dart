@@ -2,10 +2,12 @@ import 'package:flutter/material.dart';
 
 class UserLoginStateProvider with ChangeNotifier {
   String _userLoginAuthKey = "";
-
+  Map<String, dynamic>? _userData;
   double _bankBalance = 0;
 
   String get userLoginAuthKey => _userLoginAuthKey;
+
+  Map<String, dynamic>? get user => _userData;
 
   String get bankBalance {
     String stringFieldBankBalance = _bankBalance.toStringAsFixed(2);
@@ -21,5 +23,8 @@ class UserLoginStateProvider with ChangeNotifier {
     notifyListeners();
   }
 
-
+  void setUserData({required Map<String, dynamic> userData}) {
+    _userData = userData;
+    notifyListeners();
+  }
 }

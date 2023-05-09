@@ -47,7 +47,6 @@ class _LoginFormComponentState extends State<LoginFormComponent> {
       if (mounted) {
         Provider.of<UserLoginStateProvider>(context, listen: false)
             .setAuthKeyValue(loggedInUserAuthKey);
-
         if (isUserSaved[0] && isUserSaved[1]) {
           debugPrint("user data saved");
         }
@@ -77,34 +76,37 @@ class _LoginFormComponentState extends State<LoginFormComponent> {
           [_saveLoggedInUserData('empty', dataReceived['userData'])]);
 
       if (status[0] == true) {
-        switch(indexTab){
+        switch (indexTab) {
           case 0:
             ScaffoldMessenger.of(context)
                 .showSnackBar(SnackBar(
-              content: Text("Login Successful"),
-              backgroundColor: Colors.green,
-            ))
+                  content: Text("Login Successful"),
+                  backgroundColor: Colors.green,
+                ))
                 .closed
                 .then((value) => Navigator.of(context).pushAndRemoveUntil(
-                MaterialPageRoute(
-                    builder: (context) => TabbedLayoutComponent(
-                        userData: dataReceived['userData'])),
+                    MaterialPageRoute(
+                        builder: (context) => TabbedLayoutComponent(
+                            userData: dataReceived['userData'])),
                     (route) => false));
+            Provider.of<UserLoginStateProvider>(context, listen: false)
+                .setUserData(userData: dataReceived['userData']);
             break;
           case 1:
             ScaffoldMessenger.of(context)
                 .showSnackBar(SnackBar(
-              content: Text("Login Successful"),
-              backgroundColor: Colors.green,
-            ))
+                  content: Text("Login Successful"),
+                  backgroundColor: Colors.green,
+                ))
                 .closed
                 .then((value) => Navigator.of(context).pushAndRemoveUntil(
-                MaterialPageRoute(
-                    builder: (context) => ManagerTabbedLayoutComponent()),
+                    MaterialPageRoute(
+                        builder: (context) => ManagerTabbedLayoutComponent(
+                              managerData: dataReceived['userData'],
+                            )),
                     (route) => false));
             break;
         }
-
       } else {
         showErrorAlert(context, dataReceived);
       }

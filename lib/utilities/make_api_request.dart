@@ -1,11 +1,10 @@
 import 'dart:convert';
-import 'dart:developer';
 import 'dart:io';
 
 import 'package:fitness_app/resources/api_constants.dart';
 import 'package:http/http.dart' as http;
 
-Future<Map<String, dynamic>> getData(
+Future getData(
     {required String urlPath, String? authKey}) async {
   String backendServerHost = "${ApiConstants.baseUrl}$urlPath";
   http.Response response;
@@ -21,26 +20,22 @@ Future<Map<String, dynamic>> getData(
   } on SocketException {
     return {'internetConnectionError': 'no internet connection'};
   }
-  return jsonDecode(response.body);
+  final List<dynamic> data = jsonDecode(response.body);
+  return data.map((e) => e as Map<String, dynamic>).toList();
 }
 
-Future<Map<String, dynamic>> sendData(
+Future sendData(
     {required String urlPath,
-    required Map<String, dynamic> data,
+    Map<String, dynamic>? data,
     String? authKey}) async {
+  print(data);
   String backendServerHost = "${ApiConstants.baseUrl}$urlPath";
   http.Response response;
   try {
     response = await http.post(Uri.parse(backendServerHost), body: data);
-    if (response.statusCode == 200) {
-      var resSignup = jsonDecode(response.body);
-      if (resSignup['success'] == true) {
-        log("SUCCESS");
-      } else {
-        log(resSignup['msg']);
-        log("FALSE");
-      }
-    }
+    // if (response.statusCode == 200) {
+    //   var resSignup = jsonDecode(response.body);
+    // }
   } on SocketException {
     return {'internetConnectionError': 'no internet connection'};
   }

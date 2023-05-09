@@ -49,6 +49,8 @@ dependencies:
   gender_picker: ^1.1.0
   filter_list: ^1.0.2
   image_picker: ^0.8.7+1
+  syncfusion_flutter_datepicker: ^21.1.41
+  intl: ^0.18.1
 
 
 dev_dependencies:
