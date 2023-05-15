@@ -1,6 +1,7 @@
 import 'package:filter_list/filter_list.dart';
 import 'package:fitness_app/components/main_app_screen/tabbed_appbar_component.dart';
 import 'package:fitness_app/providers/user_login_state_provider.dart';
+import 'package:fitness_app/resources/randomGenerator.dart';
 import 'package:fitness_app/utilities/make_api_request.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
@@ -126,8 +127,8 @@ class _ActivityScreenState extends State<ActivityScreen> {
                               )
                             ]),
                         child: Container(
-                            padding:
-                                const EdgeInsetsDirectional.fromSTEB(0, 0, 18, 0),
+                            padding: const EdgeInsetsDirectional.fromSTEB(
+                                0, 0, 18, 0),
                             alignment: Alignment.topRight,
                             child: FloatingActionButton(
                                 backgroundColor: const Color(0xFFFF94D4),
@@ -225,11 +226,11 @@ class _ActivityListState extends State<ActivityList> {
         decoration: BoxDecoration(
           color: Colors.white,
           image: DecorationImage(
-            fit: BoxFit.fitWidth,
-            image: Image.network(
-              'https://images.unsplash.com/photo-1616803689943-5601631c7fec?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxzZWFyY2h8NTR8fHdvcmtvdXR8ZW58MHx8MHx8&auto=format&fit=crop&w=800&q=60',
-            ).image,
-          ),
+              fit: BoxFit.fitWidth, image: RandomImageGenerator().image
+              // Image.network(
+              //   'https://images.unsplash.com/photo-1616803689943-5601631c7fec?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxzZWFyY2h8NTR8fHdvcmtvdXR8ZW58MHx8MHx8&auto=format&fit=crop&w=800&q=60',
+              // ).image,
+              ),
           boxShadow: const [
             BoxShadow(
               blurRadius: 3,
@@ -351,7 +352,9 @@ class _ActivityListState extends State<ActivityList> {
                                 padding:
                                     EdgeInsetsDirectional.fromSTEB(0, 0, 0, 4),
                                 child: Text(
-                                    startDate.hour.toString() + ':' + startDate.minute.toString(),
+                                    startDate.hour.toString() +
+                                        ':' +
+                                        startDate.minute.toString(),
                                     style: TextStyle(
                                       fontFamily: 'Lexend Deca',
                                       color: Colors.white,

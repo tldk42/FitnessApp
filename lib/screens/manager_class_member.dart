@@ -182,12 +182,7 @@ class _ManagerClassUserScreenState extends State<ManagerClassUserScreen> {
                         shrinkWrap: true,
                         scrollDirection: Axis.vertical,
                         itemBuilder: (BuildContext context, int index) {
-                          List<String> items;
-                          if (_searchKeyword.isEmpty ||
-                              _users![index]['member_name']
-                                  .toString()
-                                  .toLowerCase()
-                                  .contains(_searchKeyword.toLowerCase())) {
+                         {
                             return UserIconWithInfo(
                               memberInfo: _users![index],
                             );

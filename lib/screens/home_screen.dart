@@ -205,7 +205,8 @@ class ActivityHomeView extends StatelessWidget {
                         child: ClipRRect(
                           borderRadius:
                           BorderRadius.circular(6),
-                          child: Image.network(
+                          child:
+                          Image.network(
                             'https://images.unsplash.com/photo-1500468756762-a401b6f17b46?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=1288&q=80',
                             width: 100,
                             height: 100,

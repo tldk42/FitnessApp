@@ -1,9 +1,12 @@
 import 'dart:async';
+import 'dart:math';
+import 'package:fitness_app/providers/live_transactions_provider.dart';
 import 'package:fitness_app/providers/tab_navigation_provider.dart';
 import 'package:fitness_app/providers/user_login_state_provider.dart';
 import 'package:fitness_app/screens/activity_screen.dart';
 import 'package:fitness_app/screens/home_screen.dart';
 import 'package:fitness_app/screens/user_screen.dart';
+import 'package:fitness_app/utilities/make_api_request.dart';
 import 'package:google_nav_bar/google_nav_bar.dart';
 
 import 'package:flutter/material.dart';
@@ -11,7 +14,7 @@ import 'package:line_icons/line_icons.dart';
 import 'package:provider/provider.dart';
 
 class TabbedLayoutComponent extends StatefulWidget {
-  final Map<String, dynamic> userData;
+  late final Map<String, dynamic> userData;
 
   const TabbedLayoutComponent({Key? key, required this.userData})
       : super(key: key);
@@ -21,7 +24,7 @@ class TabbedLayoutComponent extends StatefulWidget {
 }
 
 class _TabbedLayoutComponentState extends State<TabbedLayoutComponent> {
-  // Timer? _updateTransactionTimer;
+  Timer? _updateTimer;
   int _currentTabIndex = 0;
   int totalTransactionRequests = 0;
 
@@ -32,12 +35,17 @@ class _TabbedLayoutComponentState extends State<TabbedLayoutComponent> {
   void initState() {
     // TODO: implement initState
     super.initState();
+
+    // _updateTimer = Timer.periodic(
+    //     Duration(minutes: [1, 2, 3, 4][Random().nextInt(4)]), (Timer t) {
+    //   Provider.of<LiveUpdateProvider>(context, listen: false).update();
+    // });
   }
 
   @override
   void dispose() {
     // TODO: implement dispose
-    // _updateTransactionTimer!.cancel();
+    _updateTimer!.cancel();
     super.dispose();
   }
 
