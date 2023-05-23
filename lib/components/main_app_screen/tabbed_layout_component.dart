@@ -14,7 +14,7 @@ import 'package:line_icons/line_icons.dart';
 import 'package:provider/provider.dart';
 
 class TabbedLayoutComponent extends StatefulWidget {
-  late final Map<String, dynamic> userData;
+  final Map<String, dynamic> userData;
 
   const TabbedLayoutComponent({Key? key, required this.userData})
       : super(key: key);
@@ -36,10 +36,10 @@ class _TabbedLayoutComponentState extends State<TabbedLayoutComponent> {
     // TODO: implement initState
     super.initState();
 
-    // _updateTimer = Timer.periodic(
-    //     Duration(minutes: [1, 2, 3, 4][Random().nextInt(4)]), (Timer t) {
-    //   Provider.of<LiveUpdateProvider>(context, listen: false).update();
-    // });
+    _updateTimer = Timer.periodic(
+        Duration(minutes: [1, 2, 3, 4][Random().nextInt(4)]), (Timer t) {
+      // Provider.of<LiveUpdateProvider>(context, listen: false).update();
+    });
   }
 
   @override

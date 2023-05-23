@@ -4,8 +4,7 @@ import 'dart:io';
 import 'package:fitness_app/resources/api_constants.dart';
 import 'package:http/http.dart' as http;
 
-Future getData(
-    {required String urlPath, String? authKey}) async {
+Future getData({required String urlPath, String? authKey}) async {
   String backendServerHost = "${ApiConstants.baseUrl}$urlPath";
   http.Response response;
 
@@ -33,6 +32,7 @@ Future sendData(
   http.Response response;
   try {
     response = await http.post(Uri.parse(backendServerHost), body: data);
+    print(response.body);
     // if (response.statusCode == 200) {
     //   var resSignup = jsonDecode(response.body);
     // }

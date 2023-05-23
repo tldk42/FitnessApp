@@ -51,6 +51,7 @@ dependencies:
   image_picker: ^0.8.7+1
   syncfusion_flutter_datepicker: ^21.1.41
   intl: ^0.18.1
+  flutter_datetime_picker: ^1.5.1
 
 
 dev_dependencies:
