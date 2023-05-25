@@ -162,10 +162,12 @@ class _UserInfoState extends State<UserInfo> {
                                                 CrossAxisAlignment.start,
                                             children: [
                                               Text(
-                                                'Jacob',
+                                                'Hello, ${widget.user['member_name']}',
                                                 style: TextStyle(
+                                                  color: Color(0xFF393239),
                                                   fontFamily: 'Poppins',
                                                   fontWeight: FontWeight.bold,
+                                                  fontSize: 24
                                                 ),
                                               ),
                                             ],
@@ -229,7 +231,7 @@ class _UserInfoState extends State<UserInfo> {
                                           CrossAxisAlignment.start,
                                       children: [
                                         Text(
-                                          'Expiration Date',
+                                          'Member Since',
                                           style: TextStyle(
                                             fontFamily: 'Outfit',
                                             color: Color(0xFF14181B),
@@ -242,7 +244,7 @@ class _UserInfoState extends State<UserInfo> {
                                               EdgeInsetsDirectional.fromSTEB(
                                                   0, 4, 0, 0),
                                           child: Text(
-                                            'Below is an a summary of activity.',
+                                            widget.user['created_on'].substring(0, 10),
                                             style: TextStyle(
                                               fontFamily: 'Outfit',
                                               color: Color(0xFF57636C),
@@ -348,7 +350,7 @@ class _UserInfoState extends State<UserInfo> {
                                           CrossAxisAlignment.start,
                                       children: [
                                         Text(
-                                          'Persnal Training',
+                                          'Personal Locker No.8',
                                           style: TextStyle(
                                             fontFamily: 'Outfit',
                                             color: Color(0xFF14181B),
@@ -361,7 +363,7 @@ class _UserInfoState extends State<UserInfo> {
                                               EdgeInsetsDirectional.fromSTEB(
                                                   0, 4, 0, 0),
                                           child: Text(
-                                            'Below is an a summary of activity.',
+                                            'Nu',
                                             style: TextStyle(
                                               fontFamily: 'Outfit',
                                               color: Color(0xFF57636C),

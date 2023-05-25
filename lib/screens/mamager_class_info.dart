@@ -1,4 +1,4 @@
-import 'package:fitness_app/components/member_screen/MemberInfo.dart';
+import 'package:fitness_app/components/member_screen/BriefMemberInfo.dart';
 import 'package:fitness_app/utilities/make_api_request.dart';
 import 'package:flutter/material.dart';
 

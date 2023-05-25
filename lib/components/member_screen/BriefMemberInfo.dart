@@ -1,3 +1,4 @@
+import 'package:fitness_app/components/member_screen/DetailedMemberInfo.dart';
 import 'package:flutter/material.dart';
 
 class UserIconWithInfo extends StatefulWidget {
@@ -84,7 +85,14 @@ class _UserIconWithInfoState extends State<UserIconWithInfo> {
                       Padding(
                         padding: EdgeInsetsDirectional.fromSTEB(4, 4, 4, 4),
                         child: IconButton(
-                          onPressed: () {},
+                          onPressed: () async {
+                            final result = await Navigator.push(
+                                context,
+                                MaterialPageRoute(
+                                    builder: (context) => DetailMemberInfoWidget()));
+                            if (result != null && result == "update") {
+                            }
+                          },
                           icon: const Icon(
                             Icons.keyboard_arrow_right_rounded,
                             color: Color(0xFF57636C),
