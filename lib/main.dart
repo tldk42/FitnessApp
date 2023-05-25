@@ -98,12 +98,27 @@ class _FitnessAppState extends State<FitnessApp> {
     super.dispose();
   }
 
+  Map<int, Color> customColorSwatch = {
+    50: Color(0xFFFCECF8),
+    100: Color(0xFFF8CEE2),
+    200: Color(0xFFF4ADCC),
+    300: Color(0xFFF08DB6),
+    400: Color(0xFFEC6DA0),
+    500: Color(0xFFE84E8A),
+    600: Color(0xFFE42E74),
+    700: Color(0xFFE00E5E),
+    800: Color(0xFFDC0048),
+    900: Color(0xFFd80032),
+  };
+
+
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
       title: 'FitnessApp',
       theme: ThemeData(
-        primarySwatch: Colors.red,
+        primaryColor: Color(0xFF393239),
+        primarySwatch: MaterialColor(0xfff975c4, customColorSwatch),
         textTheme: GoogleFonts.manropeTextTheme(Theme.of(context).textTheme),
       ),
       home: Builder(

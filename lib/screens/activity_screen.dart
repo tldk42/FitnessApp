@@ -151,16 +151,7 @@ class _ActivityScreenState extends State<ActivityScreen> {
                   itemBuilder: (BuildContext context, int index) {
                     return ActivityList(classData: classes![index]);
                   },
-                  // children: [
-                  //
-                  //   // ActivityList(
-                  //   //     imageUrl:
-                  //   //         'https://images.unsplash.com/photo-1571019613454-1cb2f99b2d8b?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxzZWFyY2h8M3x8d29ya291dHxlbnwwfHwwfHw%3D&auto=format&fit=crop&w=800&q=60'),
-                  //   // ActivityList(
-                  //   //   imageUrl:
-                  //   //       'https://images.unsplash.com/photo-1581009137042-c552e485697a?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxzZWFyY2h8MTN8fHdvcmtvdXR8ZW58MHx8MHx8&auto=format&fit=crop&w=800&q=60',
-                  //   // ),
-                  // ],
+
                 ))
               ],
             ),
@@ -185,17 +176,22 @@ class _ActivityListState extends State<ActivityList> {
   late DateTime endDate;
   late Map<String, dynamic> mergedMap;
   String startDay = '';
-  bool enrolled = false;
+  bool? enrolled;
+  late Future<String> _enrollmentStatusFuture;
 
-  Future<bool> _isEnrolled() async {
+  Future<String> _isEnrolled() async {
     final response =
-        await sendData(urlPath: 'user/check_enroll.php', data: mergedMap);
-    if (response != null) {
-      if (response['success']) {
-        return true;
+        await sendData(urlPath: 'user/check_enroll.php', data: {'class_id': widget.classData['class_id'], 'member_id': Provider.of<UserLoginStateProvider>(context, listen: false).user!['member_id']});
+    setState(() {
+      if (response != null) {
+        if (response['success']) {
+          enrolled = true;
+        }
+      }else{
+        enrolled = false;
       }
-    }
-    return false;
+    });
+    return 'Loaded';
   }
 
   @override
@@ -212,7 +208,7 @@ class _ActivityListState extends State<ActivityList> {
           Provider.of<UserLoginStateProvider>(context, listen: false).user;
       var tempClassData = widget.classData;
       mergedMap = Map.from(tempUserData!)..addAll(tempClassData);
-      _isEnrolled().then((value) => enrolled = value);
+      _enrollmentStatusFuture = _isEnrolled();
     });
   }
 
@@ -220,98 +216,106 @@ class _ActivityListState extends State<ActivityList> {
   Widget build(BuildContext context) {
     return Padding(
       padding: const EdgeInsetsDirectional.fromSTEB(16, 12, 16, 20),
-      child: Container(
-        width: double.infinity,
-        height: 184,
-        decoration: BoxDecoration(
-          color: Colors.white,
-          image: DecorationImage(
-              fit: BoxFit.fitWidth, image: RandomImageGenerator().image
-              // Image.network(
-              //   'https://images.unsplash.com/photo-1616803689943-5601631c7fec?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxzZWFyY2h8NTR8fHdvcmtvdXR8ZW58MHx8MHx8&auto=format&fit=crop&w=800&q=60',
-              // ).image,
+      child: FutureBuilder(
+        future: _enrollmentStatusFuture,
+        builder: (BuildContext context, AsyncSnapshot<dynamic> snapshot) {
+          if (snapshot.connectionState == ConnectionState.waiting){
+            return CircularProgressIndicator();
+          } else if (snapshot.hasError){
+            return Text('Error: ${snapshot.error}');
+          }else{
+            return  Container(
+              width: double.infinity,
+              height: 184,
+              decoration: BoxDecoration(
+                color: Colors.white,
+                image: DecorationImage(
+                    fit: BoxFit.fitWidth, image: RandomImageGenerator().image
+                  // Image.network(
+                  //   'https://images.unsplash.com/photo-1616803689943-5601631c7fec?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxzZWFyY2h8NTR8fHdvcmtvdXR8ZW58MHx8MHx8&auto=format&fit=crop&w=800&q=60',
+                  // ).image,
+                ),
+                boxShadow: const [
+                  BoxShadow(
+                    blurRadius: 3,
+                    color: Color(0x33000000),
+                    offset: Offset(0, 2),
+                  )
+                ],
+                borderRadius: BorderRadius.circular(8),
               ),
-          boxShadow: const [
-            BoxShadow(
-              blurRadius: 3,
-              color: Color(0x33000000),
-              offset: Offset(0, 2),
-            )
-          ],
-          borderRadius: BorderRadius.circular(8),
-        ),
-        child: Container(
-          width: 100,
-          height: 100,
-          decoration: BoxDecoration(
-            color: const Color(0x65090F13),
-            borderRadius: BorderRadius.circular(8),
-          ),
-          child: Padding(
-            padding: const EdgeInsetsDirectional.fromSTEB(0, 0, 0, 2),
-            child: Column(
-              mainAxisSize: MainAxisSize.max,
-              children: [
-                Padding(
-                  padding: const EdgeInsetsDirectional.fromSTEB(16, 16, 16, 0),
-                  child: Row(
+              child: Container(
+                width: 100,
+                height: 100,
+                decoration: BoxDecoration(
+                  color: const Color(0x65090F13),
+                  borderRadius: BorderRadius.circular(8),
+                ),
+                child: Padding(
+                  padding: const EdgeInsetsDirectional.fromSTEB(0, 0, 0, 2),
+                  child: Column(
                     mainAxisSize: MainAxisSize.max,
                     children: [
-                      Expanded(
-                        child: Text(
-                          widget.classData['class_name'],
-                          style: TextStyle(
-                            fontFamily: 'Lexend Deca',
-                            color: Colors.white,
-                            fontSize: 24,
-                            fontWeight: FontWeight.bold,
-                          ),
+                      Padding(
+                        padding: const EdgeInsetsDirectional.fromSTEB(16, 16, 16, 0),
+                        child: Row(
+                          mainAxisSize: MainAxisSize.max,
+                          children: [
+                            Expanded(
+                              child: Text(
+                                widget.classData['class_name'],
+                                style: TextStyle(
+                                  fontFamily: 'Lexend Deca',
+                                  color: Colors.white,
+                                  fontSize: 24,
+                                  fontWeight: FontWeight.bold,
+                                ),
+                              ),
+                            ),
+                            Icon(
+                              Icons.chevron_right_rounded,
+                              color: Colors.white,
+                              size: 24,
+                            ),
+                          ],
                         ),
                       ),
-                      Icon(
-                        Icons.chevron_right_rounded,
-                        color: Colors.white,
-                        size: 24,
+                      Padding(
+                        padding: const EdgeInsetsDirectional.fromSTEB(16, 4, 16, 0),
+                        child: Row(
+                          mainAxisSize: MainAxisSize.max,
+                          children: const [
+                            Expanded(
+                              child: Text('30m | High Intensity | Indoor/Outdoor',
+                                  style: TextStyle(
+                                    fontFamily: 'Lexend Deca',
+                                    color: Color(0xFF39D2C0),
+                                    fontSize: 14,
+                                    fontWeight: FontWeight.normal,
+                                  )),
+                            ),
+                          ],
+                        ),
                       ),
-                    ],
-                  ),
-                ),
-                Padding(
-                  padding: const EdgeInsetsDirectional.fromSTEB(16, 4, 16, 0),
-                  child: Row(
-                    mainAxisSize: MainAxisSize.max,
-                    children: const [
                       Expanded(
-                        child: Text('30m | High Intensity | Indoor/Outdoor',
-                            style: TextStyle(
-                              fontFamily: 'Lexend Deca',
-                              color: Color(0xFF39D2C0),
-                              fontSize: 14,
-                              fontWeight: FontWeight.normal,
-                            )),
-                      ),
-                    ],
-                  ),
-                ),
-                Expanded(
-                  child: Padding(
-                    padding:
-                        const EdgeInsetsDirectional.fromSTEB(16, 4, 16, 16),
-                    child: Row(
-                      mainAxisSize: MainAxisSize.max,
-                      crossAxisAlignment: CrossAxisAlignment.end,
-                      children: [
-                        ElevatedButton.icon(
-                          style: ElevatedButton.styleFrom(
-                            backgroundColor: !enrolled
-                                ? Color(0xFFFF94D4)
-                                : Color(0xFFC03239),
-                          ),
-                          onPressed: !enrolled
-                              ? () async {
+                        child: Padding(
+                          padding:
+                          const EdgeInsetsDirectional.fromSTEB(16, 4, 16, 16),
+                          child: Row(
+                            mainAxisSize: MainAxisSize.max,
+                            crossAxisAlignment: CrossAxisAlignment.end,
+                            children: [
+                              ElevatedButton.icon(
+                                style: ElevatedButton.styleFrom(
+                                  backgroundColor: !enrolled!
+                                      ? Color(0xFFFF94D4)
+                                      : Color(0xFFC03239),
+                                ),
+                                onPressed: !enrolled!
+                                    ? () async {
                                   final response = await sendData(
                                       urlPath: 'user/enroll_class.php',
-                                      data: mergedMap);
+                                      data: {'class_id': widget.classData['class_id'], 'member_id': Provider.of<UserLoginStateProvider>(context, listen: false).user!['member_id']});
                                   if (response != null) {
                                     if (response['success']) {
                                       print('enrolled');
@@ -321,10 +325,10 @@ class _ActivityListState extends State<ActivityList> {
                                     }
                                   }
                                 }
-                              : () async {
+                                    : () async {
                                   final response = await sendData(
                                       urlPath: 'user/cancel_enroll.php',
-                                      data: mergedMap);
+                                      data: {'class_id': widget.classData['class_id'], 'member_id': Provider.of<UserLoginStateProvider>(context, listen: false).user!['member_id']});
                                   if (response != null) {
                                     if (response['success']) {
                                       print('canceled');
@@ -334,53 +338,218 @@ class _ActivityListState extends State<ActivityList> {
                                     }
                                   }
                                 },
-                          icon: Icon(
-                              !enrolled
-                                  ? Icons.add_rounded
-                                  : Icons.cancel_rounded,
-                              color: Colors.white,
-                              size: 15),
-                          label: Text(!enrolled ? 'Reserve' : 'Cancel'),
-                        ),
-                        Expanded(
-                          child: Column(
-                            mainAxisSize: MainAxisSize.max,
-                            mainAxisAlignment: MainAxisAlignment.end,
-                            crossAxisAlignment: CrossAxisAlignment.end,
-                            children: [
-                              Padding(
-                                padding:
-                                    EdgeInsetsDirectional.fromSTEB(0, 0, 0, 4),
-                                child: Text(
-                                    startDate.hour.toString() +
-                                        ':' +
-                                        startDate.minute.toString(),
-                                    style: TextStyle(
-                                      fontFamily: 'Lexend Deca',
-                                      color: Colors.white,
-                                      fontSize: 20,
-                                      fontWeight: FontWeight.bold,
-                                    )),
+                                icon: Icon(
+                                    !enrolled!
+                                        ? Icons.add_rounded
+                                        : Icons.cancel_rounded,
+                                    color: Colors.white,
+                                    size: 15),
+                                label: Text(!enrolled! ? 'Reserve' : 'Cancel'),
                               ),
-                              Text(startDay,
-                                  textAlign: TextAlign.end,
-                                  style: TextStyle(
-                                    fontFamily: 'Lexend Deca',
-                                    color: Color(0xB4FFFFFF),
-                                    fontSize: 14,
-                                    fontWeight: FontWeight.normal,
-                                  )),
+                              Expanded(
+                                child: Column(
+                                  mainAxisSize: MainAxisSize.max,
+                                  mainAxisAlignment: MainAxisAlignment.end,
+                                  crossAxisAlignment: CrossAxisAlignment.end,
+                                  children: [
+                                    Padding(
+                                      padding:
+                                      EdgeInsetsDirectional.fromSTEB(0, 0, 0, 4),
+                                      child: Text(
+                                          startDate.hour.toString() +
+                                              ':' +
+                                              startDate.minute.toString(),
+                                          style: TextStyle(
+                                            fontFamily: 'Lexend Deca',
+                                            color: Colors.white,
+                                            fontSize: 20,
+                                            fontWeight: FontWeight.bold,
+                                          )),
+                                    ),
+                                    Text(startDay,
+                                        textAlign: TextAlign.end,
+                                        style: TextStyle(
+                                          fontFamily: 'Lexend Deca',
+                                          color: Color(0xB4FFFFFF),
+                                          fontSize: 14,
+                                          fontWeight: FontWeight.normal,
+                                        )),
+                                  ],
+                                ),
+                              ),
                             ],
                           ),
                         ),
-                      ],
-                    ),
+                      ),
+                    ],
                   ),
                 ),
-              ],
-            ),
-          ),
-        ),
+              ),
+            );
+          }
+        },
+        // child: Container(
+        //   width: double.infinity,
+        //   height: 184,
+        //   decoration: BoxDecoration(
+        //     color: Colors.white,
+        //     image: DecorationImage(
+        //         fit: BoxFit.fitWidth, image: RandomImageGenerator().image
+        //         // Image.network(
+        //         //   'https://images.unsplash.com/photo-1616803689943-5601631c7fec?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxzZWFyY2h8NTR8fHdvcmtvdXR8ZW58MHx8MHx8&auto=format&fit=crop&w=800&q=60',
+        //         // ).image,
+        //         ),
+        //     boxShadow: const [
+        //       BoxShadow(
+        //         blurRadius: 3,
+        //         color: Color(0x33000000),
+        //         offset: Offset(0, 2),
+        //       )
+        //     ],
+        //     borderRadius: BorderRadius.circular(8),
+        //   ),
+        //   child: Container(
+        //     width: 100,
+        //     height: 100,
+        //     decoration: BoxDecoration(
+        //       color: const Color(0x65090F13),
+        //       borderRadius: BorderRadius.circular(8),
+        //     ),
+        //     child: Padding(
+        //       padding: const EdgeInsetsDirectional.fromSTEB(0, 0, 0, 2),
+        //       child: Column(
+        //         mainAxisSize: MainAxisSize.max,
+        //         children: [
+        //           Padding(
+        //             padding: const EdgeInsetsDirectional.fromSTEB(16, 16, 16, 0),
+        //             child: Row(
+        //               mainAxisSize: MainAxisSize.max,
+        //               children: [
+        //                 Expanded(
+        //                   child: Text(
+        //                     widget.classData['class_name'],
+        //                     style: TextStyle(
+        //                       fontFamily: 'Lexend Deca',
+        //                       color: Colors.white,
+        //                       fontSize: 24,
+        //                       fontWeight: FontWeight.bold,
+        //                     ),
+        //                   ),
+        //                 ),
+        //                 Icon(
+        //                   Icons.chevron_right_rounded,
+        //                   color: Colors.white,
+        //                   size: 24,
+        //                 ),
+        //               ],
+        //             ),
+        //           ),
+        //           Padding(
+        //             padding: const EdgeInsetsDirectional.fromSTEB(16, 4, 16, 0),
+        //             child: Row(
+        //               mainAxisSize: MainAxisSize.max,
+        //               children: const [
+        //                 Expanded(
+        //                   child: Text('30m | High Intensity | Indoor/Outdoor',
+        //                       style: TextStyle(
+        //                         fontFamily: 'Lexend Deca',
+        //                         color: Color(0xFF39D2C0),
+        //                         fontSize: 14,
+        //                         fontWeight: FontWeight.normal,
+        //                       )),
+        //                 ),
+        //               ],
+        //             ),
+        //           ),
+        //           Expanded(
+        //             child: Padding(
+        //               padding:
+        //                   const EdgeInsetsDirectional.fromSTEB(16, 4, 16, 16),
+        //               child: Row(
+        //                 mainAxisSize: MainAxisSize.max,
+        //                 crossAxisAlignment: CrossAxisAlignment.end,
+        //                 children: [
+        //                   ElevatedButton.icon(
+        //                     style: ElevatedButton.styleFrom(
+        //                       backgroundColor: !enrolled!
+        //                           ? Color(0xFFFF94D4)
+        //                           : Color(0xFFC03239),
+        //                     ),
+        //                     onPressed: !enrolled!
+        //                         ? () async {
+        //                             final response = await sendData(
+        //                                 urlPath: 'user/enroll_class.php',
+        //                                 data: {'class_id': widget.classData['class_id'], 'member_id': Provider.of<UserLoginStateProvider>(context, listen: false).user!['member_id']});
+        //                             if (response != null) {
+        //                               if (response['success']) {
+        //                                 print('enrolled');
+        //                                 setState(() {
+        //                                   enrolled = true;
+        //                                 });
+        //                               }
+        //                             }
+        //                           }
+        //                         : () async {
+        //                             final response = await sendData(
+        //                                 urlPath: 'user/cancel_enroll.php',
+        //                                 data: {'class_id': widget.classData['class_id'], 'member_id': Provider.of<UserLoginStateProvider>(context, listen: false).user!['member_id']});
+        //                             if (response != null) {
+        //                               if (response['success']) {
+        //                                 print('canceled');
+        //                                 setState(() {
+        //                                   enrolled = false;
+        //                                 });
+        //                               }
+        //                             }
+        //                           },
+        //                     icon: Icon(
+        //                         !enrolled!
+        //                             ? Icons.add_rounded
+        //                             : Icons.cancel_rounded,
+        //                         color: Colors.white,
+        //                         size: 15),
+        //                     label: Text(!enrolled! ? 'Reserve' : 'Cancel'),
+        //                   ),
+        //                   Expanded(
+        //                     child: Column(
+        //                       mainAxisSize: MainAxisSize.max,
+        //                       mainAxisAlignment: MainAxisAlignment.end,
+        //                       crossAxisAlignment: CrossAxisAlignment.end,
+        //                       children: [
+        //                         Padding(
+        //                           padding:
+        //                               EdgeInsetsDirectional.fromSTEB(0, 0, 0, 4),
+        //                           child: Text(
+        //                               startDate.hour.toString() +
+        //                                   ':' +
+        //                                   startDate.minute.toString(),
+        //                               style: TextStyle(
+        //                                 fontFamily: 'Lexend Deca',
+        //                                 color: Colors.white,
+        //                                 fontSize: 20,
+        //                                 fontWeight: FontWeight.bold,
+        //                               )),
+        //                         ),
+        //                         Text(startDay,
+        //                             textAlign: TextAlign.end,
+        //                             style: TextStyle(
+        //                               fontFamily: 'Lexend Deca',
+        //                               color: Color(0xB4FFFFFF),
+        //                               fontSize: 14,
+        //                               fontWeight: FontWeight.normal,
+        //                             )),
+        //                       ],
+        //                     ),
+        //                   ),
+        //                 ],
+        //               ),
+        //             ),
+        //           ),
+        //         ],
+        //       ),
+        //     ),
+        //   ),
+        // ),
       ),
     );
   }

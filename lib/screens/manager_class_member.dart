@@ -1,3 +1,4 @@
+import 'package:fitness_app/components/member_screen/MemberInfo.dart';
 import 'package:fitness_app/utilities/make_api_request.dart';
 import 'package:flutter/material.dart';
 
@@ -39,7 +40,7 @@ class _ManagerClassUserScreenState extends State<ManagerClassUserScreen> {
   Widget build(BuildContext context) {
     return SafeArea(
       child: RefreshIndicator(
-        onRefresh: ()  async{
+        onRefresh: () async {
           _fetchAllUser();
         },
         child: GestureDetector(
@@ -54,7 +55,8 @@ class _ManagerClassUserScreenState extends State<ManagerClassUserScreen> {
                 children: [
                   // 검색 창
                   Padding(
-                    padding: const EdgeInsetsDirectional.fromSTEB(16, 8, 16, 12),
+                    padding:
+                        const EdgeInsetsDirectional.fromSTEB(16, 8, 16, 12),
                     child: Row(
                       mainAxisSize: MainAxisSize.max,
                       children: [
@@ -135,35 +137,6 @@ class _ManagerClassUserScreenState extends State<ManagerClassUserScreen> {
                   Padding(
                     padding: EdgeInsetsDirectional.fromSTEB(24, 0, 0, 0),
                     child: Text(
-                      'Members in my class',
-                      style: TextStyle(
-                        fontFamily: 'Outfit',
-                        color: Color(0xFF57636C),
-                        fontSize: 14,
-                        fontWeight: FontWeight.normal,
-                      ),
-                    ),
-                  ),
-                  Container(
-                    width: double.infinity,
-                    height: 170,
-                    decoration: BoxDecoration(
-                      color: Color(0xFFF1F4F8),
-                    ),
-                    child: ListView(
-                      padding: EdgeInsets.zero,
-                      primary: false,
-                      shrinkWrap: true,
-                      scrollDirection: Axis.horizontal,
-                      children: [
-                        UserIconWithName(),
-
-                      ],
-                    ),
-                  ),
-                  Padding(
-                    padding: EdgeInsetsDirectional.fromSTEB(24, 0, 0, 0),
-                    child: Text(
                       'All Members',
                       style: TextStyle(
                         fontFamily: 'Outfit',
@@ -175,22 +148,20 @@ class _ManagerClassUserScreenState extends State<ManagerClassUserScreen> {
                   ),
                   Padding(
                     padding: EdgeInsetsDirectional.fromSTEB(0, 12, 0, 12),
-                    child:  ListView.builder(
-                        itemCount: _users?.length ?? 0,
-                        padding: EdgeInsets.zero,
-                        primary: false,
-                        shrinkWrap: true,
-                        scrollDirection: Axis.vertical,
-                        itemBuilder: (BuildContext context, int index) {
-                         {
-                            return UserIconWithInfo(
-                              memberInfo: _users![index],
-                            );
-                          }
-                        },
-
-                      ),
-
+                    child: ListView.builder(
+                      itemCount: _users?.length ?? 0,
+                      padding: EdgeInsets.zero,
+                      primary: false,
+                      shrinkWrap: true,
+                      scrollDirection: Axis.vertical,
+                      itemBuilder: (BuildContext context, int index) {
+                        {
+                          return UserIconWithInfo(
+                            memberInfo: _users![index],
+                          );
+                        }
+                      },
+                    ),
                   ),
                 ],
               ),
@@ -202,159 +173,4 @@ class _ManagerClassUserScreenState extends State<ManagerClassUserScreen> {
   }
 }
 
-class UserIconWithInfo extends StatefulWidget {
-  final Map<String, dynamic> memberInfo;
 
-  const UserIconWithInfo({Key? key, required this.memberInfo})
-      : super(key: key);
-
-  @override
-  State<UserIconWithInfo> createState() => _UserIconWithInfoState();
-}
-
-class _UserIconWithInfoState extends State<UserIconWithInfo> {
-  @override
-  Widget build(BuildContext context) {
-    return Padding(
-      padding: EdgeInsetsDirectional.fromSTEB(16, 4, 16, 8),
-      child: Container(
-        width: double.infinity,
-        height: 50,
-        decoration: BoxDecoration(
-          color: Colors.white,
-          boxShadow: [
-            BoxShadow(
-              blurRadius: 4,
-              color: Color(0x32000000),
-              offset: Offset(0, 2),
-            )
-          ],
-          borderRadius: BorderRadius.circular(8),
-        ),
-        child: Padding(
-          padding: EdgeInsetsDirectional.fromSTEB(8, 0, 8, 0),
-          child: Row(
-            mainAxisSize: MainAxisSize.max,
-            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-            children: [
-              ClipRRect(
-                borderRadius: BorderRadius.circular(26),
-                child: Image.network(
-                  'https://images.unsplash.com/photo-1438761681033-6461ffad8d80?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxzZWFyY2h8MTZ8fHByb2ZpbGV8ZW58MHx8MHx8&auto=format&fit=crop&w=900&q=60',
-                  width: 36,
-                  height: 36,
-                  fit: BoxFit.cover,
-                ),
-              ),
-              Expanded(
-                child: Padding(
-                  padding: EdgeInsetsDirectional.fromSTEB(12, 0, 0, 0),
-                  child: Column(
-                    mainAxisSize: MainAxisSize.max,
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      Text(
-                        widget.memberInfo['member_name'],
-                        style: TextStyle(
-                          fontFamily: 'Outfit',
-                          color: Color(0xFF1D2429),
-                          fontSize: 14,
-                          fontWeight: FontWeight.normal,
-                        ),
-                      ),
-                      Row(
-                        mainAxisSize: MainAxisSize.max,
-                        children: [
-                          Text(
-                            widget.memberInfo['member_phone'],
-                            style: TextStyle(
-                              fontFamily: 'Outfit',
-                              color: Color(0xFF57636C),
-                              fontSize: 14,
-                              fontWeight: FontWeight.normal,
-                            ),
-                          ),
-                        ],
-                      ),
-                    ],
-                  ),
-                ),
-              ),
-            ],
-          ),
-        ),
-      ),
-    );
-  }
-}
-
-class UserIconWithName extends StatelessWidget {
-  const UserIconWithName({
-    Key? key,
-  }) : super(key: key);
-
-  @override
-  Widget build(BuildContext context) {
-    return Padding(
-      padding: EdgeInsetsDirectional.fromSTEB(16, 12, 12, 12),
-      child: Container(
-        width: 160,
-        height: 100,
-        decoration: BoxDecoration(
-          color: Colors.white,
-          boxShadow: [
-            BoxShadow(
-              blurRadius: 4,
-              color: Color(0x34090F13),
-              offset: Offset(0, 2),
-            )
-          ],
-          borderRadius: BorderRadius.circular(8),
-        ),
-        child: Padding(
-          padding: EdgeInsetsDirectional.fromSTEB(12, 12, 12, 12),
-          child: Column(
-            mainAxisSize: MainAxisSize.max,
-            mainAxisAlignment: MainAxisAlignment.center,
-            children: [
-              ClipRRect(
-                borderRadius: BorderRadius.circular(50),
-                child: Image.network(
-                  'https://images.unsplash.com/photo-1531427186611-ecfd6d936c79?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxzZWFyY2h8MXx8cHJvZmlsZXxlbnwwfHwwfHw%3D&auto=format&fit=crop&w=900&q=60',
-                  width: 60,
-                  height: 60,
-                  fit: BoxFit.cover,
-                ),
-              ),
-              Padding(
-                padding: EdgeInsetsDirectional.fromSTEB(0, 8, 0, 0),
-                child: Text(
-                  'UserName',
-                  style: TextStyle(
-                    fontFamily: 'Outfit',
-                    color: Color(0xFF1D2429),
-                    fontSize: 14,
-                    fontWeight: FontWeight.normal,
-                  ),
-                ),
-              ),
-              Padding(
-                padding: EdgeInsetsDirectional.fromSTEB(0, 4, 0, 0),
-                child: Text(
-                  'Remove',
-                  style: TextStyle(
-                    fontFamily: 'Outfit',
-                    color: Color(0xFF57636C),
-                    fontSize: 14,
-                    fontWeight: FontWeight.normal,
-                  ),
-                ),
-              ),
-            ],
-          ),
-        ),
-      ),
-    );
-  }
-}

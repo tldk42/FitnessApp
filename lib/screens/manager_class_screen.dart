@@ -1,6 +1,5 @@
-import 'dart:convert';
-
 import 'package:fitness_app/components/main_app_screen/modal_add_new_class.dart';
+import 'package:fitness_app/screens/mamager_class_info.dart';
 import 'package:fitness_app/utilities/make_api_request.dart';
 import 'package:flutter/material.dart';
 
@@ -18,11 +17,6 @@ class _ManagerClassScreenState extends State<ManagerClassScreen> {
   final _formKey = GlobalKey<FormState>();
 
   List<Map<String, dynamic>>? classes;
-
-  String _className = '';
-  String _capacity = '';
-  DateTime _startDate = DateTime.now();
-  DateTime _endDate = DateTime.now();
 
   Future _getManagerData() async {
     final response = await sendData(
@@ -56,12 +50,45 @@ class _ManagerClassScreenState extends State<ManagerClassScreen> {
         child: ListView.builder(
           itemCount: classes?.length ?? 0,
           itemBuilder: (BuildContext context, int index) {
-            return ListTile(
-              title: Text(classes![index]['class_name']),
-              subtitle: Text(classes![index]['capacity']),
-              onTap: () {
-                // 선택한 클래스 정보 보기
+            return Dismissible(
+              key: Key(classes![index]['class_name']),
+              onDismissed: (direction) {
+                setState(() {
+                  classes!.removeAt(index);
+                  print('hello');
+                });
               },
+              background: Container(
+                color: Colors.red,
+                alignment: Alignment.centerRight, // 아이콘 및 텍스트를 왼쪽 정렬
+                child: Padding(
+                  padding: const EdgeInsets.all(10), // 서브 위젯의 간격 설정
+                  child: Row(
+                    children: [
+                      Icon(Icons.delete, color: Colors.white),
+                      // 삭제 아이콘 추가
+                      Text('Delete', style: TextStyle(color: Colors.white)),
+                      // 삭제 텍스트 추가
+                    ],
+                  ),
+                ),
+              ),
+              child: ListTile(
+                title: Text(classes![index]['class_name']),
+                subtitle: Text(classes![index]['capacity']),
+                onTap: () async {
+                  final result = await Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                          builder: (context) => ClassInfo(
+                                classData: classes![index],
+                                managerName: widget.managerData['manager_name'],
+                              )));
+                  if (result != null && result == "update") {
+                    await _getManagerData();
+                  }
+                },
+              ),
             );
           },
         ),
@@ -80,130 +107,24 @@ class _ManagerClassScreenState extends State<ManagerClassScreen> {
                   onSave: (classItem) async {
                     var response =
                         sendData(urlPath: 'manager/insert_class.php', data: {
-                      'class_id': '${_className}_${DateTime.now()}',
+                      'class_id':
+                          '${classItem.class_name}_${DateTime.now().month}_${DateTime.now().day}',
                       'class_name': classItem.class_name,
                       'manager_id': widget.managerData['manager_id'],
-                      'capacity': classItem.capacity,
-                      'start_date': classItem.start_date,
-                      'end_date': classItem.end_date
+                      'capacity': classItem.capacity.toString(),
+                      'start_date': classItem.start_date.toString(),
+                      'end_date': classItem.end_date.toString(),
+                      'start_time':
+                          '${classItem.start_time.hour}:${classItem.start_time.minute}',
+                      'end_time':
+                          '${classItem.end_time.hour}:${classItem.end_time.minute}',
+                      'active_days': classItem.active_days
                     });
-                    Navigator.of(context).pop();
+                    print(response);
+                    print(classItem);
+                    _getManagerData();
                   },
                 );
-
-                //   BottomSheet(
-                //
-                //   onClosing: () {},
-                //   builder: (BuildContext context) {
-                //     return SingleChildScrollView(
-                //       child: Container(
-                //         padding: EdgeInsets.only(
-                //             bottom: MediaQuery.of(context).viewInsets.bottom),
-                //         child: Form(
-                //           key: _formKey,
-                //           child: Column(
-                //             children: [
-                //               TextFormField(
-                //                 decoration:
-                //                     InputDecoration(labelText: 'Class Name'),
-                //                 onChanged: (value) => _className = value,
-                //               ),
-                //               TextFormField(
-                //                 decoration:
-                //                     InputDecoration(labelText: 'Capacity'),
-                //                 onChanged: (value) => _capacity = value,
-                //               ),
-                //               Row(
-                //                 children: [
-                //                   Text('Start Date\t\t\t\t\t'),
-                //                   ElevatedButton(
-                //                       onPressed: () async {
-                //                         final selectedDate =
-                //                             await showDatePicker(
-                //                           context: context,
-                //                           initialDate: _startDate,
-                //                           firstDate: DateTime(2023),
-                //                           lastDate: DateTime(2024),
-                //                         );
-                //                         if (selectedDate != null) {
-                //                           print(_startDate);
-                //                           setState(() {
-                //                             _startDate = selectedDate;
-                //                           });
-                //                         }
-                //                       },
-                //                       child: Text(
-                //                           "${_startDate.year.toString()}-${_startDate.month.toString().padLeft(2, '0')}-${_startDate.day.toString().padLeft(2, '0')}")),
-                //                 ],
-                //               ),
-                //               Row(
-                //                 children: [
-                //                   Text('End Date\t\t\t\t\t\t\t\t'),
-                //                   ElevatedButton(
-                //                       onPressed: () async {
-                //                         final selectedDate =
-                //                             await showDatePicker(
-                //                           context: context,
-                //                           initialDate: _endDate,
-                //                           firstDate: DateTime(2023),
-                //                           lastDate: DateTime(2024),
-                //                         );
-                //                         if (selectedDate != null) {
-                //                           print(_endDate);
-                //                           setState(() {
-                //                             _endDate = selectedDate;
-                //                           });
-                //                         }
-                //                       },
-                //                       child: DateText(endDate: _endDate)),
-                //                 ],
-                //               ),
-                //               Row(
-                //                 mainAxisAlignment: MainAxisAlignment.center,
-                //                 children: [
-                //                   ElevatedButton(
-                //                     child: Text('취소'),
-                //                     onPressed: () async {
-                //                       Navigator.of(context).pop();
-                //                     },
-                //                   ),
-                //                   ElevatedButton(
-                //                     style: ButtonStyle(
-                //                       backgroundColor:
-                //                           MaterialStateProperty.all<Color>(
-                //                               Colors.black),
-                //                       foregroundColor:
-                //                           MaterialStateProperty.all<Color>(
-                //                               Colors.white),
-                //                     ),
-                //                     child: Text(
-                //                       '추가',
-                //                     ),
-                //                     onPressed: () async {
-                //                       // TODO: 클래스 추가 기능 구현
-                //                       sendData(
-                //                           urlPath: 'manager/insert_class.php',
-                //                           data: {
-                //                             'class_id': '${_className}_${DateTime.now()}',
-                //                             'class_name': _className,
-                //                             'manager_id': widget
-                //                                 .managerData['manager_id'],
-                //                             'capacity': _capacity,
-                //                             'start_date': "2023-05-03 12:00:00",
-                //                             'end_date': "2023-05-03 13:00:00"
-                //                           });
-                //                       Navigator.of(context).pop();
-                //                     },
-                //                   ),
-                //                 ],
-                //               )
-                //             ],
-                //           ),
-                //         ),
-                //       ),
-                //     );
-                //   },
-                // );
               });
         },
       ),

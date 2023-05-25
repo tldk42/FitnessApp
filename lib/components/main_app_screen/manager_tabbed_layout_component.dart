@@ -10,7 +10,8 @@ import '../../db/login_info_storage.dart';
 class ManagerTabbedLayoutComponent extends StatefulWidget {
   final Map<String, dynamic> managerData;
 
-  const ManagerTabbedLayoutComponent({Key? key, required this.managerData}) : super(key: key);
+  const ManagerTabbedLayoutComponent({Key? key, required this.managerData})
+      : super(key: key);
 
   @override
   State<ManagerTabbedLayoutComponent> createState() =>
@@ -23,7 +24,6 @@ class _ManagerTabbedLayoutState extends State<ManagerTabbedLayoutComponent> {
     Tab(text: 'Classes'),
   ];
 
-
   Future<bool> _deleteLoggedInUserData() async {
     List<bool> deletionStatus = await Future.wait(
         [LoginInfoStorage().deleteFile(), UserDataStorage().deleteFile()]);
@@ -31,8 +31,7 @@ class _ManagerTabbedLayoutState extends State<ManagerTabbedLayoutComponent> {
   }
 
   ButtonStyle buttonStyle = ElevatedButton.styleFrom(
-    primary: Colors.transparent,
-    shadowColor: Colors.transparent,
+    backgroundColor: Colors.transparent,
     shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(10)),
   );
 
@@ -40,7 +39,7 @@ class _ManagerTabbedLayoutState extends State<ManagerTabbedLayoutComponent> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text("Manager Mode"),
+        title: Text("Manager Mode", style: TextStyle(color: Color(0xfff975c4))),
         backgroundColor: Color(0xFF393239),
         actions: [
           ElevatedButton(
@@ -49,10 +48,10 @@ class _ManagerTabbedLayoutState extends State<ManagerTabbedLayoutComponent> {
                 if (logOutStatus) {
                   Navigator.of(context).pushAndRemoveUntil(
                       MaterialPageRoute(builder: (context) => LoginScreen()),
-                          (route) => false);
+                      (route) => false);
                 }
               },
-              child: Text('Logout'),
+              child: Text('Logout', style: TextStyle(color: Colors.white70)),
               style: buttonStyle)
         ],
       ),
@@ -61,7 +60,9 @@ class _ManagerTabbedLayoutState extends State<ManagerTabbedLayoutComponent> {
         child: Scaffold(
           body: TabBarView(
             children: [
-              ManagerClassUserScreen(managerData: widget.managerData,),
+              ManagerClassUserScreen(
+                managerData: widget.managerData,
+              ),
               ManagerClassScreen(managerData: widget.managerData),
               // ManagerClassUserScreen(),
             ],

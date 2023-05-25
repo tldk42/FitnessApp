@@ -33,9 +33,7 @@ Future sendData(
   try {
     response = await http.post(Uri.parse(backendServerHost), body: data);
     print(response.body);
-    // if (response.statusCode == 200) {
-    //   var resSignup = jsonDecode(response.body);
-    // }
+
   } on SocketException {
     return {'internetConnectionError': 'no internet connection'};
   }
