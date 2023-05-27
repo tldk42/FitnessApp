@@ -356,7 +356,7 @@ class _ClassInfoState extends State<ClassInfo> with TickerProviderStateMixin {
                                   shrinkWrap: true,
                                   scrollDirection: Axis.vertical,
                                   itemBuilder: (BuildContext context, int index) {
-                                    return UserIconWithInfo(memberInfo: memberList![index]);
+                                    return UserIconWithInfo(memberInfo: memberList![index], update: () => _getMemberList(),);
                                   },
                                   // children: [
                                   //   Padding(

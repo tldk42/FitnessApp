@@ -27,12 +27,10 @@ Future sendData(
     {required String urlPath,
     Map<String, dynamic>? data,
     String? authKey}) async {
-  print(data);
   String backendServerHost = "${ApiConstants.baseUrl}$urlPath";
   http.Response response;
   try {
     response = await http.post(Uri.parse(backendServerHost), body: data);
-    print(response.body);
 
   } on SocketException {
     return {'internetConnectionError': 'no internet connection'};

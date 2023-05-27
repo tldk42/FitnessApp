@@ -69,7 +69,7 @@ class _ActivityScreenState extends State<ActivityScreen> {
 
     if (response != null) {
       setState(() {
-        print('UPDATE');
+        print('UPDATE Activities Page');
         final List<dynamic> list = response;
         classes = list.map((e) => e as Map<String, dynamic>).toList();
       });
@@ -151,7 +151,6 @@ class _ActivityScreenState extends State<ActivityScreen> {
                   itemBuilder: (BuildContext context, int index) {
                     return ActivityList(classData: classes![index]);
                   },
-
                 ))
               ],
             ),
@@ -178,20 +177,57 @@ class _ActivityListState extends State<ActivityList> {
   String startDay = '';
   bool? enrolled;
   late Future<String> _enrollmentStatusFuture;
+  late String userId;
 
   Future<String> _isEnrolled() async {
-    final response =
-        await sendData(urlPath: 'user/check_enroll.php', data: {'class_id': widget.classData['class_id'], 'member_id': Provider.of<UserLoginStateProvider>(context, listen: false).user!['member_id']});
+    final response = await sendData(urlPath: 'user/check_enroll.php', data: {
+      'class_id': widget.classData['class_id'],
+      'member_id': userId
+    });
     setState(() {
       if (response != null) {
         if (response['success']) {
           enrolled = true;
+        } else {
+          enrolled = false;
         }
-      }else{
+      } else {
         enrolled = false;
       }
     });
     return 'Loaded';
+  }
+
+  Future<void> _showConfirmationDialog() async {
+    return showDialog<void>(
+      context: context,
+      barrierDismissible: false, // 사용자가 다른 영역을 누르면 창이 닫히지 않습니다.
+      builder: (BuildContext context) {
+        return AlertDialog(
+          title: Text(enrolled! ? 'Cancel' : 'Register'),
+          content: Text(enrolled!
+              ? 'Cancel this Class?'
+              : 'Register this Class?'),
+          actions: <Widget>[
+            TextButton(
+              child: const Text('No'),
+              onPressed: () {
+                Navigator.of(context).pop();
+              },
+            ),
+            TextButton(
+              child: const Text('Yes'),
+              onPressed: () {
+                setState(() {
+                  enrolled = !enrolled!;
+                });
+                Navigator.of(context).pop();
+              },
+            ),
+          ],
+        );
+      },
+    );
   }
 
   @override
@@ -208,6 +244,8 @@ class _ActivityListState extends State<ActivityList> {
           Provider.of<UserLoginStateProvider>(context, listen: false).user;
       var tempClassData = widget.classData;
       mergedMap = Map.from(tempUserData!)..addAll(tempClassData);
+      userId = Provider.of<UserLoginStateProvider>(context, listen: false)
+          .user!['member_id'];
       _enrollmentStatusFuture = _isEnrolled();
     });
   }
@@ -219,337 +257,200 @@ class _ActivityListState extends State<ActivityList> {
       child: FutureBuilder(
         future: _enrollmentStatusFuture,
         builder: (BuildContext context, AsyncSnapshot<dynamic> snapshot) {
-          if (snapshot.connectionState == ConnectionState.waiting){
-            return CircularProgressIndicator();
-          } else if (snapshot.hasError){
+          if (snapshot.connectionState == ConnectionState.waiting) {
+            return const CircularProgressIndicator();
+          } else if (snapshot.hasError) {
             return Text('Error: ${snapshot.error}');
-          }else{
-            return  Container(
-              width: double.infinity,
-              height: 184,
-              decoration: BoxDecoration(
-                color: Colors.white,
-                image: DecorationImage(
-                    fit: BoxFit.fitWidth, image: RandomImageGenerator().image
-                  // Image.network(
-                  //   'https://images.unsplash.com/photo-1616803689943-5601631c7fec?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxzZWFyY2h8NTR8fHdvcmtvdXR8ZW58MHx8MHx8&auto=format&fit=crop&w=800&q=60',
-                  // ).image,
-                ),
-                boxShadow: const [
-                  BoxShadow(
-                    blurRadius: 3,
-                    color: Color(0x33000000),
-                    offset: Offset(0, 2),
-                  )
-                ],
-                borderRadius: BorderRadius.circular(8),
-              ),
-              child: Container(
-                width: 100,
-                height: 100,
+          } else {
+            if (enrolled != null) {
+              return Container(
+                width: double.infinity,
+                height: 184,
                 decoration: BoxDecoration(
-                  color: const Color(0x65090F13),
+                  color: Colors.white,
+                  image: DecorationImage(
+                      fit: BoxFit.fitWidth, image: RandomImageGenerator().image
+                      ),
+                  boxShadow: const [
+                    BoxShadow(
+                      blurRadius: 3,
+                      color: Color(0x33000000),
+                      offset: Offset(0, 2),
+                    )
+                  ],
                   borderRadius: BorderRadius.circular(8),
                 ),
-                child: Padding(
-                  padding: const EdgeInsetsDirectional.fromSTEB(0, 0, 0, 2),
-                  child: Column(
-                    mainAxisSize: MainAxisSize.max,
-                    children: [
-                      Padding(
-                        padding: const EdgeInsetsDirectional.fromSTEB(16, 16, 16, 0),
-                        child: Row(
-                          mainAxisSize: MainAxisSize.max,
-                          children: [
-                            Expanded(
-                              child: Text(
-                                widget.classData['class_name'],
-                                style: TextStyle(
-                                  fontFamily: 'Lexend Deca',
-                                  color: Colors.white,
-                                  fontSize: 24,
-                                  fontWeight: FontWeight.bold,
-                                ),
-                              ),
-                            ),
-                            Icon(
-                              Icons.chevron_right_rounded,
-                              color: Colors.white,
-                              size: 24,
-                            ),
-                          ],
-                        ),
-                      ),
-                      Padding(
-                        padding: const EdgeInsetsDirectional.fromSTEB(16, 4, 16, 0),
-                        child: Row(
-                          mainAxisSize: MainAxisSize.max,
-                          children: const [
-                            Expanded(
-                              child: Text('30m | High Intensity | Indoor/Outdoor',
-                                  style: TextStyle(
-                                    fontFamily: 'Lexend Deca',
-                                    color: Color(0xFF39D2C0),
-                                    fontSize: 14,
-                                    fontWeight: FontWeight.normal,
-                                  )),
-                            ),
-                          ],
-                        ),
-                      ),
-                      Expanded(
-                        child: Padding(
-                          padding:
-                          const EdgeInsetsDirectional.fromSTEB(16, 4, 16, 16),
+                child: Container(
+                  width: 100,
+                  height: 100,
+                  decoration: BoxDecoration(
+                    color: const Color(0x65090F13),
+                    borderRadius: BorderRadius.circular(8),
+                  ),
+                  child: Padding(
+                    padding: const EdgeInsetsDirectional.fromSTEB(0, 0, 0, 2),
+                    child: Column(
+                      mainAxisSize: MainAxisSize.max,
+                      children: [
+                        Padding(
+                          padding: const EdgeInsetsDirectional.fromSTEB(
+                              16, 16, 16, 0),
                           child: Row(
                             mainAxisSize: MainAxisSize.max,
-                            crossAxisAlignment: CrossAxisAlignment.end,
                             children: [
-                              ElevatedButton.icon(
-                                style: ElevatedButton.styleFrom(
-                                  backgroundColor: !enrolled!
-                                      ? Color(0xFFFF94D4)
-                                      : Color(0xFFC03239),
-                                ),
-                                onPressed: !enrolled!
-                                    ? () async {
-                                  final response = await sendData(
-                                      urlPath: 'user/enroll_class.php',
-                                      data: {'class_id': widget.classData['class_id'], 'member_id': Provider.of<UserLoginStateProvider>(context, listen: false).user!['member_id']});
-                                  if (response != null) {
-                                    if (response['success']) {
-                                      print('enrolled');
-                                      setState(() {
-                                        enrolled = true;
-                                      });
-                                    }
-                                  }
-                                }
-                                    : () async {
-                                  final response = await sendData(
-                                      urlPath: 'user/cancel_enroll.php',
-                                      data: {'class_id': widget.classData['class_id'], 'member_id': Provider.of<UserLoginStateProvider>(context, listen: false).user!['member_id']});
-                                  if (response != null) {
-                                    if (response['success']) {
-                                      print('canceled');
-                                      setState(() {
-                                        enrolled = false;
-                                      });
-                                    }
-                                  }
-                                },
-                                icon: Icon(
-                                    !enrolled!
-                                        ? Icons.add_rounded
-                                        : Icons.cancel_rounded,
-                                    color: Colors.white,
-                                    size: 15),
-                                label: Text(!enrolled! ? 'Reserve' : 'Cancel'),
-                              ),
                               Expanded(
-                                child: Column(
-                                  mainAxisSize: MainAxisSize.max,
-                                  mainAxisAlignment: MainAxisAlignment.end,
-                                  crossAxisAlignment: CrossAxisAlignment.end,
-                                  children: [
-                                    Padding(
-                                      padding:
-                                      EdgeInsetsDirectional.fromSTEB(0, 0, 0, 4),
-                                      child: Text(
-                                          startDate.hour.toString() +
-                                              ':' +
-                                              startDate.minute.toString(),
-                                          style: TextStyle(
-                                            fontFamily: 'Lexend Deca',
-                                            color: Colors.white,
-                                            fontSize: 20,
-                                            fontWeight: FontWeight.bold,
-                                          )),
-                                    ),
-                                    Text(startDay,
-                                        textAlign: TextAlign.end,
-                                        style: TextStyle(
-                                          fontFamily: 'Lexend Deca',
-                                          color: Color(0xB4FFFFFF),
-                                          fontSize: 14,
-                                          fontWeight: FontWeight.normal,
-                                        )),
-                                  ],
+                                child: Text(
+                                  widget.classData['class_name'],
+                                  style: const TextStyle(
+                                    fontFamily: 'Lexend Deca',
+                                    color: Colors.white,
+                                    fontSize: 24,
+                                    fontWeight: FontWeight.bold,
+                                  ),
                                 ),
+                              ),
+                              const Icon(
+                                Icons.chevron_right_rounded,
+                                color: Colors.white,
+                                size: 24,
                               ),
                             ],
                           ),
                         ),
-                      ),
-                    ],
+                        Padding(
+                          padding: const EdgeInsetsDirectional.fromSTEB(
+                              16, 4, 16, 0),
+                          child: Row(
+                            mainAxisSize: MainAxisSize.max,
+                            children: const [
+                              Expanded(
+                                child: Text(
+                                    '30m | High Intensity | Indoor/Outdoor',
+                                    style: TextStyle(
+                                      fontFamily: 'Lexend Deca',
+                                      color: Color(0xFF39D2C0),
+                                      fontSize: 14,
+                                      fontWeight: FontWeight.normal,
+                                    )),
+                              ),
+                            ],
+                          ),
+                        ),
+                        Expanded(
+                          child: Padding(
+                            padding: const EdgeInsetsDirectional.fromSTEB(
+                                16, 4, 16, 16),
+                            child: Row(
+                              mainAxisSize: MainAxisSize.max,
+                              crossAxisAlignment: CrossAxisAlignment.end,
+                              mainAxisAlignment: MainAxisAlignment.center,
+                              children: [
+                                ElevatedButton.icon(
+                                  style: ElevatedButton.styleFrom(
+                                    backgroundColor: !enrolled!
+                                        ? const Color(0xFFFF94D4)
+                                        : const Color(0xFFC03239),
+                                  ),
+                                  onPressed:
+                                  !enrolled!
+                                      ? () async {
+                                          final response = await sendData(
+                                              urlPath: 'user/enroll_class.php',
+                                              data: {
+                                                'class_id': widget
+                                                    .classData['class_id'],
+                                                'member_id': userId
+                                              });
+                                          if (response != null) {
+                                            print(response);
+                                            if (response['success']) {
+                                              print('enrolled');
+                                              setState(() {
+                                                enrolled = true;
+                                              });
+                                            }
+                                          }
+                                        }
+                                      : () async {
+                                          final response = await sendData(
+                                              urlPath: 'user/cancel_enroll.php',
+                                              data: {
+                                                'class_id': widget
+                                                    .classData['class_id'],
+                                                'member_id': userId
+                                              });
+                                          if (response != null) {
+                                            if (response['success']) {
+                                              print('canceled');
+                                              setState(() {
+                                                enrolled = false;
+                                              });
+                                            }
+                                          }
+                                        },
+                                  icon: Icon(
+                                      !enrolled!
+                                          ? Icons.add_rounded
+                                          : Icons.cancel_rounded,
+                                      color: Colors.white,
+                                      size: 15),
+                                  label:
+                                      Text(!enrolled! ? 'Reserve' : 'Cancel'),
+                                ),
+                                Padding(
+                                  padding: const EdgeInsets.symmetric(horizontal: 50),
+                                  child: Text(
+                                    '\$${widget.classData['credit']}',
+                                    style: const TextStyle(
+                                      color: Colors.yellowAccent,
+                                      fontWeight: FontWeight.bold,
+                                      fontSize: 30
+                                    ),
+                                  ),
+                                ),
+                                Expanded(
+                                  child: Column(
+                                    mainAxisSize: MainAxisSize.max,
+                                    mainAxisAlignment: MainAxisAlignment.end,
+                                    crossAxisAlignment: CrossAxisAlignment.end,
+                                    children: [
+                                      Padding(
+                                        padding: const EdgeInsetsDirectional.fromSTEB(
+                                            0, 0, 0, 4),
+                                        child: Text(
+                                            '${widget.classData['start_time'].substring(0,5)} ~ ${widget.classData['end_time'].substring(0,5)}',
+                                            style: const TextStyle(
+                                              fontFamily: 'Lexend Deca',
+                                              color: Colors.white,
+                                              fontSize: 22,
+                                              fontWeight: FontWeight.w900,
+                                            )),
+                                      ),
+                                      Text(startDay,
+                                          textAlign: TextAlign.end,
+                                          style: const TextStyle(
+                                            fontFamily: 'Lexend Deca',
+                                            color: const Color(0xFFFF94D4),
+                                            fontSize: 14,
+                                            fontWeight: FontWeight.normal,
+                                          )),
+                                    ],
+                                  ),
+                                ),
+                              ],
+                            ),
+                          ),
+                        ),
+                      ],
+                    ),
                   ),
                 ),
-              ),
-            );
+              );
+            } else {
+              return const CircularProgressIndicator();
+            }
           }
         },
-        // child: Container(
-        //   width: double.infinity,
-        //   height: 184,
-        //   decoration: BoxDecoration(
-        //     color: Colors.white,
-        //     image: DecorationImage(
-        //         fit: BoxFit.fitWidth, image: RandomImageGenerator().image
-        //         // Image.network(
-        //         //   'https://images.unsplash.com/photo-1616803689943-5601631c7fec?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxzZWFyY2h8NTR8fHdvcmtvdXR8ZW58MHx8MHx8&auto=format&fit=crop&w=800&q=60',
-        //         // ).image,
-        //         ),
-        //     boxShadow: const [
-        //       BoxShadow(
-        //         blurRadius: 3,
-        //         color: Color(0x33000000),
-        //         offset: Offset(0, 2),
-        //       )
-        //     ],
-        //     borderRadius: BorderRadius.circular(8),
-        //   ),
-        //   child: Container(
-        //     width: 100,
-        //     height: 100,
-        //     decoration: BoxDecoration(
-        //       color: const Color(0x65090F13),
-        //       borderRadius: BorderRadius.circular(8),
-        //     ),
-        //     child: Padding(
-        //       padding: const EdgeInsetsDirectional.fromSTEB(0, 0, 0, 2),
-        //       child: Column(
-        //         mainAxisSize: MainAxisSize.max,
-        //         children: [
-        //           Padding(
-        //             padding: const EdgeInsetsDirectional.fromSTEB(16, 16, 16, 0),
-        //             child: Row(
-        //               mainAxisSize: MainAxisSize.max,
-        //               children: [
-        //                 Expanded(
-        //                   child: Text(
-        //                     widget.classData['class_name'],
-        //                     style: TextStyle(
-        //                       fontFamily: 'Lexend Deca',
-        //                       color: Colors.white,
-        //                       fontSize: 24,
-        //                       fontWeight: FontWeight.bold,
-        //                     ),
-        //                   ),
-        //                 ),
-        //                 Icon(
-        //                   Icons.chevron_right_rounded,
-        //                   color: Colors.white,
-        //                   size: 24,
-        //                 ),
-        //               ],
-        //             ),
-        //           ),
-        //           Padding(
-        //             padding: const EdgeInsetsDirectional.fromSTEB(16, 4, 16, 0),
-        //             child: Row(
-        //               mainAxisSize: MainAxisSize.max,
-        //               children: const [
-        //                 Expanded(
-        //                   child: Text('30m | High Intensity | Indoor/Outdoor',
-        //                       style: TextStyle(
-        //                         fontFamily: 'Lexend Deca',
-        //                         color: Color(0xFF39D2C0),
-        //                         fontSize: 14,
-        //                         fontWeight: FontWeight.normal,
-        //                       )),
-        //                 ),
-        //               ],
-        //             ),
-        //           ),
-        //           Expanded(
-        //             child: Padding(
-        //               padding:
-        //                   const EdgeInsetsDirectional.fromSTEB(16, 4, 16, 16),
-        //               child: Row(
-        //                 mainAxisSize: MainAxisSize.max,
-        //                 crossAxisAlignment: CrossAxisAlignment.end,
-        //                 children: [
-        //                   ElevatedButton.icon(
-        //                     style: ElevatedButton.styleFrom(
-        //                       backgroundColor: !enrolled!
-        //                           ? Color(0xFFFF94D4)
-        //                           : Color(0xFFC03239),
-        //                     ),
-        //                     onPressed: !enrolled!
-        //                         ? () async {
-        //                             final response = await sendData(
-        //                                 urlPath: 'user/enroll_class.php',
-        //                                 data: {'class_id': widget.classData['class_id'], 'member_id': Provider.of<UserLoginStateProvider>(context, listen: false).user!['member_id']});
-        //                             if (response != null) {
-        //                               if (response['success']) {
-        //                                 print('enrolled');
-        //                                 setState(() {
-        //                                   enrolled = true;
-        //                                 });
-        //                               }
-        //                             }
-        //                           }
-        //                         : () async {
-        //                             final response = await sendData(
-        //                                 urlPath: 'user/cancel_enroll.php',
-        //                                 data: {'class_id': widget.classData['class_id'], 'member_id': Provider.of<UserLoginStateProvider>(context, listen: false).user!['member_id']});
-        //                             if (response != null) {
-        //                               if (response['success']) {
-        //                                 print('canceled');
-        //                                 setState(() {
-        //                                   enrolled = false;
-        //                                 });
-        //                               }
-        //                             }
-        //                           },
-        //                     icon: Icon(
-        //                         !enrolled!
-        //                             ? Icons.add_rounded
-        //                             : Icons.cancel_rounded,
-        //                         color: Colors.white,
-        //                         size: 15),
-        //                     label: Text(!enrolled! ? 'Reserve' : 'Cancel'),
-        //                   ),
-        //                   Expanded(
-        //                     child: Column(
-        //                       mainAxisSize: MainAxisSize.max,
-        //                       mainAxisAlignment: MainAxisAlignment.end,
-        //                       crossAxisAlignment: CrossAxisAlignment.end,
-        //                       children: [
-        //                         Padding(
-        //                           padding:
-        //                               EdgeInsetsDirectional.fromSTEB(0, 0, 0, 4),
-        //                           child: Text(
-        //                               startDate.hour.toString() +
-        //                                   ':' +
-        //                                   startDate.minute.toString(),
-        //                               style: TextStyle(
-        //                                 fontFamily: 'Lexend Deca',
-        //                                 color: Colors.white,
-        //                                 fontSize: 20,
-        //                                 fontWeight: FontWeight.bold,
-        //                               )),
-        //                         ),
-        //                         Text(startDay,
-        //                             textAlign: TextAlign.end,
-        //                             style: TextStyle(
-        //                               fontFamily: 'Lexend Deca',
-        //                               color: Color(0xB4FFFFFF),
-        //                               fontSize: 14,
-        //                               fontWeight: FontWeight.normal,
-        //                             )),
-        //                       ],
-        //                     ),
-        //                   ),
-        //                 ],
-        //               ),
-        //             ),
-        //           ),
-        //         ],
-        //       ),
-        //     ),
-        //   ),
-        // ),
       ),
     );
   }

@@ -1,11 +1,14 @@
-import 'package:fitness_app/providers/user_login_state_provider.dart';
+import 'package:fitness_app/utilities/make_api_request.dart';
 import 'package:flutter/material.dart';
-import 'package:provider/provider.dart';
+import 'package:flutter/services.dart';
 
 class DetailMemberInfoWidget extends StatefulWidget {
   Map<String, dynamic> userInfo;
+  final Function update;
 
-  DetailMemberInfoWidget({Key? key, required this.userInfo}) : super(key: key);
+  DetailMemberInfoWidget(
+      {Key? key, required this.userInfo, required this.update})
+      : super(key: key);
 
   @override
   _DetailMemberInfoWidgetState createState() => _DetailMemberInfoWidgetState();
@@ -13,10 +16,17 @@ class DetailMemberInfoWidget extends StatefulWidget {
 
 class _DetailMemberInfoWidgetState extends State<DetailMemberInfoWidget> {
   final scaffoldKey = GlobalKey<ScaffoldState>();
+  bool? transactionComplete;
+  String? reservedCredit;
+  int? credit;
 
   @override
   void initState() {
     super.initState();
+    transactionComplete = widget.userInfo['transaction_state'] == '0';
+    reservedCredit = widget.userInfo['reserved_credit'];
+    credit = int.tryParse(
+        '${reservedCredit?.substring(reservedCredit!.lastIndexOf('\$') + 1, reservedCredit!.length)}');
   }
 
   @override
@@ -26,6 +36,24 @@ class _DetailMemberInfoWidgetState extends State<DetailMemberInfoWidget> {
 
   @override
   Widget build(BuildContext context) {
+    BoxDecoration customBoxDeco = const BoxDecoration(
+      color: Colors.white,
+      boxShadow: [
+        BoxShadow(
+          blurRadius: 1,
+          color: Color(0xFF393239),
+          offset: Offset(0, 2),
+        )
+      ],
+    );
+
+    TextStyle customTextStyle = const TextStyle(
+      fontFamily: 'Plus Jakarta Sans',
+      color: Color(0xFF14181B),
+      fontSize: 16,
+      fontWeight: FontWeight.normal,
+    );
+
     return Scaffold(
       key: scaffoldKey,
       backgroundColor: Colors.white,
@@ -33,10 +61,10 @@ class _DetailMemberInfoWidgetState extends State<DetailMemberInfoWidget> {
         mainAxisSize: MainAxisSize.max,
         children: [
           Padding(
-            padding: EdgeInsetsDirectional.fromSTEB(0, 0, 0, 1),
+            padding: const EdgeInsetsDirectional.fromSTEB(0, 0, 0, 1),
             child: Container(
               width: double.infinity,
-              decoration: BoxDecoration(
+              decoration: const BoxDecoration(
                 color: Colors.white,
                 boxShadow: [
                   BoxShadow(
@@ -50,16 +78,18 @@ class _DetailMemberInfoWidgetState extends State<DetailMemberInfoWidget> {
                 mainAxisSize: MainAxisSize.max,
                 children: [
                   Padding(
-                    padding: EdgeInsetsDirectional.fromSTEB(16, 32, 16, 0),
+                    padding:
+                        const EdgeInsetsDirectional.fromSTEB(16, 32, 16, 0),
                     child: Row(
                       mainAxisSize: MainAxisSize.max,
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: [
                         Padding(
-                          padding: EdgeInsetsDirectional.fromSTEB(2, 0, 0, 0),
+                          padding:
+                              const EdgeInsetsDirectional.fromSTEB(2, 0, 0, 0),
                           child: Text(
-                            widget.userInfo!['member_name'],
-                            style: TextStyle(
+                            widget.userInfo['member_name'],
+                            style: const TextStyle(
                               fontFamily: 'Outfit',
                               color: Color(0xFFFF94D4),
                               fontSize: 32,
@@ -79,7 +109,7 @@ class _DetailMemberInfoWidgetState extends State<DetailMemberInfoWidget> {
                             width: 40,
                             height: 40,
                             clipBehavior: Clip.antiAlias,
-                            decoration: BoxDecoration(
+                            decoration: const BoxDecoration(
                               shape: BoxShape.circle,
                             ),
                             child: Image.asset(
@@ -101,23 +131,13 @@ class _DetailMemberInfoWidgetState extends State<DetailMemberInfoWidget> {
               child: Column(
                 children: [
                   Align(
-                    alignment: Alignment(-1, 0),
+                    alignment: const Alignment(-1, 0),
                     child: TabBar(
                       isScrollable: true,
-                      labelStyle: TextStyle(
-                        fontFamily: 'Plus Jakarta Sans',
-                        color: Colors.white,
-                        fontSize: 16,
-                        fontWeight: FontWeight.w500,
-                      ),
-                      unselectedLabelStyle: TextStyle(
-                        fontFamily: 'Plus Jakarta Sans',
-                        color: Colors.white,
-                        fontSize: 16,
-                        fontWeight: FontWeight.w500,
-                      ),
-                      labelColor: Color(0xFFFF96D5),
-                      unselectedLabelColor: Color(0xFF57636C),
+                      labelStyle: customTextStyle,
+                      unselectedLabelStyle: customTextStyle,
+                      labelColor: const Color(0xFFFF96D5),
+                      unselectedLabelColor: const Color(0xFF57636C),
                       // backgroundColor: Color(0xFF393239),
                       // unselectedBackgroundColor: Color(0xFFE0E3E7),
                       // borderColor: Color(0xFF393239),
@@ -125,10 +145,10 @@ class _DetailMemberInfoWidgetState extends State<DetailMemberInfoWidget> {
                       // borderRadius: 12,
                       // elevation: 0,
                       labelPadding:
-                          EdgeInsetsDirectional.fromSTEB(16, 0, 16, 0),
+                          const EdgeInsetsDirectional.fromSTEB(16, 0, 16, 0),
                       // buttonMargin:
                       // EdgeInsetsDirectional.fromSTEB(16, 12, 0, 12),
-                      tabs: [
+                      tabs: const [
                         Tab(
                           child: Text('Details'),
                         ),
@@ -148,18 +168,9 @@ class _DetailMemberInfoWidgetState extends State<DetailMemberInfoWidget> {
                             Container(
                               width: 100,
                               height: 70,
-                              decoration: BoxDecoration(
-                                color: Colors.white,
-                                boxShadow: [
-                                  BoxShadow(
-                                    blurRadius: 1,
-                                    color: Color(0xFFF1F4F8),
-                                    offset: Offset(0, 2),
-                                  )
-                                ],
-                              ),
+                              decoration: customBoxDeco,
                               child: Padding(
-                                padding: EdgeInsetsDirectional.fromSTEB(
+                                padding: const EdgeInsetsDirectional.fromSTEB(
                                     16, 8, 16, 8),
                                 child: Row(
                                   mainAxisSize: MainAxisSize.max,
@@ -170,16 +181,12 @@ class _DetailMemberInfoWidgetState extends State<DetailMemberInfoWidget> {
                                       size: 24,
                                     ),
                                     Padding(
-                                      padding: EdgeInsetsDirectional.fromSTEB(
-                                          12, 0, 0, 0),
+                                      padding:
+                                          const EdgeInsetsDirectional.fromSTEB(
+                                              12, 0, 0, 0),
                                       child: Text(
                                         'Phone : ${widget.userInfo['member_phone']}',
-                                        style: TextStyle(
-                                          fontFamily: 'Plus Jakarta Sans',
-                                          color: Color(0xFF14181B),
-                                          fontSize: 16,
-                                          fontWeight: FontWeight.normal,
-                                        ),
+                                        style: customTextStyle,
                                       ),
                                     ),
                                   ],
@@ -189,38 +196,25 @@ class _DetailMemberInfoWidgetState extends State<DetailMemberInfoWidget> {
                             Container(
                               width: 100,
                               height: 70,
-                              decoration: BoxDecoration(
-                                color: Colors.white,
-                                boxShadow: [
-                                  BoxShadow(
-                                    blurRadius: 1,
-                                    color: Color(0xFFF1F4F8),
-                                    offset: Offset(0, 2),
-                                  )
-                                ],
-                              ),
+                              decoration: customBoxDeco,
                               child: Padding(
-                                padding: EdgeInsetsDirectional.fromSTEB(
+                                padding: const EdgeInsetsDirectional.fromSTEB(
                                     16, 8, 16, 8),
                                 child: Row(
                                   mainAxisSize: MainAxisSize.max,
                                   children: [
-                                    Icon(
+                                    const Icon(
                                       Icons.fitness_center,
                                       color: Color(0xFF57636C),
                                       size: 24,
                                     ),
                                     Padding(
-                                      padding: EdgeInsetsDirectional.fromSTEB(
-                                          12, 0, 0, 0),
+                                      padding:
+                                          const EdgeInsetsDirectional.fromSTEB(
+                                              12, 0, 0, 0),
                                       child: Text(
-                                        'Member Since : ${widget.userInfo['created_on']}',
-                                        style: TextStyle(
-                                          fontFamily: 'Plus Jakarta Sans',
-                                          color: Color(0xFF14181B),
-                                          fontSize: 16,
-                                          fontWeight: FontWeight.normal,
-                                        ),
+                                        'Member Since : ${widget.userInfo['created_on'].substring(0, 10)}',
+                                        style: customTextStyle,
                                       ),
                                     ),
                                   ],
@@ -230,40 +224,186 @@ class _DetailMemberInfoWidgetState extends State<DetailMemberInfoWidget> {
                             Container(
                               width: 100,
                               height: 70,
-                              decoration: BoxDecoration(
-                                color: Colors.white,
-                                boxShadow: [
-                                  BoxShadow(
-                                    blurRadius: 1,
-                                    color: Color(0xFFF1F4F8),
-                                    offset: Offset(0, 2),
-                                  )
-                                ],
-                              ),
+                              decoration: customBoxDeco,
                               child: Padding(
-                                padding: EdgeInsetsDirectional.fromSTEB(
+                                padding: const EdgeInsetsDirectional.fromSTEB(
                                     16, 8, 16, 8),
                                 child: Row(
                                   mainAxisSize: MainAxisSize.max,
                                   children: [
-                                    Icon(
-                                      Icons.fitness_center,
+                                    const Icon(
+                                      Icons.lock,
                                       color: Color(0xFF57636C),
                                       size: 24,
                                     ),
                                     Padding(
-                                      padding: EdgeInsetsDirectional.fromSTEB(
-                                          12, 0, 0, 0),
+                                      padding:
+                                          const EdgeInsetsDirectional.fromSTEB(
+                                              12, 0, 0, 0),
                                       child: Text(
-                                        'Cloth Rental : ${widget.userInfo['cloth_rental'] != 0 ? 'false' : 'true'}',
-                                        style: TextStyle(
-                                          fontFamily: 'Plus Jakarta Sans',
-                                          color: Color(0xFF14181B),
-                                          fontSize: 16,
-                                          fontWeight: FontWeight.normal,
-                                        ),
+                                        'Locker Number : ${widget.userInfo['cloth_rental'] != 0 ? 'false' : 'true'}',
+                                        style: customTextStyle,
                                       ),
                                     ),
+                                  ],
+                                ),
+                              ),
+                            ),
+                            Container(
+                              width: 100,
+                              height: 70,
+                              decoration: customBoxDeco,
+                              child: Padding(
+                                padding: const EdgeInsetsDirectional.fromSTEB(
+                                    16, 8, 16, 8),
+                                child: Row(
+                                  mainAxisSize: MainAxisSize.max,
+                                  children: [
+                                    const Icon(
+                                      Icons.attach_money,
+                                      color: Color(0xFF57636C),
+                                      size: 24,
+                                    ),
+                                    Padding(
+                                      padding:
+                                          const EdgeInsetsDirectional.fromSTEB(
+                                              12, 0, 0, 0),
+                                      child: Text(
+                                        'Credit : ${widget.userInfo['member_credit']}',
+                                        style: customTextStyle,
+                                      ),
+                                    ),
+                                    const Spacer(),
+                                    ElevatedButton(
+                                        onPressed: transactionComplete!
+                                            ? null
+                                            : () async {
+                                                await showDialog(
+                                                  context: context,
+                                                  builder: (context) {
+                                                    return AlertDialog(
+                                                      shape:
+                                                          RoundedRectangleBorder(
+                                                              borderRadius:
+                                                                  BorderRadius
+                                                                      .circular(
+                                                                          20)),
+                                                      title: const Text(
+                                                          'Enter Coin'),
+                                                      content: Column(
+                                                        mainAxisAlignment:
+                                                            MainAxisAlignment
+                                                                .center,
+                                                        children: [
+                                                          TextFormField(
+                                                            initialValue:
+                                                                '$credit',
+                                                            keyboardType:
+                                                                TextInputType
+                                                                    .number,
+                                                            inputFormatters: [
+                                                              FilteringTextInputFormatter
+                                                                  .digitsOnly
+                                                            ],
+                                                            textAlign: TextAlign
+                                                                .center,
+                                                            decoration:
+                                                                const InputDecoration(
+                                                              border:
+                                                                  InputBorder
+                                                                      .none,
+                                                              // 경계선 없음
+                                                              isDense: true,
+
+                                                              prefixText: '\$',
+                                                            ),
+                                                            style:
+                                                                const TextStyle(
+                                                              fontFamily:
+                                                                  'Outfit',
+                                                              color: Color(
+                                                                  0xFF14181B),
+                                                              fontSize: 50,
+                                                              fontWeight:
+                                                                  FontWeight
+                                                                      .bold,
+                                                            ),
+                                                            onChanged:
+                                                                (value) async {
+                                                              setState(() {
+                                                                credit =
+                                                                    int.tryParse(
+                                                                            value) ??
+                                                                        0;
+                                                              });
+                                                            },
+                                                          ),
+                                                          const SizedBox(
+                                                              height: 40),
+                                                          Text(widget.userInfo[
+                                                              'reserved_credit']),
+                                                          const SizedBox(
+                                                              height: 40),
+                                                          ElevatedButton(
+                                                              onPressed:
+                                                                  () async {
+                                                                var result =
+                                                                    await sendData(
+                                                                        urlPath:
+                                                                            'manager/add_credit.php',
+                                                                        data: {
+                                                                      'member_id':
+                                                                          widget
+                                                                              .userInfo['member_id'],
+                                                                      'member_credit':
+                                                                          '${(int.tryParse(widget.userInfo['member_credit'])! + credit!)}'
+                                                                    });
+                                                                if (result !=
+                                                                    null) {
+                                                                  setState(() {
+                                                                    transactionComplete =
+                                                                        true;
+                                                                    credit = 0;
+                                                                    reservedCredit =
+                                                                        '';
+                                                                  });
+                                                                }
+                                                                await widget
+                                                                    .update();
+                                                                var result2 =
+                                                                    await sendData(
+                                                                        urlPath:
+                                                                            'manager/sync_page.php',
+                                                                        data: {
+                                                                      'member_id':
+                                                                          widget
+                                                                              .userInfo['member_id']
+                                                                    });
+                                                                if (result2 !=
+                                                                    null) {
+                                                                  if (result2[
+                                                                      'success']) {
+                                                                    print('OK');
+                                                                    setState(
+                                                                        () {
+                                                                      widget.userInfo =
+                                                                          result2[
+                                                                              'userData'];
+                                                                    });
+                                                                  }
+                                                                }
+                                                                Navigator.pop(
+                                                                    context);
+                                                              },
+                                                              child: const Text(
+                                                                  "Submit"))
+                                                        ],
+                                                      ),
+                                                    );
+                                                  },
+                                                );
+                                              },
+                                        child: const Text("Add"))
                                   ],
                                 ),
                               ),
@@ -274,13 +414,13 @@ class _DetailMemberInfoWidgetState extends State<DetailMemberInfoWidget> {
                           itemCount: 1,
                           itemBuilder: (context, index) {
                             return Padding(
-                              padding:
-                                  EdgeInsetsDirectional.fromSTEB(16, 12, 16, 0),
+                              padding: const EdgeInsetsDirectional.fromSTEB(
+                                  16, 12, 16, 0),
                               child: Container(
                                 width: MediaQuery.of(context).size.width,
                                 decoration: BoxDecoration(
                                   color: Colors.white,
-                                  boxShadow: [
+                                  boxShadow: const [
                                     BoxShadow(
                                       blurRadius: 3,
                                       color: Color(0x25000000),
@@ -290,32 +430,32 @@ class _DetailMemberInfoWidgetState extends State<DetailMemberInfoWidget> {
                                   borderRadius: BorderRadius.circular(8),
                                 ),
                                 child: Padding(
-                                  padding: EdgeInsetsDirectional.fromSTEB(
+                                  padding: const EdgeInsetsDirectional.fromSTEB(
                                       0, 5, 0, 0),
                                   child: Row(
                                     mainAxisSize: MainAxisSize.max,
                                     children: [
                                       Padding(
-                                        padding: EdgeInsetsDirectional.fromSTEB(
-                                            4, 4, 4, 4),
+                                        padding: const EdgeInsetsDirectional
+                                            .fromSTEB(4, 4, 4, 4),
                                         child: Container(
                                           width: 4,
                                           height: 90,
                                           decoration: BoxDecoration(
-                                            color: Color(0xFF393239),
+                                            color: const Color(0xFF393239),
                                             borderRadius:
                                                 BorderRadius.circular(4),
                                           ),
                                         ),
                                       ),
                                       Padding(
-                                        padding: EdgeInsetsDirectional.fromSTEB(
-                                            12, 12, 16, 12),
+                                        padding: const EdgeInsetsDirectional
+                                            .fromSTEB(12, 12, 16, 12),
                                         child: Column(
                                           mainAxisSize: MainAxisSize.max,
                                           crossAxisAlignment:
                                               CrossAxisAlignment.start,
-                                          children: [
+                                          children: const [
                                             Text(
                                               'Project Name',
                                               style: TextStyle(

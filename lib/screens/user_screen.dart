@@ -2,6 +2,7 @@ import 'dart:io';
 
 import 'package:fitness_app/components/main_app_screen/tabbed_appbar_component.dart';
 import 'package:fitness_app/providers/tab_navigation_provider.dart';
+import 'package:fitness_app/screens/credit_details.dart';
 import 'package:fitness_app/screens/new_setting_screen.dart';
 import 'package:fitness_app/utilities/slide_right_route.dart';
 import 'package:fluentui_system_icons/fluentui_system_icons.dart';
@@ -28,6 +29,7 @@ class UserInfo extends StatefulWidget {
 
 class _UserInfoState extends State<UserInfo> {
   var _image;
+  bool _showSubPage = false;
 
   @override
   void initState() {
@@ -41,15 +43,22 @@ class _UserInfoState extends State<UserInfo> {
         onPressed: () {
           Navigator.push(context, SlideRightRoute(page: NewSettingScreen()));
         },
-        icon: const Icon(FluentIcons.settings_28_regular),
+        icon: const Icon(FluentIcons.settings_28_regular, color: Color(0xFFFF94D4)),
       ),
     )
   ];
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      backgroundColor: Color(0xFFF1F4F8),
+    return
+      _showSubPage ?
+        CreditManageWidget(
+          onBack: () async {setState(() {
+          _showSubPage = false;
+        });},)
+      :
+      Scaffold(
+      backgroundColor: const Color(0xFFF1F4F8),
       appBar: TabbedAppBar(title: 'UserInfo', actions: action),
       body: SafeArea(
         child: GestureDetector(
@@ -65,7 +74,7 @@ class _UserInfoState extends State<UserInfo> {
                       Container(
                         width: double.infinity,
                         height: 100,
-                        decoration: BoxDecoration(
+                        decoration: const BoxDecoration(
                           color: Color(0xFF393239),
                           borderRadius: BorderRadius.only(
                             bottomRight: Radius.circular(36),
@@ -73,35 +82,35 @@ class _UserInfoState extends State<UserInfo> {
                         ),
                         child: Stack(
                           children: [
-                            Padding(
+                            const Padding(
                               padding:
                                   EdgeInsetsDirectional.fromSTEB(16, 0, 0, 0),
                             ),
                             Padding(
                               padding:
-                                  EdgeInsetsDirectional.fromSTEB(16, 0, 0, 0),
+                                  const EdgeInsetsDirectional.fromSTEB(16, 0, 0, 0),
                               child: Container(
                                 height: 120,
                                 decoration: BoxDecoration(
                                   color: Colors.white,
-                                  boxShadow: [
+                                  boxShadow: const [
                                     BoxShadow(
                                       blurRadius: 4,
                                       color: Color(0x1F000000),
                                       offset: Offset(0, 2),
                                     )
                                   ],
-                                  borderRadius: BorderRadius.only(
+                                  borderRadius: const BorderRadius.only(
                                       topLeft: Radius.circular(8),
                                       topRight: Radius.circular(8),
                                       bottomRight: Radius.circular(36)),
                                   border: Border.all(
-                                    color: Color(0xFFF1F4F8),
+                                    color: const Color(0xFFF1F4F8),
                                     width: 1,
                                   ),
                                 ),
                                 child: Padding(
-                                  padding: EdgeInsetsDirectional.fromSTEB(
+                                  padding: const EdgeInsetsDirectional.fromSTEB(
                                       12, 0, 12, 0),
                                   child: GestureDetector(
                                     onTap: () => print("on tabbed"),
@@ -112,15 +121,15 @@ class _UserInfoState extends State<UserInfo> {
                                         Container(
                                           width: 60,
                                           height: 60,
-                                          decoration: BoxDecoration(
+                                          decoration: const BoxDecoration(
                                             color: Color(0xFFF1F4F8),
                                             shape: BoxShape.circle,
                                           ),
-                                          alignment: AlignmentDirectional(0, 0),
+                                          alignment: const AlignmentDirectional(0, 0),
                                           child: Card(
                                             clipBehavior:
                                                 Clip.antiAliasWithSaveLayer,
-                                            color: Color(0xFF393239),
+                                            color: const Color(0xFF393239),
                                             shape: RoundedRectangleBorder(
                                               borderRadius:
                                                   BorderRadius.circular(40),
@@ -152,7 +161,7 @@ class _UserInfoState extends State<UserInfo> {
                                           ),
                                         ),
                                         Padding(
-                                          padding: EdgeInsetsDirectional.fromSTEB(
+                                          padding: const EdgeInsetsDirectional.fromSTEB(
                                               12, 12, 12, 12),
                                           child: Column(
                                             mainAxisSize: MainAxisSize.max,
@@ -163,7 +172,7 @@ class _UserInfoState extends State<UserInfo> {
                                             children: [
                                               Text(
                                                 'Hello, ${widget.user['member_name']}',
-                                                style: TextStyle(
+                                                style: const TextStyle(
                                                   color: Color(0xFF393239),
                                                   fontFamily: 'Poppins',
                                                   fontWeight: FontWeight.bold,
@@ -188,12 +197,12 @@ class _UserInfoState extends State<UserInfo> {
                 GestureDetector(
                   onTap: () => print("Tab!"),
                   child: Padding(
-                    padding: EdgeInsetsDirectional.fromSTEB(16, 12, 16, 0),
+                    padding: const EdgeInsetsDirectional.fromSTEB(16, 12, 16, 0),
                     child: Container(
                       width: double.infinity,
                       decoration: BoxDecoration(
                         color: Colors.white,
-                        boxShadow: [
+                        boxShadow: const [
                           BoxShadow(
                             blurRadius: 4,
                             color: Color(0x1F000000),
@@ -202,26 +211,26 @@ class _UserInfoState extends State<UserInfo> {
                         ],
                         borderRadius: BorderRadius.circular(8),
                         border: Border.all(
-                          color: Color(0xFFF1F4F8),
+                          color: const Color(0xFFF1F4F8),
                           width: 1,
                         ),
                       ),
                       child: Padding(
-                        padding: EdgeInsetsDirectional.fromSTEB(0, 0, 0, 12),
+                        padding: const EdgeInsetsDirectional.fromSTEB(0, 0, 0, 12),
                         child: Column(
                           mainAxisSize: MainAxisSize.max,
                           crossAxisAlignment: CrossAxisAlignment.center,
                           children: [
                             Padding(
                               padding:
-                                  EdgeInsetsDirectional.fromSTEB(12, 8, 16, 4),
+                                  const EdgeInsetsDirectional.fromSTEB(12, 8, 16, 4),
                               child: Row(
                                 mainAxisSize: MainAxisSize.max,
                                 mainAxisAlignment:
                                     MainAxisAlignment.spaceBetween,
                                 children: [
                                   Padding(
-                                    padding: EdgeInsetsDirectional.fromSTEB(
+                                    padding: const EdgeInsetsDirectional.fromSTEB(
                                         4, 12, 12, 12),
                                     child: Column(
                                       mainAxisSize: MainAxisSize.max,
@@ -230,7 +239,7 @@ class _UserInfoState extends State<UserInfo> {
                                       crossAxisAlignment:
                                           CrossAxisAlignment.start,
                                       children: [
-                                        Text(
+                                        const Text(
                                           'Member Since',
                                           style: TextStyle(
                                             fontFamily: 'Outfit',
@@ -241,11 +250,11 @@ class _UserInfoState extends State<UserInfo> {
                                         ),
                                         Padding(
                                           padding:
-                                              EdgeInsetsDirectional.fromSTEB(
+                                              const EdgeInsetsDirectional.fromSTEB(
                                                   0, 4, 0, 0),
                                           child: Text(
                                             widget.user['created_on'].substring(0, 10),
-                                            style: TextStyle(
+                                            style: const TextStyle(
                                               fontFamily: 'Outfit',
                                               color: Color(0xFF57636C),
                                               fontSize: 14,
@@ -259,18 +268,18 @@ class _UserInfoState extends State<UserInfo> {
                                   Container(
                                     width: 60,
                                     height: 60,
-                                    decoration: BoxDecoration(
+                                    decoration: const BoxDecoration(
                                       color: Color(0xFFF1F4F8),
                                       shape: BoxShape.circle,
                                     ),
-                                    alignment: AlignmentDirectional(0, 0),
+                                    alignment: const AlignmentDirectional(0, 0),
                                     child: Card(
                                       clipBehavior: Clip.antiAliasWithSaveLayer,
-                                      color: Color(0xFFE0E3E7),
+                                      color: const Color(0xFFE0E3E7),
                                       shape: RoundedRectangleBorder(
                                         borderRadius: BorderRadius.circular(40),
                                       ),
-                                      child: Padding(
+                                      child: const Padding(
                                         padding: EdgeInsetsDirectional.fromSTEB(
                                             12, 12, 12, 12),
                                         child: Icon(
@@ -286,15 +295,15 @@ class _UserInfoState extends State<UserInfo> {
                             ),
                             Padding(
                               padding:
-                                  EdgeInsetsDirectional.fromSTEB(16, 0, 16, 0),
+                                  const EdgeInsetsDirectional.fromSTEB(16, 0, 16, 0),
                               child: LinearPercentIndicator(
                                 percent: 0.5,
                                 width: MediaQuery.of(context).size.width * 0.82,
                                 lineHeight: 16,
                                 animation: true,
-                                progressColor: Color(0xFFFF94D4),
-                                backgroundColor: Color(0xFFF1F4F8),
-                                barRadius: Radius.circular(24),
+                                progressColor: const Color(0xFFFF94D4),
+                                backgroundColor: const Color(0xFFF1F4F8),
+                                barRadius: const Radius.circular(24),
                                 padding: EdgeInsets.zero,
                               ),
                             ),
@@ -307,12 +316,12 @@ class _UserInfoState extends State<UserInfo> {
                 GestureDetector(
                   onTap: () => print("Tab2!"),
                   child: Padding(
-                    padding: EdgeInsetsDirectional.fromSTEB(16, 12, 16, 16),
+                    padding: const EdgeInsetsDirectional.fromSTEB(16, 12, 16, 16),
                     child: Container(
                       width: double.infinity,
                       decoration: BoxDecoration(
                         color: Colors.white,
-                        boxShadow: [
+                        boxShadow: const [
                           BoxShadow(
                             blurRadius: 4,
                             color: Color(0x1F000000),
@@ -321,26 +330,26 @@ class _UserInfoState extends State<UserInfo> {
                         ],
                         borderRadius: BorderRadius.circular(8),
                         border: Border.all(
-                          color: Color(0xFFF1F4F8),
+                          color: const Color(0xFFF1F4F8),
                           width: 1,
                         ),
                       ),
                       child: Padding(
-                        padding: EdgeInsetsDirectional.fromSTEB(0, 0, 0, 12),
+                        padding: const EdgeInsetsDirectional.fromSTEB(0, 0, 0, 12),
                         child: Column(
                           mainAxisSize: MainAxisSize.max,
                           crossAxisAlignment: CrossAxisAlignment.center,
                           children: [
                             Padding(
                               padding:
-                                  EdgeInsetsDirectional.fromSTEB(12, 8, 16, 4),
+                                  const EdgeInsetsDirectional.fromSTEB(12, 8, 16, 4),
                               child: Row(
                                 mainAxisSize: MainAxisSize.max,
                                 mainAxisAlignment:
                                     MainAxisAlignment.spaceBetween,
                                 children: [
                                   Padding(
-                                    padding: EdgeInsetsDirectional.fromSTEB(
+                                    padding: const EdgeInsetsDirectional.fromSTEB(
                                         4, 12, 12, 12),
                                     child: Column(
                                       mainAxisSize: MainAxisSize.max,
@@ -348,7 +357,7 @@ class _UserInfoState extends State<UserInfo> {
                                           MainAxisAlignment.center,
                                       crossAxisAlignment:
                                           CrossAxisAlignment.start,
-                                      children: [
+                                      children: const [
                                         Text(
                                           'Personal Locker No.8',
                                           style: TextStyle(
@@ -378,22 +387,22 @@ class _UserInfoState extends State<UserInfo> {
                                   Container(
                                     width: 60,
                                     height: 60,
-                                    decoration: BoxDecoration(
+                                    decoration: const BoxDecoration(
                                       color: Color(0xFFF1F4F8),
                                       shape: BoxShape.circle,
                                     ),
-                                    alignment: AlignmentDirectional(0, 0),
+                                    alignment: const AlignmentDirectional(0, 0),
                                     child: Card(
                                       clipBehavior: Clip.antiAliasWithSaveLayer,
-                                      color: Color(0xFFE0E3E7),
+                                      color: const Color(0xFFE0E3E7),
                                       shape: RoundedRectangleBorder(
                                         borderRadius: BorderRadius.circular(40),
                                       ),
-                                      child: Padding(
+                                      child: const Padding(
                                         padding: EdgeInsetsDirectional.fromSTEB(
                                             12, 12, 12, 12),
                                         child: Icon(
-                                          Icons.desktop_windows_sharp,
+                                          Icons.lock,
                                           color: Color(0xFF14181B),
                                           size: 24,
                                         ),
@@ -405,15 +414,15 @@ class _UserInfoState extends State<UserInfo> {
                             ),
                             Padding(
                               padding:
-                                  EdgeInsetsDirectional.fromSTEB(16, 0, 16, 0),
+                                  const EdgeInsetsDirectional.fromSTEB(16, 0, 16, 0),
                               child: LinearPercentIndicator(
                                 percent: 0.5,
                                 width: MediaQuery.of(context).size.width * 0.82,
                                 lineHeight: 16,
                                 animation: true,
-                                progressColor: Color(0xFFFF94D4),
-                                backgroundColor: Color(0xFFF1F4F8),
-                                barRadius: Radius.circular(24),
+                                progressColor: const Color(0xFFFF94D4),
+                                backgroundColor: const Color(0xFFF1F4F8),
+                                barRadius: const Radius.circular(24),
                                 padding: EdgeInsets.zero,
                               ),
                             ),
@@ -423,6 +432,120 @@ class _UserInfoState extends State<UserInfo> {
                     ),
                   ),
                 ),
+                GestureDetector(
+                  onTap: () async {
+                    setState(() {
+                      _showSubPage = true;
+                    });
+                    // Navigator.push(
+                    //   context,
+                    //   MaterialPageRoute(builder: (context) => CreditManageWidget()),
+                    // );
+                  },
+                  child: Padding(
+                    padding: const EdgeInsetsDirectional.fromSTEB(16, 12, 16, 16),
+                    child: Container(
+                      width: double.infinity,
+                      decoration: BoxDecoration(
+                        color: Colors.white,
+                        boxShadow: const [
+                          BoxShadow(
+                            blurRadius: 4,
+                            color: Color(0x1F000000),
+                            offset: Offset(0, 2),
+                          )
+                        ],
+                        borderRadius: BorderRadius.circular(8),
+                        border: Border.all(
+                          color: const Color(0xFFF1F4F8),
+                          width: 1,
+                        ),
+                      ),
+                      child: Padding(
+                        padding: const EdgeInsetsDirectional.fromSTEB(0, 0, 0, 12),
+                        child: Column(
+                          mainAxisSize: MainAxisSize.max,
+                          crossAxisAlignment: CrossAxisAlignment.center,
+                          children: [
+                            Padding(
+                              padding:
+                               EdgeInsetsDirectional.fromSTEB(12, 8, 16, 4),
+                              child: Row(
+                                mainAxisSize: MainAxisSize.max,
+                                mainAxisAlignment:
+                                MainAxisAlignment.spaceBetween,
+                                children: [
+                                  Padding(
+                                    padding: const EdgeInsetsDirectional.fromSTEB(
+                                        4, 12, 12, 12),
+                                    child: Column(
+                                      mainAxisSize: MainAxisSize.max,
+                                      mainAxisAlignment:
+                                      MainAxisAlignment.center,
+                                      crossAxisAlignment:
+                                      CrossAxisAlignment.start,
+                                      children:  const [
+                                        Text(
+                                          'My Credit',
+                                          style: TextStyle(
+                                            fontFamily: 'Outfit',
+                                            color: Color(0xFF14181B),
+                                            fontSize: 18,
+                                            fontWeight: FontWeight.normal,
+                                          ),
+                                        ),
+                                      ],
+                                    ),
+                                  ),
+                                  Padding(
+                                    padding:
+                                    const EdgeInsetsDirectional.fromSTEB(
+                                        100, 0, 0, 0),
+                                    child: Text(
+                                      widget.user['member_credit'],
+                                      style: const TextStyle(
+                                        fontFamily: 'Outfit',
+                                        color: Color(0xFF362e36),
+                                        fontSize: 24,
+                                        fontWeight: FontWeight.bold,
+                                      ),
+                                    ),
+                                  ),
+                                  Container(
+                                    width: 60,
+                                    height: 60,
+                                    decoration: const BoxDecoration(
+                                      color: Color(0xFFF1F4F8),
+                                      shape: BoxShape.circle,
+                                    ),
+                                    alignment: const AlignmentDirectional(0, 0),
+                                    child: Card(
+                                      clipBehavior: Clip.antiAliasWithSaveLayer,
+                                      color: const Color(0xFFE0E3E7),
+                                      shape: RoundedRectangleBorder(
+                                        borderRadius: BorderRadius.circular(40),
+                                      ),
+                                      child: const Padding(
+                                        padding: EdgeInsetsDirectional.fromSTEB(
+                                            12, 12, 12, 12),
+                                        child: Icon(
+                                          Icons.attach_money,
+                                          color: Color(0xFF14181B),
+                                          size: 24,
+                                        ),
+                                      ),
+                                    ),
+                                  ),
+                                ],
+                              ),
+                            ),
+                          ],
+                        ),
+                      ),
+                    ),
+                  ),
+                ),
+
               ],
             ),
           ),

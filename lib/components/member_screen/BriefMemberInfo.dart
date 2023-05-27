@@ -3,8 +3,9 @@ import 'package:flutter/material.dart';
 
 class UserIconWithInfo extends StatefulWidget {
   final Map<String, dynamic> memberInfo;
+  final Function update;
 
-  const UserIconWithInfo({Key? key, required this.memberInfo})
+  UserIconWithInfo({Key? key, required this.memberInfo, required this.update})
       : super(key: key);
 
   @override
@@ -89,7 +90,7 @@ class _UserIconWithInfoState extends State<UserIconWithInfo> {
                             final result = await Navigator.push(
                                 context,
                                 MaterialPageRoute(
-                                    builder: (context) => DetailMemberInfoWidget()));
+                                    builder: (context) => DetailMemberInfoWidget(userInfo: widget.memberInfo, update: widget.update,)));
                             if (result != null && result == "update") {
                             }
                           },

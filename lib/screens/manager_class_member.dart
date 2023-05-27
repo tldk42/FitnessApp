@@ -20,7 +20,7 @@ class _ManagerClassUserScreenState extends State<ManagerClassUserScreen> {
   Future _fetchAllUser() async {
     var response = await sendData(urlPath: 'manager/get_all_user.php');
     if (response != null) {
-      print('UPDATE');
+      print('UPDATE All User Info');
       setState(() {
         final List<dynamic> list = response;
         _users = list.map((e) => e as Map<String, dynamic>).toList();
@@ -158,6 +158,7 @@ class _ManagerClassUserScreenState extends State<ManagerClassUserScreen> {
                         {
                           return UserIconWithInfo(
                             memberInfo: _users![index],
+                            update:  _fetchAllUser,
                           );
                         }
                       },
