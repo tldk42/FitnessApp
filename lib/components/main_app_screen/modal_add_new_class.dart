@@ -18,8 +18,8 @@ class _ClassEditModalState extends State<ClassEditModal> {
   DateTime? _endDate;
   TimeOfDay? _startTime;
   TimeOfDay? _endTime;
-
   String? _activeDays;
+  int? _credit;
 
   @override
   Widget build(BuildContext context) {
@@ -62,7 +62,7 @@ class _ClassEditModalState extends State<ClassEditModal> {
                   child: Container(
                     padding: EdgeInsets.symmetric(vertical: 10.0),
                     child: Text(
-                        "시작 날짜: ${_startDate != null ? "${_startDate!.day}/${_startDate!.month}/${_startDate!.year}" : ''}"),
+                        "Start Date: ${_startDate != null ? "${_startDate!.day}/${_startDate!.month}/${_startDate!.year}" : ''}"),
                   ),
                 ),
                 InkWell(
@@ -80,7 +80,7 @@ class _ClassEditModalState extends State<ClassEditModal> {
                   child: Container(
                     padding: EdgeInsets.symmetric(vertical: 10.0),
                     child: Text(
-                        "종료 날짜: ${_endDate != null ? "${_endDate!.day}/${_endDate!.month}/${_endDate!.year}" : ''}"),
+                        "End Date: ${_endDate != null ? "${_endDate!.day}/${_endDate!.month}/${_endDate!.year}" : ''}"),
                   ),
                 ),
                 InkWell(
@@ -99,7 +99,7 @@ class _ClassEditModalState extends State<ClassEditModal> {
                   child: Container(
                     padding: EdgeInsets.symmetric(vertical: 10.0),
                     child: Text(
-                        "시작 시간: ${_startTime != null ? "${_startTime!.hour}:${_startTime!.minute}" : ''}"),
+                        "Start Time: ${_startTime != null ? "${_startTime!.hour}:${_startTime!.minute}" : ''}"),
                   ),
                 ),
                 InkWell(
@@ -118,7 +118,7 @@ class _ClassEditModalState extends State<ClassEditModal> {
                   child: Container(
                     padding: EdgeInsets.symmetric(vertical: 10.0),
                     child: Text(
-                        "종료 시간: ${_endTime != null ? "${_endTime!.hour}:${_endTime!.minute}" : ''}"),
+                        "End Time: ${_endTime != null ? "${_endTime!.hour}:${_endTime!.minute}" : ''}"),
                   ),
                 ),
                 TextField(
@@ -130,12 +130,22 @@ class _ClassEditModalState extends State<ClassEditModal> {
                     });
                   },
                 ),
-                SizedBox(height: 16.0),
+                TextField(
+                  decoration: InputDecoration(labelText: 'Credit'),
+                  keyboardType:
+                      const TextInputType.numberWithOptions(decimal: true),
+                  onChanged: (value) {
+                    setState(() {
+                      _credit = int.tryParse(value);
+                    });
+                  },
+                ),
+                SizedBox(height: 8.0),
                 Row(
                   children: [
                     Expanded(
                       child: ElevatedButton(
-                        child: Text('저장'),
+                        child: Text('Save'),
                         onPressed: () {
                           widget.onSave(ClassItem(
                             class_name: nameController.text,
@@ -145,6 +155,7 @@ class _ClassEditModalState extends State<ClassEditModal> {
                             start_time: _startTime!,
                             end_time: _endTime!,
                             active_days: _activeDays!,
+                            credit: _credit!
                           ));
                           Navigator.pop(context);
                         },
@@ -153,7 +164,7 @@ class _ClassEditModalState extends State<ClassEditModal> {
                     SizedBox(width: 8.0),
                     Expanded(
                       child: TextButton(
-                        child: Text('취소'),
+                        child: Text('Cancel'),
                         onPressed: () {
                           Navigator.pop(context);
                         },
@@ -178,6 +189,7 @@ class ClassItem {
   final TimeOfDay start_time;
   final TimeOfDay end_time;
   final String active_days;
+  final int credit;
 
   ClassItem({
     required this.class_name,
@@ -187,5 +199,6 @@ class ClassItem {
     required this.start_time,
     required this.end_time,
     required this.active_days,
+    required this.credit
   });
 }

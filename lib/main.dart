@@ -25,9 +25,6 @@ void main() {
         create: (_) => UserLoginStateProvider(),
       ),
       ChangeNotifierProvider(create: (_) => TabNavigationProvider()),
-      //   ChangeNotifierProxyProvider<UserLoginStateProvider, LiveTransactionsProvider>(
-      //       create: (BuildContext context) => LiveTransactionsProvider(), update: (context, userLoginAuthKey, liveTransactions) =>
-      // liveTransactions!..update(userLoginAuthKey)),
     ],
     child: FitnessApp(),
   ));
@@ -46,7 +43,7 @@ class _FitnessAppState extends State<FitnessApp> {
   LoginInfoStorage loginInfoStorage = LoginInfoStorage();
   bool? _previousllyInstalled;
   bool? _isLoggedIn;
-  Map<String, dynamic>? _loggedInUserData = {'tldk423': 'lbgs8589--'};
+  Map<String, dynamic>? _loggedInUserData;
 
   void _checkForPreviousInstallations() async {
     final previousllyInstalledStatus = await deviceInfoStorage.wasUsedBefore;
@@ -129,6 +126,7 @@ class _FitnessAppState extends State<FitnessApp> {
           } else {
             FlutterNativeSplash.remove();
             if (_loggedInUserData != null) {
+              print('xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx');
               return TabbedLayoutComponent(userData: _loggedInUserData!);
             }
             return LoginScreen();

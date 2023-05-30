@@ -1,3 +1,5 @@
+import 'dart:math';
+
 import 'package:fitness_app/components/main_app_screen/modal_add_new_class.dart';
 import 'package:fitness_app/screens/mamager_class_info.dart';
 import 'package:fitness_app/utilities/make_api_request.dart';
@@ -75,7 +77,6 @@ class _ManagerClassScreenState extends State<ManagerClassScreen> {
               ),
               child: ListTile(
                 title: Text(classes![index]['class_name']),
-                subtitle: Text(classes![index]['capacity']),
                 onTap: () async {
                   final result = await Navigator.push(
                       context,
@@ -108,7 +109,7 @@ class _ManagerClassScreenState extends State<ManagerClassScreen> {
                     var response =
                         sendData(urlPath: 'manager/insert_class.php', data: {
                       'class_id':
-                          '${classItem.class_name}_${DateTime.now().month}_${DateTime.now().day}',
+                          '${Random().nextInt(99999)}${DateTime.now().month}${DateTime.now().day}',
                       'class_name': classItem.class_name,
                       'manager_id': widget.managerData['manager_id'],
                       'capacity': classItem.capacity.toString(),
@@ -118,10 +119,10 @@ class _ManagerClassScreenState extends State<ManagerClassScreen> {
                           '${classItem.start_time.hour}:${classItem.start_time.minute}',
                       'end_time':
                           '${classItem.end_time.hour}:${classItem.end_time.minute}',
-                      'active_days': classItem.active_days
+                      'active_days': classItem.active_days,
+                      'credit': classItem.credit.toString()
                     });
                     print(response);
-                    print(classItem);
                     _getManagerData();
                   },
                 );

@@ -37,8 +37,8 @@ class _TabbedLayoutComponentState extends State<TabbedLayoutComponent> {
     super.initState();
 
     _updateTimer = Timer.periodic(
-        Duration(minutes: [1, 2, 3, 4][Random().nextInt(4)]), (Timer t) {
-      // Provider.of<LiveUpdateProvider>(context, listen: false).update();
+        Duration(seconds: [10, 30, 60][Random().nextInt(3)]), (Timer t) {
+      Provider.of<UserLoginStateProvider>(context, listen: false).updateFromServer();
     });
   }
 

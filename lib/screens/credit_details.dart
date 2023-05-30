@@ -6,6 +6,7 @@ import 'package:fitness_app/providers/user_login_state_provider.dart';
 import 'package:fitness_app/utilities/make_api_request.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:google_fonts/google_fonts.dart';
 import 'package:path_provider/path_provider.dart';
 import 'package:provider/provider.dart';
 
@@ -24,7 +25,6 @@ class _CreditManageWidgetState extends State<CreditManageWidget>
   final _unfocusNode = FocusNode();
   Map<String, dynamic>? userInfo;
   int transactionCredit = 0;
-  bool showMasterAccount = false;
 
   Map<String, dynamic> storedValues = {
     'showMasterAccount': false,
@@ -33,15 +33,21 @@ class _CreditManageWidgetState extends State<CreditManageWidget>
   };
 
   Future<void> _saveValues() async {
+    print('save transaction request');
+
     final directory = await getApplicationDocumentsDirectory();
     final file = File('${directory.path}/storedTransactionInfo.json');
+    print(file);
     await file.writeAsString(jsonEncode(storedValues));
   }
 
   Future<void> _loadValues() async {
+    print('load transaction request');
+
     try {
       final directory = await getApplicationDocumentsDirectory();
       final file = File('${directory.path}/storedTransactionInfo.json');
+      print(file);
       final contents = await file.readAsString();
       setState(() {
         storedValues = jsonDecode(contents) as Map<String, dynamic>;
@@ -51,9 +57,11 @@ class _CreditManageWidgetState extends State<CreditManageWidget>
         _initializeValues();
       });
     }
+    print(storedValues);
   }
 
   void _initializeValues() {
+    print('init transaction state');
     storedValues = {
       'showMasterAccount': false,
       'transactionCredit': 0,
@@ -61,34 +69,12 @@ class _CreditManageWidgetState extends State<CreditManageWidget>
     };
   }
 
-  // Future<void> _saveShowMasterAccount(bool value) async {
-  //   final directory = await getApplicationDocumentsDirectory();
-  //   final file = File('${directory.path}/showMasterAccount.txt');
-  //   await file.writeAsString(value ? 'true' : 'false');
-  // }
-  //
-  // Future<void> _loadShowMasterAccount() async {
-  //   try {
-  //     final directory = await getApplicationDocumentsDirectory();
-  //     final file = File('${directory.path}/showMasterAccount.txt');
-  //     final contents = await file.readAsString();
-  //     setState(() {
-  //       showMasterAccount = contents == 'true';
-  //     });
-  //   } catch (e) {
-  //     setState(() {
-  //       showMasterAccount = false;
-  //     });
-  //   }
-  // }
-
   @override
   void initState() {
     super.initState();
     userInfo =
         Provider.of<UserLoginStateProvider>(context, listen: false).user!;
 
-    showMasterAccount = userInfo!['transaction_state'] == 1;
     _loadValues();
   }
 
@@ -286,15 +272,14 @@ class _CreditManageWidgetState extends State<CreditManageWidget>
                                         });
                                     setState(() {
                                       if (result != null) {
-                                        showMasterAccount =
+                                        storedValues['showMasterAccount'] =
                                             result['success'] ?? false;
                                       } else {
-                                        showMasterAccount = false;
+                                        storedValues['showMasterAccount'] =
+                                            false;
                                       }
                                     });
                                     // _saveShowMasterAccount(showMasterAccount);
-                                    storedValues['showMasterAccount'] =
-                                        showMasterAccount;
                                     storedValues['transactionCredit'] =
                                         transactionCredit;
                                     storedValues['transactionId'] =
@@ -315,36 +300,10 @@ class _CreditManageWidgetState extends State<CreditManageWidget>
                               Padding(
                                 padding:
                                     EdgeInsetsDirectional.fromSTEB(0, 12, 0, 0),
-                                child: showMasterAccount
+                                child: storedValues['showMasterAccount']
                                     ? Text(
                                         'Account : 46730104141808 (KB Bank)\n transaction ID : ${storedValues['transactionId']}\n Total : ${storedValues['transactionCredit']} ')
                                     : const SizedBox(),
-                                // child: FFButtonWidget(
-                                //   onPressed: () {
-                                //     print('Button pressed ...');
-                                //   },
-                                //   text: 'View Share Notice Details',
-                                //   options: FFButtonOptions(
-                                //     width: 230,
-                                //     height: 40,
-                                //     padding: EdgeInsetsDirectional.fromSTEB(
-                                //         0, 0, 0, 0),
-                                //     iconPadding: EdgeInsetsDirectional.fromSTEB(
-                                //         0, 0, 0, 0),
-                                //     color: Color(0xFFF1F4F8),
-                                //     textStyle: TextStyle(
-                                //       fontFamily: 'Plus Jakarta Sans',
-                                //       color: Color(0xFFFF96D5),
-                                //       fontSize: 16,
-                                //       fontWeight: FontWeight.w500,
-                                //     ),
-                                //     elevation: 0,
-                                //     borderSide: BorderSide(
-                                //       color: Colors.transparent,
-                                //       width: 1,
-                                //     ),
-                                //   ),
-                                // ),
                               ),
                             ],
                           ),
@@ -355,7 +314,7 @@ class _CreditManageWidgetState extends State<CreditManageWidget>
                       padding: EdgeInsetsDirectional.fromSTEB(16, 16, 16, 16),
                       child: Container(
                         width: double.infinity,
-                        constraints: BoxConstraints(
+                        constraints: const BoxConstraints(
                           maxWidth: 500,
                         ),
                         decoration: BoxDecoration(
@@ -370,11 +329,8 @@ class _CreditManageWidgetState extends State<CreditManageWidget>
                           padding:
                               EdgeInsetsDirectional.fromSTEB(12, 16, 12, 12),
                           child: Column(
-                            mainAxisSize: MainAxisSize.max,
-                            mainAxisAlignment: MainAxisAlignment.center,
-                            crossAxisAlignment: CrossAxisAlignment.start,
                             children: [
-                              Text(
+                              const Text(
                                 'My Credit\n',
                                 style: TextStyle(
                                   fontFamily: 'Outfit',
@@ -383,64 +339,53 @@ class _CreditManageWidgetState extends State<CreditManageWidget>
                                   fontWeight: FontWeight.w500,
                                 ),
                               ),
-                              Padding(
-                                padding:
-                                    EdgeInsetsDirectional.fromSTEB(0, 4, 0, 4),
-                                child: Text(
-                                  'AHP 5500',
-                                  style: TextStyle(
-                                    fontFamily: 'Plus Jakarta Sans',
-                                    color: Color(0xFF14181B),
-                                    fontSize: 12,
-                                    fontWeight: FontWeight.bold,
-                                  ),
-                                ),
-                              ),
-                              Text(
-                                'Last Payment: April 8th, 2022',
-                                style: TextStyle(
-                                  fontFamily: 'Plus Jakarta Sans',
-                                  color: Color(0xFF57636C),
-                                  fontSize: 14,
-                                  fontWeight: FontWeight.normal,
-                                ),
-                              ),
                               Row(
                                 mainAxisSize: MainAxisSize.max,
+                                mainAxisAlignment: MainAxisAlignment.center,
+                                crossAxisAlignment: CrossAxisAlignment.start,
                                 children: [
-                                  Text(
-                                    '\$3,556.29',
+                                  const Text(
+                                    'Total : ',
                                     style: TextStyle(
                                       fontFamily: 'Plus Jakarta Sans',
-                                      color: Color(0xFF14181B),
-                                      fontSize: 16,
+                                      color: Color(0xFF57636C),
+                                      fontSize: 18,
                                       fontWeight: FontWeight.normal,
                                     ),
                                   ),
                                   Text(
-                                    'of \$5,500.00',
-                                    style: TextStyle(
+                                    '\$${userInfo!['member_credit']}',
+                                    style: const TextStyle(
                                       fontFamily: 'Plus Jakarta Sans',
-                                      color: Color(0xFF57636C),
-                                      fontSize: 16,
-                                      fontWeight: FontWeight.normal,
+                                      color: Color(0xFF14181B),
+                                      fontSize: 18,
+                                      fontWeight: FontWeight.bold,
                                     ),
                                   ),
                                 ],
                               ),
-                              Padding(
-                                padding:
-                                    EdgeInsetsDirectional.fromSTEB(0, 4, 0, 0),
-                                child: Text(
-                                  'Resets Jun 30, 2022',
-                                  style: TextStyle(
-                                    fontFamily: 'Plus Jakarta Sans',
-                                    color: Color(0xFF57636C),
-                                    fontSize: 14,
-                                    fontWeight: FontWeight.normal,
-                                  ),
+                              const SizedBox(height: 20),
+                              Card(
+                                color: Colors.white70,
+                                child: Column(
+                                  children: [
+                                    const Text('All Transaction', style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),),
+                                    userInfo!['transaction_record'] == null ? const SizedBox() :
+                                    Column(
+                                      crossAxisAlignment: CrossAxisAlignment.start,
+                                      children: jsonDecode(userInfo!['transaction_record']).entries.map<Widget>((entry) {
+                                        return Text(
+                                          '${entry.key}: ${entry.value}',
+                                          style: GoogleFonts.pacifico(
+                                              color: const Color(0xFFFF96D5),
+                                              fontWeight: FontWeight.bold,
+                                              fontSize: 16),
+                                        );
+                                      }).toList(),
+                                    )
+                                  ],
                                 ),
-                              ),
+                              )
                             ],
                           ),
                         ),

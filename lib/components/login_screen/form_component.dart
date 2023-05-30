@@ -78,6 +78,8 @@ class _LoginFormComponentState extends State<LoginFormComponent> {
       if (status[0] == true) {
         switch (indexTab) {
           case 0:
+            Provider.of<UserLoginStateProvider>(context, listen: false)
+                .setUserData(userData: dataReceived['userData']);
             ScaffoldMessenger.of(context)
                 .showSnackBar(SnackBar(
                   content: Text("Login Successful"),
@@ -87,10 +89,9 @@ class _LoginFormComponentState extends State<LoginFormComponent> {
                 .then((value) => Navigator.of(context).pushAndRemoveUntil(
                     MaterialPageRoute(
                         builder: (context) => TabbedLayoutComponent(
-                            userData: dataReceived['userData'])),
+                            userData: Provider.of<UserLoginStateProvider>(context, listen: true).user!)),
                     (route) => false));
-            Provider.of<UserLoginStateProvider>(context, listen: false)
-                .setUserData(userData: dataReceived['userData']);
+
             break;
           case 1:
             ScaffoldMessenger.of(context)

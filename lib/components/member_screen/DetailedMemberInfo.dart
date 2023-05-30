@@ -232,6 +232,35 @@ class _DetailMemberInfoWidgetState extends State<DetailMemberInfoWidget> {
                                   mainAxisSize: MainAxisSize.max,
                                   children: [
                                     const Icon(
+                                      Icons.fitness_center,
+                                      color: Color(0xFF57636C),
+                                      size: 24,
+                                    ),
+                                    Padding(
+                                      padding:
+                                      const EdgeInsetsDirectional.fromSTEB(
+                                          12, 0, 0, 0),
+                                      child: Text(
+                                        'Membership Due : ${widget.userInfo['valid_on'] != null ? widget.userInfo['valid_on'].substring(0, 10) : 'X'}',
+                                        style: customTextStyle,
+                                      ),
+                                    ),
+                                  ],
+                                ),
+                              ),
+                            ),
+
+                            Container(
+                              width: 100,
+                              height: 70,
+                              decoration: customBoxDeco,
+                              child: Padding(
+                                padding: const EdgeInsetsDirectional.fromSTEB(
+                                    16, 8, 16, 8),
+                                child: Row(
+                                  mainAxisSize: MainAxisSize.max,
+                                  children: [
+                                    const Icon(
                                       Icons.lock,
                                       color: Color(0xFF57636C),
                                       size: 24,
@@ -241,7 +270,7 @@ class _DetailMemberInfoWidgetState extends State<DetailMemberInfoWidget> {
                                           const EdgeInsetsDirectional.fromSTEB(
                                               12, 0, 0, 0),
                                       child: Text(
-                                        'Locker Number : ${widget.userInfo['cloth_rental'] != 0 ? 'false' : 'true'}',
+                                        'Locker Number : ${widget.userInfo['locker_info'] ?? 'X'}',
                                         style: customTextStyle,
                                       ),
                                     ),
@@ -356,7 +385,11 @@ class _DetailMemberInfoWidgetState extends State<DetailMemberInfoWidget> {
                                                                           widget
                                                                               .userInfo['member_id'],
                                                                       'member_credit':
-                                                                          '${(int.tryParse(widget.userInfo['member_credit'])! + credit!)}'
+                                                                          '${(int.tryParse(widget.userInfo['member_credit'])! + credit!)}',
+                                                                      'transaction_key':
+                                                                          DateTime.now().toString().substring(0,19),
+                                                                      'transaction_value':
+                                                                          '+$credit'
                                                                     });
                                                                 if (result !=
                                                                     null) {
@@ -373,7 +406,7 @@ class _DetailMemberInfoWidgetState extends State<DetailMemberInfoWidget> {
                                                                 var result2 =
                                                                     await sendData(
                                                                         urlPath:
-                                                                            'manager/sync_page.php',
+                                                                            'common/sync_page.php',
                                                                         data: {
                                                                       'member_id':
                                                                           widget

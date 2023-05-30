@@ -1,6 +1,10 @@
+import 'dart:convert';
+import 'dart:io';
+
 import 'package:fitness_app/components/main_app_screen/tabbed_appbar_component.dart';
 import 'package:fitness_app/utilities/make_api_request.dart';
 import 'package:flutter/material.dart';
+import 'package:path_provider/path_provider.dart';
 
 class HomeScreen extends StatefulWidget {
   final Map<String, dynamic> user;
@@ -19,12 +23,48 @@ class HomeScreen extends StatefulWidget {
 }
 
 class HomeScreenState extends State<HomeScreen> {
-  late List<Map<String, dynamic>> userClassList;
-  late Future<String> _loadDataStatusFuture;
-  String _height = '177cm';
-  String _weight = '65';
-  String _fatRate = '20';
-  String _muscleMass = '34';
+  List<Map<String, dynamic>> userClassList = List.empty();
+
+  Map<String, double> userInbodyInfo = {
+    'height': 0,
+    'weight': 0,
+    'fat': 0,
+    'muscle': 0
+  };
+
+  Future<void> _saveUserInbodyInfo() async {
+    final directory = await getApplicationDocumentsDirectory();
+    final file = File('${directory.path}/storedInbodyInfo.json');
+    await file.writeAsString(jsonEncode(userInbodyInfo));
+  }
+
+  Future<void> _loadUserInbodyInfo() async {
+    try {
+      final directory = await getApplicationDocumentsDirectory();
+      final file = File('${directory.path}/storedInbodyInfo.json');
+      final contents = await file.readAsString();
+      print(contents);
+      setState(() {
+        Map<String, dynamic> decodedContents = jsonDecode(contents);
+        userInbodyInfo = decodedContents.map((key, value) => MapEntry(key, value.toDouble()));
+      });
+    } catch (e) {
+      setState(() {
+        _initializeUserInbodyInfo();
+      });
+    }
+    print(userInbodyInfo);
+  }
+
+  void _initializeUserInbodyInfo() {
+    userInbodyInfo = {
+      'height': 0,
+      'weight': 0,
+      'fat': 0,
+      'muscle': 0
+    };
+  }
+
 
   Future<String> _fetchAllClasses() async {
     var response = await sendData(
@@ -45,7 +85,8 @@ class HomeScreenState extends State<HomeScreen> {
   void initState() {
     super.initState();
 
-    _loadDataStatusFuture = _fetchAllClasses();
+    _fetchAllClasses();
+    _loadUserInbodyInfo();
   }
 
   @override
@@ -75,7 +116,7 @@ class HomeScreenState extends State<HomeScreen> {
           Expanded(
             child: Text(
               title,
-              style: TextStyle(
+              style: const TextStyle(
                 fontWeight: FontWeight.bold,
                 fontSize: 16.0,
               ),
@@ -98,32 +139,34 @@ class HomeScreenState extends State<HomeScreen> {
           children: [
             Text(
               title,
-              style: TextStyle(
+              style: const TextStyle(
+                color: Color(0xFFFF94D4),
                 fontWeight: FontWeight.bold,
                 fontSize: 16.0,
               ),
             ),
             TextField(
               controller: controller,
-              keyboardType: TextInputType.numberWithOptions(decimal: true),
+              keyboardType:
+                  const TextInputType.numberWithOptions(decimal: true),
               decoration: InputDecoration(
                 hintText: '$title 입력',
-                border: OutlineInputBorder(),
+                border: const OutlineInputBorder(),
               ),
               onChanged: (text) {
                 setState(() {
                   switch (title) {
-                    case '키':
-                      _height = text;
+                    case 'Height':
+                      userInbodyInfo['height'] = double.parse(text);
                       break;
-                    case '몸무게':
-                      _weight = text;
+                    case 'Weight':
+                      userInbodyInfo['weight'] = double.parse(text);
                       break;
-                    case '체지방률':
-                      _fatRate = text;
+                    case 'Fat':
+                      userInbodyInfo['fat'] = double.parse(text);
                       break;
-                    case '근육량':
-                      _muscleMass = text;
+                    case 'Muscle':
+                      userInbodyInfo['muscle'] = double.parse(text);
                       break;
                     default:
                   }
@@ -140,29 +183,35 @@ class HomeScreenState extends State<HomeScreen> {
         context: context,
         builder: (context) {
           return AlertDialog(
-            title: const Text('Edit Profile'),
+            title: const Text(
+              'Edit Profile',
+              style: TextStyle(color: Color(0xFFFF94D4), fontSize: 24, fontWeight: FontWeight.bold),
+            ),
             content: SingleChildScrollView(
               child: Column(
                 mainAxisSize: MainAxisSize.min,
                 children: [
-                  _buildTextField('height', _height),
-                  _buildTextField('weight', _weight),
-                  _buildTextField('fat', _fatRate),
-                  _buildTextField('muscle', _muscleMass),
+                  _buildTextField('Height', '${userInbodyInfo['height']}'),
+                  _buildTextField('Weight', '${userInbodyInfo['weight']}'),
+                  _buildTextField('Fat', '${userInbodyInfo['fat']}'),
+                  _buildTextField('Muscle', '${userInbodyInfo['muscle']}'),
                 ],
               ),
             ),
             actions: [
               ElevatedButton(
-                child: Text('취소'),
+                child: Text('Exit'),
                 onPressed: () {
                   Navigator.pop(context);
                 },
               ),
               ElevatedButton(
-                child: Text('저장'),
+                child: Text('Save'),
                 onPressed: () {
                   // 정보 저장 처리
+
+                  _saveUserInbodyInfo();
+
                   Navigator.pop(context);
                 },
               ),
@@ -210,22 +259,42 @@ class HomeScreenState extends State<HomeScreen> {
                       ),
                     ],
                   )),
-              Container(
-                width: double.infinity,
-                height: 240,
-                decoration: const BoxDecoration(
-                  color: Color(0xFF393239),
-                ),
-                child: ListView.builder(
-                  itemCount: userClassList.length,
-                  padding: EdgeInsets.zero,
-                  shrinkWrap: true,
-                  scrollDirection: Axis.horizontal,
-                  itemBuilder: (BuildContext context, int index) {
-                    return ActivityHomeView(classInfo: userClassList[index]);
-                  },
-                ),
-              ),
+              userClassList.isEmpty
+                  ? Container(
+                      width: double.infinity,
+                      height: 240,
+                      decoration: const BoxDecoration(color: Color(0xFF8b4f73)),
+                      child: const Padding(
+                        padding: EdgeInsets.only(left: 15),
+                        child: Center(
+                          child: Text(
+                            'Register for a new activity!',
+                            style: TextStyle(
+                                color: Colors.white,
+                                fontSize: 60,
+                                fontWeight: FontWeight.bold,
+                                fontFamily: 'Dancing Script'),
+                          ),
+                        ),
+                      ),
+                    )
+                  : Container(
+                      width: double.infinity,
+                      height: 240,
+                      decoration: const BoxDecoration(
+                        color: Color(0xFF393239),
+                      ),
+                      child: ListView.builder(
+                        itemCount: userClassList.length,
+                        padding: EdgeInsets.zero,
+                        shrinkWrap: true,
+                        scrollDirection: Axis.horizontal,
+                        itemBuilder: (BuildContext context, int index) {
+                          return ActivityHomeView(
+                              classInfo: userClassList[index]);
+                        },
+                      ),
+                    ),
               const SizedBox(height: 30),
               Card(
                 child: Padding(
@@ -234,23 +303,24 @@ class HomeScreenState extends State<HomeScreen> {
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
                       const Text(
-                        '신체 정보',
+                        'My Health Profile',
                         style: TextStyle(
                           fontWeight: FontWeight.bold,
-                          fontSize: 18.0,
+                          fontFamily: 'Pacifico',
+                          fontSize: 24.0,
                         ),
                       ),
                       const SizedBox(height: 16.0),
-                      _buildInfoRow('키', _height!),
-                      _buildInfoRow('몸무게', _weight!),
-                      _buildInfoRow('체지방률', _fatRate!),
-                      _buildInfoRow('근육량', _muscleMass!),
+                      _buildInfoRow('Height', '${userInbodyInfo['height']}'),
+                      _buildInfoRow('Weight', '${userInbodyInfo['weight']}'),
+                      _buildInfoRow('Fat', '${userInbodyInfo['fat']}'),
+                      _buildInfoRow('Muscle', '${userInbodyInfo['muscle']}'),
                       const SizedBox(height: 16.0),
                       Row(
                         mainAxisAlignment: MainAxisAlignment.end,
                         children: [
                           IconButton(
-                            icon: Icon(Icons.settings),
+                            icon: const Icon(Icons.settings, color: Color(0xFFFF94D4)),
                             onPressed: _showEditDialog,
                           ),
                         ],
@@ -290,19 +360,8 @@ class HomeScreenState extends State<HomeScreen> {
       body: CustomScrollView(slivers: [
         SliverFillRemaining(
           hasScrollBody: false,
-          child: FutureBuilder(
-            future: _loadDataStatusFuture,
-            builder: (BuildContext context, AsyncSnapshot<dynamic> snapshot) {
-              if (snapshot.connectionState == ConnectionState.waiting) {
-                return CircularProgressIndicator();
-              } else if (snapshot.hasError) {
-                return Text('Error: ${snapshot.error}');
-              } else {
-                return Column(
-                  children: homeScreenContents,
-                );
-              }
-            },
+          child: Column(
+            children: homeScreenContents,
           ),
         )
       ]),

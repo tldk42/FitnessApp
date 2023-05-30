@@ -17,6 +17,17 @@ class _ManagerClassUserScreenState extends State<ManagerClassUserScreen> {
   List<Map<String, dynamic>>? _users;
   String _searchKeyword = '';
 
+  List<Map<String, dynamic>> _getFilteredUsers() {
+    if (_searchKeyword.isEmpty) {
+      return _users!;
+    } else {
+      return _users!.where((user) {
+        final String userName = user['member_name'].toString().toLowerCase();
+        return userName.contains(_searchKeyword.toLowerCase());
+      }).toList();
+    }
+  }
+
   Future _fetchAllUser() async {
     var response = await sendData(urlPath: 'manager/get_all_user.php');
     if (response != null) {
@@ -149,7 +160,7 @@ class _ManagerClassUserScreenState extends State<ManagerClassUserScreen> {
                   Padding(
                     padding: EdgeInsetsDirectional.fromSTEB(0, 12, 0, 12),
                     child: ListView.builder(
-                      itemCount: _users?.length ?? 0,
+                      itemCount: _getFilteredUsers().length,
                       padding: EdgeInsets.zero,
                       primary: false,
                       shrinkWrap: true,
@@ -157,7 +168,7 @@ class _ManagerClassUserScreenState extends State<ManagerClassUserScreen> {
                       itemBuilder: (BuildContext context, int index) {
                         {
                           return UserIconWithInfo(
-                            memberInfo: _users![index],
+                            memberInfo: _getFilteredUsers()[index],
                             update:  _fetchAllUser,
                           );
                         }

@@ -8,11 +8,11 @@ import 'package:intl/intl.dart';
 import 'package:provider/provider.dart';
 
 class ActivityScreen extends StatefulWidget {
-  final Map<String, dynamic> user;
+  Map<String, dynamic> user;
   final String? userAuthKey;
   final Function setTab;
 
-  const ActivityScreen(
+  ActivityScreen(
       {Key? key,
       required this.user,
       required this.userAuthKey,
@@ -83,6 +83,9 @@ class _ActivityScreenState extends State<ActivityScreen> {
     setState(() {
       _fetchClasses();
     });
+
+    // widget.user =
+    //     Provider.of<UserLoginStateProvider>(context).user!;
   }
 
   @override
@@ -180,10 +183,9 @@ class _ActivityListState extends State<ActivityList> {
   late String userId;
 
   Future<String> _isEnrolled() async {
-    final response = await sendData(urlPath: 'user/check_enroll.php', data: {
-      'class_id': widget.classData['class_id'],
-      'member_id': userId
-    });
+    final response = await sendData(
+        urlPath: 'user/check_enroll.php',
+        data: {'class_id': widget.classData['class_id'], 'member_id': userId});
     setState(() {
       if (response != null) {
         if (response['success']) {
@@ -205,9 +207,8 @@ class _ActivityListState extends State<ActivityList> {
       builder: (BuildContext context) {
         return AlertDialog(
           title: Text(enrolled! ? 'Cancel' : 'Register'),
-          content: Text(enrolled!
-              ? 'Cancel this Class?'
-              : 'Register this Class?'),
+          content:
+              Text(enrolled! ? 'Cancel this Class?' : 'Register this Class?'),
           actions: <Widget>[
             TextButton(
               child: const Text('No'),
@@ -217,7 +218,67 @@ class _ActivityListState extends State<ActivityList> {
             ),
             TextButton(
               child: const Text('Yes'),
-              onPressed: () {
+              onPressed: () async {
+                var userProvider =
+                    Provider.of<UserLoginStateProvider>(context, listen: false);
+                int currentCredit =
+                    int.parse(userProvider.user!['member_credit']);
+
+                int classCredit = int.parse(widget.classData['credit']);
+
+                var newCredit = 0;
+
+                if (!enrolled!) {
+                  newCredit = (currentCredit) - classCredit;
+
+                  print(newCredit);
+                  if (newCredit < 0) {
+                    ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
+                        content: Text("You do not have enough credit"),
+                        backgroundColor: Colors.red));
+
+                    Navigator.of(context).pop();
+                    return;
+                  }
+
+                  final response =
+                      await sendData(urlPath: 'user/enroll_class.php', data: {
+                    'class_id': widget.classData['class_id'],
+                    'member_id': userId,
+                    'member_credit': '$newCredit',
+                    'transaction_key':
+                        DateTime.now().toString().substring(0, 19),
+                    'transaction_value':
+                        '-$classCredit (${widget.classData['class_name']})'
+                  });
+                  if (response != null) {
+                    if (response['success']) {
+                      print('enrolled');
+                    }
+                  }
+                } else {
+                  newCredit =
+                      currentCredit + int.parse(widget.classData['credit']);
+
+                  final response =
+                      await sendData(urlPath: 'user/cancel_enroll.php', data: {
+                    'class_id': widget.classData['class_id'],
+                    'member_id': userId,
+                    'member_credit': '$newCredit',
+                    'transaction_key':
+                        DateTime.now().toString().substring(0, 19),
+                    'transaction_value':
+                        '+$classCredit (${widget.classData['class_name']})'
+                  });
+                  if (response != null) {
+                    if (response['success']) {
+                      print('canceled');
+                    }
+                  }
+                }
+
+                userProvider.updateFromServer();
+
                 setState(() {
                   enrolled = !enrolled!;
                 });
@@ -269,8 +330,8 @@ class _ActivityListState extends State<ActivityList> {
                 decoration: BoxDecoration(
                   color: Colors.white,
                   image: DecorationImage(
-                      fit: BoxFit.fitWidth, image: RandomImageGenerator().image
-                      ),
+                      fit: BoxFit.fitWidth,
+                      image: RandomImageGenerator().image),
                   boxShadow: const [
                     BoxShadow(
                       blurRadius: 3,
@@ -351,43 +412,7 @@ class _ActivityListState extends State<ActivityList> {
                                         ? const Color(0xFFFF94D4)
                                         : const Color(0xFFC03239),
                                   ),
-                                  onPressed:
-                                  !enrolled!
-                                      ? () async {
-                                          final response = await sendData(
-                                              urlPath: 'user/enroll_class.php',
-                                              data: {
-                                                'class_id': widget
-                                                    .classData['class_id'],
-                                                'member_id': userId
-                                              });
-                                          if (response != null) {
-                                            print(response);
-                                            if (response['success']) {
-                                              print('enrolled');
-                                              setState(() {
-                                                enrolled = true;
-                                              });
-                                            }
-                                          }
-                                        }
-                                      : () async {
-                                          final response = await sendData(
-                                              urlPath: 'user/cancel_enroll.php',
-                                              data: {
-                                                'class_id': widget
-                                                    .classData['class_id'],
-                                                'member_id': userId
-                                              });
-                                          if (response != null) {
-                                            if (response['success']) {
-                                              print('canceled');
-                                              setState(() {
-                                                enrolled = false;
-                                              });
-                                            }
-                                          }
-                                        },
+                                  onPressed: _showConfirmationDialog,
                                   icon: Icon(
                                       !enrolled!
                                           ? Icons.add_rounded
@@ -398,14 +423,14 @@ class _ActivityListState extends State<ActivityList> {
                                       Text(!enrolled! ? 'Reserve' : 'Cancel'),
                                 ),
                                 Padding(
-                                  padding: const EdgeInsets.symmetric(horizontal: 50),
+                                  padding: const EdgeInsets.symmetric(
+                                      horizontal: 50),
                                   child: Text(
                                     '\$${widget.classData['credit']}',
                                     style: const TextStyle(
-                                      color: Colors.yellowAccent,
-                                      fontWeight: FontWeight.bold,
-                                      fontSize: 30
-                                    ),
+                                        color: Colors.yellowAccent,
+                                        fontWeight: FontWeight.bold,
+                                        fontSize: 30),
                                   ),
                                 ),
                                 Expanded(
@@ -415,10 +440,10 @@ class _ActivityListState extends State<ActivityList> {
                                     crossAxisAlignment: CrossAxisAlignment.end,
                                     children: [
                                       Padding(
-                                        padding: const EdgeInsetsDirectional.fromSTEB(
-                                            0, 0, 0, 4),
+                                        padding: const EdgeInsetsDirectional
+                                            .fromSTEB(0, 0, 0, 4),
                                         child: Text(
-                                            '${widget.classData['start_time'].substring(0,5)} ~ ${widget.classData['end_time'].substring(0,5)}',
+                                            '${widget.classData['start_time'].substring(0, 5)} ~ ${widget.classData['end_time'].substring(0, 5)}',
                                             style: const TextStyle(
                                               fontFamily: 'Lexend Deca',
                                               color: Colors.white,
